@@ -32,10 +32,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Multi-file folder structure (tokens/core/, tokens/semantic/, tokens/component/) exists and validates against W3C DTCG format requirements
   4. Token naming conventions defined (kebab-case, no reserved characters) with validation passing
 
-**Plans**: TBD (1-3 plans based on audit complexity)
+**Plans**: 3 plans in 2 waves
 
 Plans:
-- [ ] 01-01: [To be defined during planning]
+- [ ] 01-01-PLAN.md -- Shared theme audit (SCSS variables + CSS custom properties)
+- [ ] 01-02-PLAN.md -- Component audit + gap analysis
+- [ ] 01-03-PLAN.md -- DTCG structure specification + example token validation
 
 ### Phase 2: Token Extraction
 **Goal**: All design values from shared theme are extracted into W3C DTCG-formatted JSON files, organized by category with proper semantic structure.
@@ -94,15 +96,15 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Audit & Foundation | 0/TBD | Not started | - |
+| 1. Audit & Foundation | 0/3 | Planned | - |
 | 2. Token Extraction | 0/TBD | Not started | - |
 | 3. Build Pipeline | 0/TBD | Not started | - |
 | 4. Documentation & Validation | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-02-03*
-*Last updated: 2026-02-03*
+*Last updated: 2026-02-04*
