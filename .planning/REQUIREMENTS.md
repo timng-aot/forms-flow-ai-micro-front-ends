@@ -130,59 +130,59 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUDIT-01 | TBD | Pending |
-| AUDIT-02 | TBD | Pending |
-| AUDIT-03 | TBD | Pending |
-| AUDIT-04 | TBD | Pending |
-| AUDIT-05 | TBD | Pending |
-| AUDIT-06 | TBD | Pending |
-| AUDIT-07 | TBD | Pending |
-| AUDIT-08 | TBD | Pending |
-| AUDIT-09 | TBD | Pending |
-| AUDIT-10 | TBD | Pending |
-| AUDIT-11 | TBD | Pending |
-| AUDIT-12 | TBD | Pending |
-| AUDIT-13 | TBD | Pending |
-| COLOR-01 | TBD | Pending |
-| COLOR-02 | TBD | Pending |
-| COLOR-03 | TBD | Pending |
-| SPACE-01 | TBD | Pending |
-| SPACE-02 | TBD | Pending |
-| SPACE-03 | TBD | Pending |
-| TYPE-01 | TBD | Pending |
-| TYPE-02 | TBD | Pending |
-| TYPE-03 | TBD | Pending |
-| TYPE-04 | TBD | Pending |
-| TYPE-05 | TBD | Pending |
-| TYPE-06 | TBD | Pending |
-| RADIUS-01 | TBD | Pending |
-| RADIUS-02 | TBD | Pending |
-| RADIUS-03 | TBD | Pending |
-| SHADOW-01 | TBD | Pending |
-| SHADOW-02 | TBD | Pending |
-| SHADOW-03 | TBD | Pending |
-| FORMAT-01 | TBD | Pending |
-| FORMAT-02 | TBD | Pending |
-| FORMAT-03 | TBD | Pending |
-| FORMAT-04 | TBD | Pending |
-| TOOL-01 | TBD | Pending |
-| TOOL-02 | TBD | Pending |
-| TOOL-03 | TBD | Pending |
-| TOOL-04 | TBD | Pending |
-| BUILD-01 | TBD | Pending |
-| BUILD-02 | TBD | Pending |
-| BUILD-03 | TBD | Pending |
-| BUILD-04 | TBD | Pending |
-| DOCS-01 | TBD | Pending |
-| DOCS-02 | TBD | Pending |
-| DOCS-03 | TBD | Pending |
-| DOCS-04 | TBD | Pending |
+| AUDIT-01 | Phase 1 | Pending |
+| AUDIT-02 | Phase 1 | Pending |
+| AUDIT-03 | Phase 1 | Pending |
+| AUDIT-04 | Phase 1 | Pending |
+| AUDIT-05 | Phase 1 | Pending |
+| AUDIT-06 | Phase 1 | Pending |
+| AUDIT-07 | Phase 1 | Pending |
+| AUDIT-08 | Phase 1 | Pending |
+| AUDIT-09 | Phase 1 | Pending |
+| AUDIT-10 | Phase 1 | Pending |
+| AUDIT-11 | Phase 1 | Pending |
+| AUDIT-12 | Phase 1 | Pending |
+| AUDIT-13 | Phase 1 | Pending |
+| FORMAT-01 | Phase 1 | Pending |
+| FORMAT-02 | Phase 1 | Pending |
+| FORMAT-03 | Phase 1 | Pending |
+| FORMAT-04 | Phase 1 | Pending |
+| COLOR-01 | Phase 2 | Pending |
+| COLOR-02 | Phase 2 | Pending |
+| COLOR-03 | Phase 2 | Pending |
+| SPACE-01 | Phase 2 | Pending |
+| SPACE-02 | Phase 2 | Pending |
+| SPACE-03 | Phase 2 | Pending |
+| TYPE-01 | Phase 2 | Pending |
+| TYPE-02 | Phase 2 | Pending |
+| TYPE-03 | Phase 2 | Pending |
+| TYPE-04 | Phase 2 | Pending |
+| TYPE-05 | Phase 2 | Pending |
+| TYPE-06 | Phase 2 | Pending |
+| RADIUS-01 | Phase 2 | Pending |
+| RADIUS-02 | Phase 2 | Pending |
+| RADIUS-03 | Phase 2 | Pending |
+| SHADOW-01 | Phase 2 | Pending |
+| SHADOW-02 | Phase 2 | Pending |
+| SHADOW-03 | Phase 2 | Pending |
+| TOOL-01 | Phase 2 | Pending |
+| TOOL-02 | Phase 2 | Pending |
+| TOOL-03 | Phase 2 | Pending |
+| TOOL-04 | Phase 2 | Pending |
+| BUILD-01 | Phase 3 | Pending |
+| BUILD-02 | Phase 3 | Pending |
+| BUILD-03 | Phase 3 | Pending |
+| BUILD-04 | Phase 3 | Pending |
+| DOCS-01 | Phase 4 | Pending |
+| DOCS-02 | Phase 4 | Pending |
+| DOCS-03 | Phase 4 | Pending |
+| DOCS-04 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 46 total
-- Mapped to phases: 0
-- Unmapped: 46
+- Mapped to phases: 46
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-03*
-*Last updated: 2026-02-03 after initial definition*
+*Last updated: 2026-02-03 after roadmap creation*
