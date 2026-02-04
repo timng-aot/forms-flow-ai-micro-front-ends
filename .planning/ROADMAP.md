@@ -29,7 +29,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Success Criteria** (what must be TRUE):
   1. All SCSS variables and CSS custom properties in forms-flow-theme are documented with their computed values
   2. Component micro-frontends audited with hardcoded values categorized and gap analysis complete
-  3. Multi-file folder structure (tokens/core/, tokens/semantic/, tokens/component/) exists and validates against W3C DTCG format requirements
+  3. Two-file structure (tokens/core.json, tokens/semantic.json) defined and example files validate against W3C DTCG format requirements
   4. Token naming conventions defined (kebab-case, no reserved characters) with validation passing
 
 **Plans**: 3 plans in 2 waves
