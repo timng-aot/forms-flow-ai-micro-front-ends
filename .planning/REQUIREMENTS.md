@@ -9,22 +9,22 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Audit — Shared Theme
 
-- [ ] **AUDIT-01**: Identify all SCSS variables in `forms-flow-theme/scss`
-- [ ] **AUDIT-02**: Identify all CSS custom properties in `forms-flow-theme/scss`
-- [ ] **AUDIT-03**: Categorize variables into token types (color, spacing, typography, border-radius, shadow)
-- [ ] **AUDIT-04**: Document computed values requiring manual handling (SCSS functions/mixins)
-- [ ] **AUDIT-05**: Create audit report documenting findings and naming patterns
+- [x] **AUDIT-01**: Identify all SCSS variables in `forms-flow-theme/scss`
+- [x] **AUDIT-02**: Identify all CSS custom properties in `forms-flow-theme/scss`
+- [x] **AUDIT-03**: Categorize variables into token types (color, spacing, typography, border-radius, shadow)
+- [x] **AUDIT-04**: Document computed values requiring manual handling (SCSS functions/mixins)
+- [x] **AUDIT-05**: Create audit report documenting findings and naming patterns
 
 ### Audit — Component Micro-Frontends
 
-- [ ] **AUDIT-06**: Scan SCSS/CSS files in forms-flow-admin for hardcoded design values
-- [ ] **AUDIT-07**: Scan SCSS/CSS files in forms-flow-nav for hardcoded design values
-- [ ] **AUDIT-08**: Scan SCSS/CSS files in forms-flow-review for hardcoded design values
-- [ ] **AUDIT-09**: Scan SCSS/CSS files in forms-flow-submissions for hardcoded design values
-- [ ] **AUDIT-10**: Scan SCSS/CSS files in forms-flow-components for hardcoded design values
-- [ ] **AUDIT-11**: Categorize component values by token type (color, spacing, typography, radius, shadow)
-- [ ] **AUDIT-12**: Identify values used in components but missing from shared theme (gap analysis)
-- [ ] **AUDIT-13**: Document component-specific values that should become shared tokens
+- [x] **AUDIT-06**: Scan SCSS/CSS files in forms-flow-admin for hardcoded design values
+- [x] **AUDIT-07**: Scan SCSS/CSS files in forms-flow-nav for hardcoded design values
+- [x] **AUDIT-08**: Scan SCSS/CSS files in forms-flow-review for hardcoded design values
+- [x] **AUDIT-09**: Scan SCSS/CSS files in forms-flow-submissions for hardcoded design values
+- [x] **AUDIT-10**: Scan SCSS/CSS files in forms-flow-components for hardcoded design values
+- [x] **AUDIT-11**: Categorize component values by token type (color, spacing, typography, radius, shadow)
+- [x] **AUDIT-12**: Identify values used in components but missing from shared theme (gap analysis)
+- [x] **AUDIT-13**: Document component-specific values that should become shared tokens
 
 ### Color Tokens
 
@@ -61,10 +61,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Token Format
 
-- [ ] **FORMAT-01**: All tokens use W3C DTCG format ($value, $type properties)
-- [ ] **FORMAT-02**: Token names follow DTCG naming restrictions (no $, {, }, . in names)
-- [ ] **FORMAT-03**: Semantic tokens use curly brace reference syntax ({group.token})
-- [ ] **FORMAT-04**: Tokens organized in primitive/semantic group hierarchy
+- [x] **FORMAT-01**: All tokens use W3C DTCG format ($value, $type properties)
+- [x] **FORMAT-02**: Token names follow DTCG naming restrictions (no $, {, }, . in names)
+- [x] **FORMAT-03**: Semantic tokens use curly brace reference syntax ({group.token})
+- [x] **FORMAT-04**: Tokens organized in primitive/semantic group hierarchy
 
 ### Extraction Tooling
 
@@ -130,23 +130,23 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUDIT-01 | Phase 1 | Pending |
-| AUDIT-02 | Phase 1 | Pending |
-| AUDIT-03 | Phase 1 | Pending |
-| AUDIT-04 | Phase 1 | Pending |
-| AUDIT-05 | Phase 1 | Pending |
-| AUDIT-06 | Phase 1 | Pending |
-| AUDIT-07 | Phase 1 | Pending |
-| AUDIT-08 | Phase 1 | Pending |
-| AUDIT-09 | Phase 1 | Pending |
-| AUDIT-10 | Phase 1 | Pending |
-| AUDIT-11 | Phase 1 | Pending |
-| AUDIT-12 | Phase 1 | Pending |
-| AUDIT-13 | Phase 1 | Pending |
-| FORMAT-01 | Phase 1 | Pending |
-| FORMAT-02 | Phase 1 | Pending |
-| FORMAT-03 | Phase 1 | Pending |
-| FORMAT-04 | Phase 1 | Pending |
+| AUDIT-01 | Phase 1 | Complete |
+| AUDIT-02 | Phase 1 | Complete |
+| AUDIT-03 | Phase 1 | Complete |
+| AUDIT-04 | Phase 1 | Complete |
+| AUDIT-05 | Phase 1 | Complete |
+| AUDIT-06 | Phase 1 | Complete |
+| AUDIT-07 | Phase 1 | Complete |
+| AUDIT-08 | Phase 1 | Complete |
+| AUDIT-09 | Phase 1 | Complete |
+| AUDIT-10 | Phase 1 | Complete |
+| AUDIT-11 | Phase 1 | Complete |
+| AUDIT-12 | Phase 1 | Complete |
+| AUDIT-13 | Phase 1 | Complete |
+| FORMAT-01 | Phase 1 | Complete |
+| FORMAT-02 | Phase 1 | Complete |
+| FORMAT-03 | Phase 1 | Complete |
+| FORMAT-04 | Phase 1 | Complete |
 | COLOR-01 | Phase 2 | Pending |
 | COLOR-02 | Phase 2 | Pending |
 | COLOR-03 | Phase 2 | Pending |
@@ -185,4 +185,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-03*
-*Last updated: 2026-02-03 after roadmap creation*
+*Last updated: 2026-02-04 (Phase 1 complete — 17/17 requirements satisfied)*
