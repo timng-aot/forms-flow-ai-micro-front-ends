@@ -1,0 +1,1463 @@
+{
+  "metadata": {
+    "auditDate": "2026-02-04",
+    "packagesScanned": [
+      "forms-flow-admin",
+      "forms-flow-nav",
+      "forms-flow-review",
+      "forms-flow-submissions",
+      "forms-flow-components"
+    ],
+    "totalFiles": 15,
+    "totalUniqueValues": 80,
+    "totalOccurrences": 146
+  },
+  "hardcodedValues": {
+    "shadows": [
+      {
+        "value": "none",
+        "type": "shadows",
+        "occurrences": 7,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/index.scss",
+            "line": 17,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/index.scss",
+            "line": 28,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 109,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/hamburger.scss",
+            "line": 23,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 129,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 132,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 157,
+            "property": "box-shadow"
+          }
+        ]
+      },
+      {
+        "value": "0px",
+        "type": "shadows",
+        "occurrences": 6,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 5,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 62,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/dashboard/insightDashboard.scss",
+            "line": 11,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/users/users.scss",
+            "line": 36,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/hamburger.scss",
+            "line": 35,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/hamburger.scss",
+            "line": 35,
+            "property": "box-shadow"
+          }
+        ]
+      },
+      {
+        "value": "2px",
+        "type": "shadows",
+        "occurrences": 5,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 5,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 62,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/dashboard/insightDashboard.scss",
+            "line": 11,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/users/users.scss",
+            "line": 36,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/hamburger.scss",
+            "line": 35,
+            "property": "box-shadow"
+          }
+        ]
+      },
+      {
+        "value": "8px",
+        "type": "shadows",
+        "occurrences": 4,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 5,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 62,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/dashboard/insightDashboard.scss",
+            "line": 11,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/users/users.scss",
+            "line": 36,
+            "property": "box-shadow"
+          }
+        ]
+      },
+      {
+        "value": "0px 2px 8px rgba(66, 66, 66, 0.07)",
+        "type": "shadows",
+        "occurrences": 4,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 5,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 62,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/dashboard/insightDashboard.scss",
+            "line": 11,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/users/users.scss",
+            "line": 36,
+            "property": "box-shadow"
+          }
+        ]
+      },
+      {
+        "value": "1px",
+        "type": "shadows",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/organization/organization.scss",
+            "line": 31,
+            "property": "box-shadow"
+          }
+        ]
+      },
+      {
+        "value": "3px",
+        "type": "shadows",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/organization/organization.scss",
+            "line": 31,
+            "property": "box-shadow"
+          }
+        ]
+      },
+      {
+        "value": "0 1px 3px rgba(0, 0, 0, 0.1)",
+        "type": "shadows",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/organization/organization.scss",
+            "line": 31,
+            "property": "box-shadow"
+          }
+        ]
+      },
+      {
+        "value": "4px",
+        "type": "shadows",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/hamburger.scss",
+            "line": 35,
+            "property": "box-shadow"
+          }
+        ]
+      },
+      {
+        "value": "0px 2px 4px 0px rgba(48, 52, 54, 0.08)",
+        "type": "shadows",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/hamburger.scss",
+            "line": 35,
+            "property": "box-shadow"
+          }
+        ]
+      }
+    ],
+    "spacing": [
+      {
+        "value": "1rem",
+        "type": "spacing",
+        "occurrences": 5,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/dashboard/insightDashboard.scss",
+            "line": 18,
+            "property": "margin-top"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 101,
+            "property": "padding"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 174,
+            "property": "margin"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 318,
+            "property": "width"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 319,
+            "property": "height"
+          }
+        ]
+      },
+      {
+        "value": "1px",
+        "type": "spacing",
+        "occurrences": 4,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 4,
+            "property": "border"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 61,
+            "property": "border"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/dashboard/insightDashboard.scss",
+            "line": 10,
+            "property": "border"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 173,
+            "property": "border-bottom"
+          }
+        ]
+      },
+      {
+        "value": "1.5rem",
+        "type": "spacing",
+        "occurrences": 4,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 31,
+            "property": "height"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 167,
+            "property": "left"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 168,
+            "property": "width"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 177,
+            "property": "left"
+          }
+        ]
+      },
+      {
+        "value": "9px",
+        "type": "spacing",
+        "occurrences": 4,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 97,
+            "property": "padding-left"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 98,
+            "property": "padding-right"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/users/users.scss",
+            "line": 10,
+            "property": "padding-left"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/users/users.scss",
+            "line": 11,
+            "property": "padding-right"
+          }
+        ]
+      },
+      {
+        "value": "25rem",
+        "type": "spacing",
+        "occurrences": 3,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 8,
+            "property": "max-height"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 90,
+            "property": "max-height"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 94,
+            "property": "max-height"
+          }
+        ]
+      },
+      {
+        "value": "0.3rem",
+        "type": "spacing",
+        "occurrences": 3,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/Navbar.scss",
+            "line": 40,
+            "property": "padding-block"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/Navbar.scss",
+            "line": 44,
+            "property": "padding-block"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/Navbar.scss",
+            "line": 49,
+            "property": "padding-block"
+          }
+        ]
+      },
+      {
+        "value": "4.625rem",
+        "type": "spacing",
+        "occurrences": 3,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/hamburger.scss",
+            "line": 17,
+            "property": "min-height"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/hamburger.scss",
+            "line": 44,
+            "property": "max-height"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 99,
+            "property": "min-height"
+          }
+        ]
+      },
+      {
+        "value": "1.75rem",
+        "type": "spacing",
+        "occurrences": 2,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 18,
+            "property": "margin-bottom"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/hamburger.scss",
+            "line": 43,
+            "property": "padding"
+          }
+        ]
+      },
+      {
+        "value": "1em",
+        "type": "spacing",
+        "occurrences": 2,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 36,
+            "property": "width"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 37,
+            "property": "height"
+          }
+        ]
+      },
+      {
+        "value": "1.938rem",
+        "type": "spacing",
+        "occurrences": 2,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 59,
+            "property": "padding-left"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 60,
+            "property": "padding-right"
+          }
+        ]
+      },
+      {
+        "value": "37px",
+        "type": "spacing",
+        "occurrences": 2,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 99,
+            "property": "height"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/users/users.scss",
+            "line": 12,
+            "property": "height"
+          }
+        ]
+      },
+      {
+        "value": "5px",
+        "type": "spacing",
+        "occurrences": 2,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 102,
+            "property": "margin-bottom"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/users/users.scss",
+            "line": 15,
+            "property": "margin-bottom"
+          }
+        ]
+      },
+      {
+        "value": "0.125rem",
+        "type": "spacing",
+        "occurrences": 2,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 143,
+            "property": "border-left"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 178,
+            "property": "width"
+          }
+        ]
+      },
+      {
+        "value": "10px",
+        "type": "spacing",
+        "occurrences": 2,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/users/users.scss",
+            "line": 28,
+            "property": "margin-right"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/users/users.scss",
+            "line": 29,
+            "property": "margin-top"
+          }
+        ]
+      },
+      {
+        "value": "12.1rem",
+        "type": "spacing",
+        "occurrences": 2,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/hamburger.scss",
+            "line": 39,
+            "property": "max-width"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/hamburger.scss",
+            "line": 47,
+            "property": "width"
+          }
+        ]
+      },
+      {
+        "value": "16px",
+        "type": "spacing",
+        "occurrences": 2,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 382,
+            "property": "padding"
+          },
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 382,
+            "property": "padding"
+          }
+        ]
+      },
+      {
+        "value": "8px",
+        "type": "spacing",
+        "occurrences": 2,
+        "locations": [
+          {
+            "package": "forms-flow-review",
+            "file": "forms-flow-review/src/index.scss",
+            "line": 24,
+            "property": "padding"
+          },
+          {
+            "package": "forms-flow-submissions",
+            "file": "forms-flow-submissions/src/index.scss",
+            "line": 34,
+            "property": "padding"
+          }
+        ]
+      },
+      {
+        "value": "48px",
+        "type": "spacing",
+        "occurrences": 2,
+        "locations": [
+          {
+            "package": "forms-flow-review",
+            "file": "forms-flow-review/src/index.scss",
+            "line": 24,
+            "property": "padding"
+          },
+          {
+            "package": "forms-flow-submissions",
+            "file": "forms-flow-submissions/src/index.scss",
+            "line": 34,
+            "property": "padding"
+          }
+        ]
+      },
+      {
+        "value": "3.38rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/organization/organization.scss",
+            "line": 8,
+            "property": "margin-bottom"
+          }
+        ]
+      },
+      {
+        "value": "0.81rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/organization/organization.scss",
+            "line": 14,
+            "property": "padding-bottom"
+          }
+        ]
+      },
+      {
+        "value": "1.875rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 19,
+            "property": "margin-top"
+          }
+        ]
+      },
+      {
+        "value": "4.25rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 32,
+            "property": "width"
+          }
+        ]
+      },
+      {
+        "value": "0.25em",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 38,
+            "property": "padding"
+          }
+        ]
+      },
+      {
+        "value": "4.938rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 57,
+            "property": "margin-left"
+          }
+        ]
+      },
+      {
+        "value": "5.188rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 58,
+            "property": "margin-right"
+          }
+        ]
+      },
+      {
+        "value": "21px",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 69,
+            "property": "margin-left"
+          }
+        ]
+      },
+      {
+        "value": "0.313rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 133,
+            "property": "margin-right"
+          }
+        ]
+      },
+      {
+        "value": "0.375rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 136,
+            "property": "margin-top"
+          }
+        ]
+      },
+      {
+        "value": "4rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 141,
+            "property": "margin-left"
+          }
+        ]
+      },
+      {
+        "value": "0.6rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 151,
+            "property": "bottom"
+          }
+        ]
+      },
+      {
+        "value": "0.031rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 152,
+            "property": "width"
+          }
+        ]
+      },
+      {
+        "value": "0.063rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 169,
+            "property": "height"
+          }
+        ]
+      },
+      {
+        "value": "2px",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 189,
+            "property": "margin-top"
+          }
+        ]
+      },
+      {
+        "value": "14rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/dashboard/insightDashboard.scss",
+            "line": 14,
+            "property": "max-height"
+          }
+        ]
+      },
+      {
+        "value": "20rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/users/users.scss",
+            "line": 5,
+            "property": "max-height"
+          }
+        ]
+      },
+      {
+        "value": "3px",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/Navbar.scss",
+            "line": 16,
+            "property": "border-bottom"
+          }
+        ]
+      },
+      {
+        "value": "1.2rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/hamburger.scss",
+            "line": 43,
+            "property": "padding"
+          }
+        ]
+      },
+      {
+        "value": "0.87rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 81,
+            "property": "padding"
+          }
+        ]
+      },
+      {
+        "value": "0.75rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 81,
+            "property": "padding"
+          }
+        ]
+      },
+      {
+        "value": "1.313rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 101,
+            "property": "padding"
+          }
+        ]
+      },
+      {
+        "value": "0.44rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 118,
+            "property": "gap"
+          }
+        ]
+      },
+      {
+        "value": "0.625rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 137,
+            "property": "margin-right"
+          }
+        ]
+      },
+      {
+        "value": "1.44rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 199,
+            "property": "padding-left"
+          }
+        ]
+      },
+      {
+        "value": "2rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 281,
+            "property": "width"
+          }
+        ]
+      },
+      {
+        "value": "0.5rem",
+        "type": "spacing",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 408,
+            "property": "margin-right"
+          }
+        ]
+      }
+    ],
+    "colors": [
+      {
+        "value": "rgba(66, 66, 66, 0.07)",
+        "type": "colors",
+        "occurrences": 4,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 5,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 62,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/dashboard/insightDashboard.scss",
+            "line": 11,
+            "property": "box-shadow"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/users/users.scss",
+            "line": 36,
+            "property": "box-shadow"
+          }
+        ]
+      },
+      {
+        "value": "#FFFFFF",
+        "type": "colors",
+        "occurrences": 3,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 3,
+            "property": "background"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 56,
+            "property": "background-color"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/dashboard/insightDashboard.scss",
+            "line": 9,
+            "property": "background"
+          }
+        ]
+      },
+      {
+        "value": "#ECECEC",
+        "type": "colors",
+        "occurrences": 3,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 4,
+            "property": "border"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 61,
+            "property": "border"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/dashboard/insightDashboard.scss",
+            "line": 10,
+            "property": "border"
+          }
+        ]
+      },
+      {
+        "value": "#09174A",
+        "type": "colors",
+        "occurrences": 2,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 28,
+            "property": "color"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 47,
+            "property": "color"
+          }
+        ]
+      },
+      {
+        "value": "rgb(255,193,7)",
+        "type": "colors",
+        "occurrences": 2,
+        "locations": [
+          {
+            "package": "forms-flow-review",
+            "file": "forms-flow-review/src/index.scss",
+            "line": 21,
+            "property": "color"
+          },
+          {
+            "package": "forms-flow-submissions",
+            "file": "forms-flow-submissions/src/index.scss",
+            "line": 31,
+            "property": "color"
+          }
+        ]
+      },
+      {
+        "value": "rgba(0, 0, 0, 0.1)",
+        "type": "colors",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/organization/organization.scss",
+            "line": 31,
+            "property": "box-shadow"
+          }
+        ]
+      },
+      {
+        "value": "#000",
+        "type": "colors",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 39,
+            "property": "color"
+          }
+        ]
+      },
+      {
+        "value": "#838383",
+        "type": "colors",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 67,
+            "property": "color"
+          }
+        ]
+      },
+      {
+        "value": "#F0F0F0",
+        "type": "colors",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 81,
+            "property": "background-color"
+          }
+        ]
+      },
+      {
+        "value": "rgba(48, 52, 54, 0.08)",
+        "type": "colors",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/hamburger.scss",
+            "line": 35,
+            "property": "box-shadow"
+          }
+        ]
+      },
+      {
+        "value": "#E5E5E5",
+        "type": "colors",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 173,
+            "property": "border-bottom"
+          }
+        ]
+      }
+    ],
+    "typography": [
+      {
+        "value": "2rem",
+        "type": "typography",
+        "occurrences": 2,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/AccessDenied/accessDenied.scss",
+            "line": 3,
+            "property": "font-size"
+          },
+          {
+            "package": "forms-flow-submissions",
+            "file": "forms-flow-submissions/src/components/AccessDenied/accessDenied.scss",
+            "line": 3,
+            "property": "font-size"
+          }
+        ]
+      },
+      {
+        "value": "1rem",
+        "type": "typography",
+        "occurrences": 2,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/AccessDenied/accessDenied.scss",
+            "line": 9,
+            "property": "font-size"
+          },
+          {
+            "package": "forms-flow-submissions",
+            "file": "forms-flow-submissions/src/components/AccessDenied/accessDenied.scss",
+            "line": 9,
+            "property": "font-size"
+          }
+        ]
+      },
+      {
+        "value": "36px",
+        "type": "typography",
+        "occurrences": 2,
+        "locations": [
+          {
+            "package": "forms-flow-review",
+            "file": "forms-flow-review/src/index.scss",
+            "line": 20,
+            "property": "font-size"
+          },
+          {
+            "package": "forms-flow-submissions",
+            "file": "forms-flow-submissions/src/index.scss",
+            "line": 30,
+            "property": "font-size"
+          }
+        ]
+      },
+      {
+        "value": "3rem",
+        "type": "typography",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/organization/organization.scss",
+            "line": 39,
+            "property": "font-size"
+          }
+        ]
+      },
+      {
+        "value": "24px",
+        "type": "typography",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/Navbar.scss",
+            "line": 25,
+            "property": "font-size"
+          }
+        ]
+      },
+      {
+        "value": "16px",
+        "type": "typography",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/Navbar.scss",
+            "line": 43,
+            "property": "font-size"
+          }
+        ]
+      },
+      {
+        "value": "14px",
+        "type": "typography",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/Navbar.scss",
+            "line": 47,
+            "property": "font-size"
+          }
+        ]
+      },
+      {
+        "value": "0.875rem",
+        "type": "typography",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 210,
+            "property": "font-size"
+          }
+        ]
+      },
+      {
+        "value": "1.05rem",
+        "type": "typography",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 227,
+            "property": "line-height"
+          }
+        ]
+      },
+      {
+        "value": "0.5rem",
+        "type": "typography",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 323,
+            "property": "font-size"
+          }
+        ]
+      },
+      {
+        "value": "0.938rem",
+        "type": "typography",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-nav",
+            "file": "forms-flow-nav/src/sidenav/Sidebar.scss",
+            "line": 419,
+            "property": "font-size"
+          }
+        ]
+      }
+    ],
+    "borderRadius": [
+      {
+        "value": "8px",
+        "type": "borderRadius",
+        "occurrences": 4,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 6,
+            "property": "border-radius"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 63,
+            "property": "border-radius"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/dashboard/insightDashboard.scss",
+            "line": 12,
+            "property": "border-radius"
+          },
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/users/users.scss",
+            "line": 37,
+            "property": "border-radius"
+          }
+        ]
+      },
+      {
+        "value": "0.375rem",
+        "type": "borderRadius",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/roles/roles.scss",
+            "line": 42,
+            "property": "border-radius"
+          }
+        ]
+      },
+      {
+        "value": "5px",
+        "type": "borderRadius",
+        "occurrences": 1,
+        "locations": [
+          {
+            "package": "forms-flow-admin",
+            "file": "forms-flow-admin/src/components/users/users.scss",
+            "line": 22,
+            "property": "border-radius"
+          }
+        ]
+      }
+    ]
+  }
+}
