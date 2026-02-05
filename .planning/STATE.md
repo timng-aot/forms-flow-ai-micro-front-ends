@@ -6,33 +6,34 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 
 **Core value:** Accurate extraction of design values that actually exist in the codebase — reflecting reality before restructuring, enabling Figma to become the source of truth for future design iterations.
 
-**Current focus:** Phase 1 complete — ready for Phase 2 (Token Extraction)
+**Current focus:** Phase 2 in progress (Token Extraction)
 
 ## Current Position
 
-Phase: 1 of 4 (Audit & Foundation) — COMPLETE ✓
-Plan: 3 of 3 in current phase
-Status: Phase verified and complete
-Last activity: 2026-02-04 — Phase 1 verified (4/4 must-haves, 17/17 requirements)
+Phase: 2 of 4 (Token Extraction)
+Plan: 1 of 1 in current phase — COMPLETE ✓
+Status: Phase 2 complete
+Last activity: 2026-02-05 — Completed 02-01-PLAN.md (extraction scripts + production tokens)
 
-Progress: [███░░░░░░░] 30% (3/10 total plans)
+Progress: [████░░░░░░] 40% (4/10 total plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 3.8 minutes
-- Total execution time: 0.2 hours
+- Total plans completed: 4
+- Average duration: 5.0 minutes
+- Total execution time: 0.3 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-audit-foundation | 3/3 | 11.4min | 3.8min |
+| 02-token-extraction | 1/1 | 9.2min | 9.2min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (5.4min), 01-02 (3min), 01-03 (3min)
-- Trend: Velocity stabilized at ~3min per plan
+- Last 5 plans: 01-01 (5.4min), 01-02 (3min), 01-03 (3min), 02-01 (9.2min)
+- Trend: Extraction plan took longer (debugging + fixes), expected for pipeline setup
 
 *Updated after each plan completion*
 
@@ -68,6 +69,13 @@ Recent decisions affecting current work:
 - Shadow tokens use DTCG object format, fontWeight values are numbers not strings
 - v8 design system values take precedence over legacy theme where conflicts exist
 
+**From 02-01 (Extraction Scripts):**
+- Recursion depth limit of 10 for SCSS variable resolution (prevents infinite loops)
+- V8 color palettes extracted without --ff- prefix requirement (supports both patterns)
+- CSS custom properties included for font-family and font-weight (v8 theme source)
+- Incomplete shadows and non-numeric font-weights skipped (source theme quality issues)
+- SCSS map functions (map-merge, map-get) excluded from extraction (not design tokens)
+
 ### Pending Todos
 
 [From .planning/todos/pending/ — ideas captured during sessions]
@@ -97,12 +105,18 @@ None yet.
 - Shadow RGBA → object conversion pattern established
 - No blockers for Phase 2 extraction
 
+**From 02-01 (Extraction Scripts):**
+- Production token files generated: 164 core + 21 semantic tokens
+- blend-with-white-to-hex() custom SCSS function expressions preserved as-is (pyScss doesn't support custom functions)
+- Extraction pipeline is rerunnable and ready for Phase 3 Token Studio setup
+- No blockers for Phase 3
+
 ## Session Continuity
 
-Last session: 2026-02-04 (Phase 1 execution)
-Stopped at: Phase 1 complete and verified — ready for Phase 2 planning
+Last session: 2026-02-05 (Phase 2 execution)
+Stopped at: Phase 2 Plan 01 complete — extraction scripts built and production tokens generated
 Resume file: None
 
 ---
 *State initialized: 2026-02-03*
-*Last updated: 2026-02-04 (Phase 1 complete)*
+*Last updated: 2026-02-05 (Phase 2 Plan 01 complete)*
