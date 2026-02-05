@@ -52,10 +52,11 @@ Plans:
   3. All tokens include $description fields documenting their usage and origin
   4. Automated extraction scripts successfully parse SCSS variables and CSS custom properties, outputting valid DTCG JSON
 
-**Plans**: TBD (2-3 plans: one per tooling setup + token categories)
+**Plans**: 2 plans in 2 waves
 
 Plans:
-- [ ] 02-01: [To be defined during planning]
+- [ ] 02-01-PLAN.md -- Build extraction scripts and generate production token files (core.json + semantic.json)
+- [ ] 02-02-PLAN.md -- Validate tokens against DTCG schema, references, and audit data
 
 ### Phase 3: Build Pipeline
 **Goal**: Style Dictionary successfully transforms token JSON into CSS custom properties and SCSS outputs, with validation ensuring reference integrity.
@@ -101,10 +102,10 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Audit & Foundation | 3/3 | Complete | 2026-02-04 |
-| 2. Token Extraction | 0/TBD | Not started | - |
+| 2. Token Extraction | 0/2 | Planned | - |
 | 3. Build Pipeline | 0/TBD | Not started | - |
 | 4. Documentation & Validation | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-02-03*
-*Last updated: 2026-02-04 (Phase 1 complete)*
+*Last updated: 2026-02-04 (Phase 2 planned)*
