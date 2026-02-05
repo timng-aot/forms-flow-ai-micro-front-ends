@@ -11,29 +11,29 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 ## Current Position
 
 Phase: 2 of 4 (Token Extraction)
-Plan: 1 of 1 in current phase — COMPLETE ✓
+Plan: 2 of 2 in current phase — COMPLETE ✓
 Status: Phase 2 complete
-Last activity: 2026-02-05 — Completed 02-01-PLAN.md (extraction scripts + production tokens)
+Last activity: 2026-02-05 — Completed 02-02-PLAN.md (validation pipeline + clean tokens)
 
-Progress: [████░░░░░░] 40% (4/10 total plans)
+Progress: [█████░░░░░] 50% (5/10 total plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: 5.0 minutes
-- Total execution time: 0.3 hours
+- Total plans completed: 5
+- Average duration: 5.7 minutes
+- Total execution time: 0.5 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-audit-foundation | 3/3 | 11.4min | 3.8min |
-| 02-token-extraction | 1/1 | 9.2min | 9.2min |
+| 02-token-extraction | 2/2 | 14.2min | 7.1min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (5.4min), 01-02 (3min), 01-03 (3min), 02-01 (9.2min)
-- Trend: Extraction plan took longer (debugging + fixes), expected for pipeline setup
+- Last 5 plans: 01-02 (3min), 01-03 (3min), 02-01 (9.2min), 02-02 (5min)
+- Trend: Phase 2 complete, both extraction and validation pipelines operational
 
 *Updated after each plan completion*
 
@@ -76,6 +76,13 @@ Recent decisions affecting current work:
 - Incomplete shadows and non-numeric font-weights skipped (source theme quality issues)
 - SCSS map functions (map-merge, map-get) excluded from extraction (not design tokens)
 
+**From 02-02 (Validation Pipeline):**
+- Support 8-digit hex colors with alpha channel (#rrggbbaa format)
+- Skip var() and SCSS variable references in audit diff (not actual mismatches)
+- Convert all token names to kebab-case during extraction
+- Detect shadows by pattern (contains 'shadow' + looks like CSS shadow) to fix categorization
+- DTCG shadow objects vs CSS strings are acceptable (format upgrade, not mismatch)
+
 ### Pending Todos
 
 [From .planning/todos/pending/ — ideas captured during sessions]
@@ -111,12 +118,20 @@ None yet.
 - Extraction pipeline is rerunnable and ready for Phase 3 Token Studio setup
 - No blockers for Phase 3
 
+**From 02-02 (Validation Pipeline):**
+- All 160 core + 21 semantic tokens pass validation with zero errors
+- Validation pipeline automated and rerunnable: python3 scripts/validate-tokens.py
+- Fixed extraction issues: kebab-case naming (10 violations → 0), shadow categorization (16 misclassified → 0)
+- Machine-readable validation report proves Phase 2 requirements satisfied
+- Token files ready for Phase 3 Token Studio import
+- No blockers for Phase 3
+
 ## Session Continuity
 
 Last session: 2026-02-05 (Phase 2 execution)
-Stopped at: Phase 2 Plan 01 complete — extraction scripts built and production tokens generated
+Stopped at: Phase 2 complete — all tokens validated, ready for Phase 3
 Resume file: None
 
 ---
 *State initialized: 2026-02-03*
-*Last updated: 2026-02-05 (Phase 2 Plan 01 complete)*
+*Last updated: 2026-02-05 (Phase 2 Plan 02 complete)*
