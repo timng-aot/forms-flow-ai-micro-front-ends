@@ -97,7 +97,7 @@ def validate_dtcg_schema(token_data: Dict, file_label: str) -> List[str]:
         elif token_type == "color":
             if isinstance(value, str) and not value.startswith("{"):
                 # Check for valid color format
-                hex_pattern = r'^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$'
+                hex_pattern = r'^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$'  # Support 8-digit hex (with alpha)
                 rgb_pattern = r'^rgba?\([^)]+\)$'
                 # Allow blend-with-white-to-hex() expressions
                 blend_pattern = r'^blend-with-white-to-hex\('

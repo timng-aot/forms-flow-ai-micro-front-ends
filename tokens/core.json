@@ -110,23 +110,19 @@
         "$value": "#FFFFFF",
         "$description": "v8 white palette shade 300"
       },
-      "colorDivider": {
+      "color-divider": {
         "$value": "#D1D2D3",
         "$description": "Source: scss/_theme.scss:89 | Original: $gray-medium"
       },
-      "colorDividerDark": {
+      "color-divider-dark": {
         "$value": "#B7B7B8",
         "$description": "Source: scss/_theme.scss:90 | Original: $gray-medium-dark"
       },
-      "input-error-box-shadow": {
-        "$value": "0 0 0 0.2rem rgba(255, 0, 0, 0.25)",
-        "$description": "Source: scss/inputBox.scss:5"
-      },
-      "colorMain": {
+      "color-main": {
         "$value": "#4A4A4A",
         "$description": "Source: scss/historyModal.scss:10 | Original: $gray-darkest"
       },
-      "colorSecondary": {
+      "color-secondary": {
         "$value": "#D1D2D3",
         "$description": "Source: scss/historyModal.scss:11 | Original: $gray-medium"
       },
@@ -174,26 +170,6 @@
         "$value": "#faad14",
         "$description": "Source: scss/_theme.scss:26"
       },
-      "theme-colors": {
-        "$value": "map-merge($theme-colors, $custom-colors)",
-        "$description": "Source: scss/_theme.scss:55"
-      },
-      "button-shadow-primary": {
-        "$value": "0 0.125rem 0.5rem rgba(137, 105, 242, 0.15)",
-        "$description": "Source: scss/v8-scss/_button.scss:28"
-      },
-      "button-shadow-secondary": {
-        "$value": "0 0.125rem 0.25rem rgba(0, 0, 0, 0.1)",
-        "$description": "Source: scss/v8-scss/_button.scss:29"
-      },
-      "button-shadow-error": {
-        "$value": "0 0.125rem 0.5rem rgba(255, 87, 34, 0.1)",
-        "$description": "Source: scss/v8-scss/_button.scss:30"
-      },
-      "button-shadow-warning": {
-        "$value": "0 0.125rem 0.5rem rgba(255, 152, 0, 0.1)",
-        "$description": "Source: scss/v8-scss/_button.scss:31"
-      },
       "table-border-color": {
         "$value": "#DAD9DA",
         "$description": "Source: scss/v8-scss/_table.scss:6"
@@ -217,10 +193,6 @@
       "form-builder-shadow-color": {
         "$value": "rgb(182 182 182 / 20%)",
         "$description": "Source: scss/v8-scss/_formbuilder.scss:16"
-      },
-      "multiselect-shadow": {
-        "$value": "0 4px 4px 0 rgba(0, 0, 0, 0.25)",
-        "$description": "Source: scss/v8-scss/_dropdownMultiselect.scss:18"
       },
       "multiselect-primary-border": {
         "$value": "rgba(184, 171, 255, 0.5)",
@@ -258,21 +230,9 @@
         "$value": "#b7b7b8",
         "$description": "Source: scss/v8-scss/_dateRangePicker.scss:39"
       },
-      "drp-shadow-container": {
-        "$value": "0 0.0625rem 0.125rem rgba(0, 0, 0, 0.03)",
-        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:46"
-      },
-      "drp-shadow-calendar": {
-        "$value": "0 0.5rem 1rem rgba(0, 0, 0, 0.15)",
-        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:47"
-      },
       "gray-darker": {
         "$value": "#424243",
         "$description": "Source: scss/v8-scss/_breadCrumbs.scss:7"
-      },
-      "dropdown-shadow": {
-        "$value": "0 0.25rem 0.25rem rgba(0, 0, 0, 0.25)",
-        "$description": "Source: scss/v8-scss/_selectDropdown.scss:24"
       },
       "dropdown-primary-border": {
         "$value": "rgba(184, 171, 255, 0.5)",
@@ -286,22 +246,6 @@
         "$value": "rgba(107, 114, 128, 0.3)",
         "$description": "Source: scss/v8-scss/_selectDropdown.scss:52"
       },
-      "box-shadow": {
-        "$value": "0 10px 25px rgba(0, 0, 0, 0.15)",
-        "$description": "Source: scss/v8-scss/_mixins.scss:125"
-      },
-      "alert-shadow-focus": {
-        "$value": "0 0.125rem 0.5rem rgba(137, 105, 242, 0.1)",
-        "$description": "Source: scss/v8-scss/_alert.scss:24"
-      },
-      "alert-shadow-error": {
-        "$value": "0 0.125rem 0.5rem rgba(255, 87, 34, 0.1)",
-        "$description": "Source: scss/v8-scss/_alert.scss:25"
-      },
-      "alert-shadow-warning": {
-        "$value": "0 0.125rem 0.5rem rgba(255, 152, 0, 0.1)",
-        "$description": "Source: scss/v8-scss/_alert.scss:26"
-      },
       "color-copy-button-bg": {
         "$value": "transparent",
         "$description": "Source: scss/v8-scss/_urlInput.scss:34"
@@ -309,10 +253,6 @@
       "color-copy-button-hover-bg": {
         "$value": "transparent",
         "$description": "Source: scss/v8-scss/_urlInput.scss:36"
-      },
-      "switch-shadow-default": {
-        "$value": "0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.2)",
-        "$description": "Source: scss/v8-scss/_switch.scss:20"
       },
       "select-custom-value-border-color": {
         "$value": "#E5E5E5",
@@ -383,19 +323,19 @@
     },
     "font-size": {
       "$type": "dimension",
-      "fontSmallest": {
+      "font-smallest": {
         "$value": "0.5rem*0.875",
         "$description": "Source: scss/_theme.scss:76"
       },
-      "fontModalTitle": {
+      "font-modal-title": {
         "$value": "0.5rem*1.5",
         "$description": "Source: scss/_theme.scss:79"
       },
-      "fontSectionHead": {
+      "font-section-head": {
         "$value": "0.5rem*1.125",
         "$description": "Source: scss/_theme.scss:77"
       },
-      "fontChoiceHead": {
+      "font-choice-head": {
         "$value": "0.5rem*1.25",
         "$description": "Source: scss/_theme.scss:78"
       },
@@ -490,7 +430,7 @@
     },
     "radius": {
       "$type": "dimension",
-      "borderRadiusModal": {
+      "border-radius-modal": {
         "$value": "1rem*1.5",
         "$description": "Source: scss/_theme.scss:208"
       },
@@ -569,40 +509,150 @@
     },
     "shadow": {
       "$type": "shadow",
-      "url-input-shadow-focus": {
+      "input-error-box-shadow": {
         "$value": {
-          "color": "1px",
+          "color": "rgba(255, 0, 0, 0.25)",
           "offsetX": "0px",
           "offsetY": "0px",
           "blur": "0px",
-          "spread": "0px"
+          "spread": "0.2rem"
         },
-        "$description": "Source: scss/v8-scss/_urlInput.scss:24"
+        "$description": "Source: scss/inputBox.scss:5"
       },
-      "switch-shadow-hover": {
+      "button-shadow-primary": {
         "$value": {
-          "color": "2px",
+          "color": "rgba(137, 105, 242, 0.15)",
           "offsetX": "0px",
-          "offsetY": "0px",
-          "blur": "0px",
+          "offsetY": "0.125rem",
+          "blur": "0.5rem",
           "spread": "0px"
         },
-        "$description": "Source: scss/v8-scss/_switch.scss:21"
+        "$description": "Source: scss/v8-scss/_button.scss:28"
       },
-      "switch-shadow-focus": {
+      "button-shadow-secondary": {
         "$value": {
-          "color": "1px",
+          "color": "rgba(0, 0, 0, 0.1)",
           "offsetX": "0px",
-          "offsetY": "0px",
-          "blur": "0px",
+          "offsetY": "0.125rem",
+          "blur": "0.25rem",
           "spread": "0px"
         },
-        "$description": "Source: scss/v8-scss/_switch.scss:22"
+        "$description": "Source: scss/v8-scss/_button.scss:29"
+      },
+      "button-shadow-error": {
+        "$value": {
+          "color": "rgba(255, 87, 34, 0.1)",
+          "offsetX": "0px",
+          "offsetY": "0.125rem",
+          "blur": "0.5rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_button.scss:30"
+      },
+      "button-shadow-warning": {
+        "$value": {
+          "color": "rgba(255, 152, 0, 0.1)",
+          "offsetX": "0px",
+          "offsetY": "0.125rem",
+          "blur": "0.5rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_button.scss:31"
+      },
+      "multiselect-shadow": {
+        "$value": {
+          "color": "rgba(0, 0, 0, 0.25)",
+          "offsetX": "0px",
+          "offsetY": "4px",
+          "blur": "4px",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_dropdownMultiselect.scss:18"
+      },
+      "drp-shadow-container": {
+        "$value": {
+          "color": "rgba(0, 0, 0, 0.03)",
+          "offsetX": "0px",
+          "offsetY": "0.0625rem",
+          "blur": "0.125rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:46"
+      },
+      "drp-shadow-calendar": {
+        "$value": {
+          "color": "rgba(0, 0, 0, 0.15)",
+          "offsetX": "0px",
+          "offsetY": "0.5rem",
+          "blur": "1rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:47"
+      },
+      "dropdown-shadow": {
+        "$value": {
+          "color": "rgba(0, 0, 0, 0.25)",
+          "offsetX": "0px",
+          "offsetY": "0.25rem",
+          "blur": "0.25rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_selectDropdown.scss:24"
+      },
+      "box-shadow": {
+        "$value": {
+          "color": "rgba(0, 0, 0, 0.15)",
+          "offsetX": "0px",
+          "offsetY": "10px",
+          "blur": "25px",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_mixins.scss:125"
+      },
+      "alert-shadow-focus": {
+        "$value": {
+          "color": "rgba(137, 105, 242, 0.1)",
+          "offsetX": "0px",
+          "offsetY": "0.125rem",
+          "blur": "0.5rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_alert.scss:24"
+      },
+      "alert-shadow-error": {
+        "$value": {
+          "color": "rgba(255, 87, 34, 0.1)",
+          "offsetX": "0px",
+          "offsetY": "0.125rem",
+          "blur": "0.5rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_alert.scss:25"
+      },
+      "alert-shadow-warning": {
+        "$value": {
+          "color": "rgba(255, 152, 0, 0.1)",
+          "offsetX": "0px",
+          "offsetY": "0.125rem",
+          "blur": "0.5rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_alert.scss:26"
+      },
+      "switch-shadow-default": {
+        "$value": {
+          "color": "rgba(0, 0, 0, 0.2)",
+          "offsetX": "0px",
+          "offsetY": "0.0625rem",
+          "blur": "0.1875rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_switch.scss:20"
       }
     },
     "duration": {
       "$type": "duration",
-      "animSpeed": {
+      "anim-speed": {
         "$value": "300ms",
         "$description": "Source: scss/v8-scss/_dragandrop.scss:4"
       },

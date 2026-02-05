@@ -48,11 +48,19 @@ def compare_to_audit(core_path: str, semantic_path: str, audit_path: str) -> Dic
     for var_name, var_data in extractable_vars.items():
         # Look for token by matching $description (contains "Original: $var-name")
         matching_token = None
+        normalized_var = _normalize_name(var_name)
+
         for token_path, token_value in token_map.items():
             if isinstance(token_value, dict):
                 desc = token_value.get("$description", "")
-                # Check if this token came from this SCSS variable
-                if var_name in desc or _normalize_name(var_name) in token_path.lower():
+
+                # First priority: exact variable name in description source
+                if f":{var_name}" in desc or f"{var_name};" in desc:
+                    matching_token = (token_path, token_value)
+                    break
+
+                # Second priority: normalized name at end of token path (exact match)
+                if token_path.endswith(f".{normalized_var}"):
                     matching_token = (token_path, token_value)
                     break
 
@@ -64,12 +72,29 @@ def compare_to_audit(core_path: str, semantic_path: str, audit_path: str) -> Dic
             audit_value = var_data.get("computedValue") or var_data.get("value")
             token_value = token_obj.get("$value")
 
+            # Skip comparison if audit value is a var() reference (not computed)
+            if isinstance(audit_value, str) and audit_value.startswith("var("):
+                continue
+
+            # Skip comparison if audit value is an SCSS variable reference (not resolved)
+            if isinstance(audit_value, str) and audit_value.startswith("$"):
+                continue
+
             # Skip comparison if token value is a reference or expression
             if isinstance(token_value, str) and ("{" in token_value or "blend-with-white-to-hex" in token_value):
                 continue
 
-            # Type-specific comparison
+            # Skip comparison if audit value contains SCSS expressions
+            if isinstance(audit_value, str) and ("$" in audit_value or "map-" in audit_value):
+                continue
+
+            # Skip shadow comparisons (shadows are now DTCG objects, audit has CSS strings)
             category = var_data.get("category", "")
+            if isinstance(token_value, dict) and "color" in token_value and "offsetX" in token_value:
+                # This is a DTCG shadow object, skip comparison
+                continue
+
+            # Type-specific comparison
             if not _values_match(audit_value, token_value, category):
                 mismatches.append({
                     "audit_var": var_name,
@@ -163,22 +188,22 @@ def _values_match(audit_value: Any, token_value: Any, category: str) -> bool:
         return audit_value == token_value
 
     # Convert to strings for comparison
-    audit_str = str(audit_value).strip()
-    token_str = str(token_value).strip()
+    audit_str = str(audit_value).strip().strip('"').strip("'")
+    token_str = str(token_value).strip().strip('"').strip("'")
 
     # Exact match first
     if audit_str.lower() == token_str.lower():
         return True
 
     # Dimension comparison with tolerance
-    if category in ["spacing", "dimension", "size", "radius"]:
+    if category in ["spacing", "dimension", "size", "radius", "borderRadius"]:
         audit_num = _extract_number(audit_str)
         token_num = _extract_number(token_str)
         if audit_num is not None and token_num is not None:
             return abs(audit_num - token_num) < 0.001
 
     # For fontWeight, compare numeric values
-    if category == "font-weight" or "weight" in category.lower():
+    if category == "font-weight" or "weight" in category.lower() or category == "typography":
         audit_num = _extract_number(audit_str)
         token_num = _extract_number(token_str)
         if audit_num is not None and token_num is not None:

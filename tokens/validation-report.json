@@ -1,0 +1,53 @@
+{
+  "timestamp": "2026-02-04T23:03:57.245745",
+  "files": {
+    "core": "tokens/core.json",
+    "semantic": "tokens/semantic.json",
+    "audit": "tokens/audit/theme-audit.json"
+  },
+  "checks": {
+    "dtcg_schema_core": {
+      "status": "PASS",
+      "token_count": 160,
+      "categories": {
+        "color": 65,
+        "spacing": 12,
+        "font-family": 1,
+        "font-size": 10,
+        "font-weight": 12,
+        "line-height": 2,
+        "radius": 19,
+        "shadow": 14,
+        "duration": 25
+      },
+      "errors": []
+    },
+    "dtcg_schema_semantic": {
+      "status": "PASS",
+      "token_count": 21,
+      "categories": {},
+      "errors": []
+    },
+    "reference_resolution": {
+      "status": "PASS",
+      "errors": []
+    },
+    "naming_conventions_core": {
+      "status": "PASS",
+      "errors": []
+    },
+    "naming_conventions_semantic": {
+      "status": "PASS",
+      "errors": []
+    },
+    "audit_diff": {
+      "status": "PASS",
+      "coverage_percent": 21.5,
+      "found_in_tokens": 121,
+      "total_extractable": 564,
+      "mismatches": [],
+      "not_found_count": 316
+    }
+  },
+  "overall": "PASS"
+}

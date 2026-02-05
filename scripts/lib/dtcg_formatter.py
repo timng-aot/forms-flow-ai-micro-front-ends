@@ -102,12 +102,24 @@ def _extract_colors(target: Dict, audit_data: Dict, var_context: Dict, resolver)
         if value.startswith('var('):
             continue
 
+        # Skip shadow values (they look like colors but are shadows)
+        if 'shadow' in var_name.lower() and _looks_like_shadow(value):
+            continue
+
         # Resolve the expression
         computed = var_data.get('computedValue') or value
         resolved = resolver.resolve_scss_expression(value, var_context)
 
-        # Create token name from variable name
-        token_name = var_name.lstrip('$').replace('_', '-')
+        # Skip if the resolved value looks like a shadow
+        if _looks_like_shadow(resolved):
+            continue
+
+        # Skip SCSS map functions (not actual color values)
+        if 'map-' in resolved or 'map-' in value:
+            continue
+
+        # Create token name from variable name (convert to kebab-case)
+        token_name = _to_kebab_case(var_name.lstrip('$').replace('_', '-'))
 
         # Build description
         desc_parts = []
@@ -250,7 +262,7 @@ def _extract_typography(target: Dict, audit_data: Dict, var_context: Dict, resol
             continue
 
         resolved = resolver.resolve_scss_expression(value, var_context)
-        token_name = var_name.lstrip('$').replace('_', '-')
+        token_name = _to_kebab_case(var_name.lstrip('$').replace('_', '-'))
 
         target["font-family"][token_name] = {
             "$value": resolved.strip('"').strip("'"),
@@ -294,7 +306,7 @@ def _extract_typography(target: Dict, audit_data: Dict, var_context: Dict, resol
         if not re.search(r'(rem|px|em)', resolved):
             continue
 
-        token_name = var_name.lstrip('$').replace('_', '-')
+        token_name = _to_kebab_case(var_name.lstrip('$').replace('_', '-'))
 
         target["font-size"][token_name] = {
             "$value": resolved,
@@ -321,7 +333,7 @@ def _extract_typography(target: Dict, audit_data: Dict, var_context: Dict, resol
         except (ValueError, TypeError):
             continue
 
-        token_name = var_name.lstrip('$').replace('_', '-')
+        token_name = _to_kebab_case(var_name.lstrip('$').replace('_', '-'))
 
         target["font-weight"][token_name] = {
             "$value": weight_num,  # Number, not string!
@@ -363,7 +375,7 @@ def _extract_typography(target: Dict, audit_data: Dict, var_context: Dict, resol
             continue
 
         resolved = resolver.resolve_scss_expression(value, var_context)
-        token_name = var_name.lstrip('$').replace('_', '-')
+        token_name = _to_kebab_case(var_name.lstrip('$').replace('_', '-'))
 
         # Determine if it's unitless (number) or has units (dimension)
         try:
@@ -397,7 +409,7 @@ def _extract_radius(target: Dict, audit_data: Dict, var_context: Dict, resolver)
             continue
 
         resolved = resolver.resolve_scss_expression(value, var_context)
-        token_name = var_name.lstrip('$').replace('_', '-')
+        token_name = _to_kebab_case(var_name.lstrip('$').replace('_', '-'))
 
         target["radius"][token_name] = {
             "$value": resolved,
@@ -410,9 +422,19 @@ def _extract_shadows(target: Dict, audit_data: Dict, var_context: Dict, resolver
     target["shadow"] = {"$type": "shadow"}
 
     scss_vars = audit_data.get('scssVariables', {})
+
+    # Extract from explicit shadow category
     for var_name, var_data in scss_vars.items():
         if var_data.get('category') != 'shadow':
-            continue
+            # Also check color category for misclassified shadows
+            if var_data.get('category') == 'color' and 'shadow' in var_name.lower():
+                value = var_data.get('value', '')
+                if _looks_like_shadow(value):
+                    pass  # Will be handled below
+                else:
+                    continue
+            else:
+                continue
 
         value = var_data.get('value', '')
         if value.startswith('var('):
@@ -420,12 +442,17 @@ def _extract_shadows(target: Dict, audit_data: Dict, var_context: Dict, resolver
 
         resolved = resolver.resolve_scss_expression(value, var_context)
 
+        # Skip if doesn't look like shadow
+        if not _looks_like_shadow(resolved):
+            continue
+
         # Convert CSS shadow string to DTCG object
         shadow_obj = shadow_css_to_dtcg(resolved)
         if not shadow_obj:
             continue
 
-        token_name = var_name.lstrip('$').replace('_', '-')
+        # Convert to kebab-case
+        token_name = _to_kebab_case(var_name.lstrip('$').replace('_', '-'))
 
         target["shadow"][token_name] = {
             "$value": shadow_obj,
@@ -452,7 +479,7 @@ def _extract_durations(target: Dict, audit_data: Dict, var_context: Dict, resolv
         if not re.search(r'(ms|s)', resolved):
             continue
 
-        token_name = var_name.lstrip('$').replace('_', '-')
+        token_name = _to_kebab_case(var_name.lstrip('$').replace('_', '-'))
 
         target["duration"][token_name] = {
             "$value": resolved,
@@ -476,31 +503,42 @@ def shadow_css_to_dtcg(css_shadow: str) -> Optional[Dict[str, str]]:
     if not css_shadow or css_shadow == 'none':
         return None
 
-    # Pattern: offsetX offsetY blur spread color
-    # or: offsetX offsetY blur color
-    pattern = r'^\s*(-?\d+(?:\.\d+)?(?:px|rem)?)\s+(-?\d+(?:\.\d+)?(?:px|rem)?)\s+(-?\d+(?:\.\d+)?(?:px|rem)?)\s+(?:(-?\d+(?:\.\d+)?(?:px|rem)?)\s+)?(.+?)\s*$'
+    css_shadow = css_shadow.strip()
 
-    match = re.match(pattern, css_shadow.strip())
-    if not match:
-        logging.warning(f"Could not parse shadow: {css_shadow}")
+    # Try to extract color first (rgba, rgb, or hex)
+    color = None
+    color_match = re.search(r'(rgba?\([^)]+\)|#[0-9a-fA-F]{3,8})', css_shadow)
+    if color_match:
+        color = color_match.group(1)
+        # Remove color from string to parse offsets
+        shadow_without_color = css_shadow.replace(color, '').strip()
+    else:
+        shadow_without_color = css_shadow
+
+    # Pattern: offsetX offsetY blur [spread]
+    parts = shadow_without_color.split()
+
+    # Filter out empty parts
+    parts = [p for p in parts if p]
+
+    if len(parts) < 3:
+        logging.warning(f"Could not parse shadow (not enough parts): {css_shadow}")
         return None
 
-    offset_x, offset_y, blur, spread, color = match.groups()
-
-    # If spread wasn't captured, it means it was omitted (defaults to 0)
-    if spread is None:
-        spread = "0px"
-        # Color was actually in the spread position
-        if color:
-            pass
-        else:
-            color = spread
+    offset_x = parts[0]
+    offset_y = parts[1]
+    blur = parts[2]
+    spread = parts[3] if len(parts) > 3 else "0"
 
     # Ensure units
     def add_unit(val):
         if val and not re.search(r'(px|rem|em)$', val):
             return f"{val}px"
         return val
+
+    # If no color was found, use transparent
+    if not color:
+        color = "rgba(0, 0, 0, 0.1)"
 
     return {
         "color": color.strip(),
@@ -704,3 +742,35 @@ def _is_simple_value(value: str) -> bool:
         return False
 
     return True
+
+
+def _looks_like_shadow(value: str) -> bool:
+    """Check if a value looks like a CSS shadow."""
+    if not value or not isinstance(value, str):
+        return False
+
+    # Shadow pattern: starts with offset values, contains rgba() or rgb()
+    # Example: "0 2px 8px rgba(0, 0, 0, 0.1)"
+    value = value.strip()
+
+    # Check for rgba/rgb color in the value
+    if 'rgba(' not in value and 'rgb(' not in value and '#' not in value:
+        return False
+
+    # Check for numeric offset values at the start
+    if re.match(r'^\s*-?\d+', value):
+        return True
+
+    return False
+
+
+def _to_kebab_case(name: str) -> str:
+    """Convert camelCase or PascalCase to kebab-case."""
+    # First, handle consecutive caps (e.g., "RGB" -> "rgb")
+    name = re.sub('([A-Z]+)([A-Z][a-z])', r'\1-\2', name)
+
+    # Insert hyphen before caps that follow lowercase
+    name = re.sub('([a-z\d])([A-Z])', r'\1-\2', name)
+
+    # Convert to lowercase
+    return name.lower()
