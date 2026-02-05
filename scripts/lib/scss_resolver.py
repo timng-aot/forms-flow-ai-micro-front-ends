@@ -53,22 +53,32 @@ def build_variable_context(audit_data: Dict[str, Any]) -> Dict[str, str]:
     return context
 
 
-def resolve_scss_expression(expression: str, variable_context: Dict[str, str]) -> str:
+def resolve_scss_expression(expression: str, variable_context: Dict[str, str], depth: int = 0) -> str:
     """
     Resolve an SCSS expression to its final computed value.
 
     Args:
         expression: The SCSS expression (e.g., "darken($primary, 10%)")
         variable_context: Dict of variable names to values
+        depth: Recursion depth tracker (internal)
 
     Returns:
         Resolved value, or original expression if resolution fails
     """
+    # Prevent infinite recursion
+    if depth > 10:
+        logging.debug(f"Max recursion depth reached for: {expression}")
+        return expression
+
     if not expression:
         return expression
 
     # Remove quotes if present
     expression = expression.strip().strip('"').strip("'")
+
+    # Skip SCSS map functions - these are not design tokens
+    if 'map-merge' in expression or 'map-get' in expression:
+        return expression
 
     # If it's a literal value (hex color, rem/px value, number), return as-is
     if _is_literal_value(expression):
@@ -79,12 +89,12 @@ def resolve_scss_expression(expression: str, variable_context: Dict[str, str]) -
         value = variable_context.get(expression)
         if value:
             # Recursively resolve in case the value is also an expression
-            return resolve_scss_expression(value, variable_context)
+            return resolve_scss_expression(value, variable_context, depth + 1)
         return expression
 
     # Try to resolve SCSS functions or arithmetic
     try:
-        resolved = _resolve_complex_expression(expression, variable_context)
+        resolved = _resolve_complex_expression(expression, variable_context, depth)
         return _normalize_value(resolved)
     except Exception as e:
         logging.debug(f"Failed to resolve expression '{expression}': {e}")
@@ -140,12 +150,16 @@ def _normalize_value(value: str) -> str:
     return value
 
 
-def _resolve_complex_expression(expression: str, variable_context: Dict[str, str]) -> str:
+def _resolve_complex_expression(expression: str, variable_context: Dict[str, str], depth: int = 0) -> str:
     """
     Resolve complex SCSS expressions (functions, arithmetic).
     """
+    # Prevent infinite recursion
+    if depth > 10:
+        return expression
+
     # First, substitute all variables
-    substituted = _substitute_variables(expression, variable_context)
+    substituted = _substitute_variables(expression, variable_context, depth)
 
     # If pyScss is available, try to compile the expression
     if PYSCSS_AVAILABLE:
@@ -184,8 +198,12 @@ def _resolve_complex_expression(expression: str, variable_context: Dict[str, str
     return substituted
 
 
-def _substitute_variables(expression: str, variable_context: Dict[str, str]) -> str:
+def _substitute_variables(expression: str, variable_context: Dict[str, str], depth: int = 0) -> str:
     """Substitute SCSS variable references with their values."""
+    # Prevent infinite recursion
+    if depth > 10:
+        return expression
+
     result = expression
 
     # Find all $variable references
@@ -196,7 +214,7 @@ def _substitute_variables(expression: str, variable_context: Dict[str, str]) -> 
         value = variable_context.get(var)
         if value:
             # Recursively resolve the value
-            resolved_value = resolve_scss_expression(value, variable_context)
+            resolved_value = resolve_scss_expression(value, variable_context, depth + 1)
             result = result.replace(var, resolved_value)
 
     return result

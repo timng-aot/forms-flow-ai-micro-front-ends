@@ -1,0 +1,707 @@
+{
+  "ff": {
+    "color": {
+      "$type": "color",
+      "yellow-100": {
+        "$value": "blend-with-white-to-hex(#EFC005, 1.0)",
+        "$description": "v8 yellow palette shade 100"
+      },
+      "yellow-200": {
+        "$value": "blend-with-white-to-hex(#EFC005, 0.5)",
+        "$description": "v8 yellow palette shade 200"
+      },
+      "yellow-300": {
+        "$value": "blend-with-white-to-hex(#EFC005, 0.25)",
+        "$description": "v8 yellow palette shade 300"
+      },
+      "green-100": {
+        "$value": "blend-with-white-to-hex(#00C49A, 1.0)",
+        "$description": "v8 green palette shade 100"
+      },
+      "green-200": {
+        "$value": "blend-with-white-to-hex(#00C49A, 0.5)",
+        "$description": "v8 green palette shade 200"
+      },
+      "green-300": {
+        "$value": "blend-with-white-to-hex(#00C49A, 0.25)",
+        "$description": "v8 green palette shade 300"
+      },
+      "cyan-100": {
+        "$value": "blend-with-white-to-hex(#00BCD4, 1.0)",
+        "$description": "v8 cyan palette shade 100"
+      },
+      "cyan-200": {
+        "$value": "blend-with-white-to-hex(#00BCD4, 0.5)",
+        "$description": "v8 cyan palette shade 200"
+      },
+      "cyan-300": {
+        "$value": "blend-with-white-to-hex(#00BCD4, 0.25)",
+        "$description": "v8 cyan palette shade 300"
+      },
+      "blue-100": {
+        "$value": "blend-with-white-to-hex(#0087D9, 1.0)",
+        "$description": "v8 blue palette shade 100"
+      },
+      "blue-200": {
+        "$value": "blend-with-white-to-hex(#0087D9, 0.5)",
+        "$description": "v8 blue palette shade 200"
+      },
+      "blue-300": {
+        "$value": "blend-with-white-to-hex(#0087D9, 0.25)",
+        "$description": "v8 blue palette shade 300"
+      },
+      "orange-100": {
+        "$value": "blend-with-white-to-hex(#FF9100, 1.0)",
+        "$description": "v8 orange palette shade 100"
+      },
+      "orange-200": {
+        "$value": "blend-with-white-to-hex(#FF9100, 0.5)",
+        "$description": "v8 orange palette shade 200"
+      },
+      "orange-300": {
+        "$value": "blend-with-white-to-hex(#FF9100, 0.25)",
+        "$description": "v8 orange palette shade 300"
+      },
+      "vivid-100": {
+        "$value": "blend-with-white-to-hex(#7C80FE, 1.0)",
+        "$description": "v8 vivid palette shade 100"
+      },
+      "vivid-200": {
+        "$value": "blend-with-white-to-hex(#7C80FE, 0.5)",
+        "$description": "v8 vivid palette shade 200"
+      },
+      "vivid-300": {
+        "$value": "blend-with-white-to-hex(#7C80FE, 0.25)",
+        "$description": "v8 vivid palette shade 300"
+      },
+      "red-100": {
+        "$value": "blend-with-white-to-hex(#E57373, 1.0)",
+        "$description": "v8 red palette shade 100"
+      },
+      "red-200": {
+        "$value": "blend-with-white-to-hex(#E57373, 0.5)",
+        "$description": "v8 red palette shade 200"
+      },
+      "red-300": {
+        "$value": "blend-with-white-to-hex(#E57373, 0.25)",
+        "$description": "v8 red palette shade 300"
+      },
+      "indigo-100": {
+        "$value": "blend-with-white-to-hex(#3248F4, 1.0)",
+        "$description": "v8 indigo palette shade 100"
+      },
+      "indigo-200": {
+        "$value": "blend-with-white-to-hex(#3248F4, 0.5)",
+        "$description": "v8 indigo palette shade 200"
+      },
+      "indigo-300": {
+        "$value": "blend-with-white-to-hex(#3248F4, 0.25)",
+        "$description": "v8 indigo palette shade 300"
+      },
+      "white-100": {
+        "$value": "#F6F6F6",
+        "$description": "v8 white palette shade 100"
+      },
+      "white-200": {
+        "$value": "#FCFCFC",
+        "$description": "v8 white palette shade 200"
+      },
+      "white-300": {
+        "$value": "#FFFFFF",
+        "$description": "v8 white palette shade 300"
+      },
+      "colorDivider": {
+        "$value": "#D1D2D3",
+        "$description": "Source: scss/_theme.scss:89 | Original: $gray-medium"
+      },
+      "colorDividerDark": {
+        "$value": "#B7B7B8",
+        "$description": "Source: scss/_theme.scss:90 | Original: $gray-medium-dark"
+      },
+      "input-error-box-shadow": {
+        "$value": "0 0 0 0.2rem rgba(255, 0, 0, 0.25)",
+        "$description": "Source: scss/inputBox.scss:5"
+      },
+      "colorMain": {
+        "$value": "#4A4A4A",
+        "$description": "Source: scss/historyModal.scss:10 | Original: $gray-darkest"
+      },
+      "colorSecondary": {
+        "$value": "#D1D2D3",
+        "$description": "Source: scss/historyModal.scss:11 | Original: $gray-medium"
+      },
+      "chevron-bg": {
+        "$value": "#5e61f2",
+        "$description": "Source: scss/collapsibleSidebar.scss:6"
+      },
+      "black": {
+        "$value": "#000000",
+        "$description": "Source: scss/_theme.scss:2 | Used 19 times"
+      },
+      "white": {
+        "$value": "#fff",
+        "$description": "Source: scss/v8-scss/_theme.scss:54 | Used 127 times"
+      },
+      "green": {
+        "$value": "#57C20A",
+        "$description": "Source: scss/_theme.scss:4"
+      },
+      "green-dark": {
+        "$value": "#006621",
+        "$description": "Source: scss/_theme.scss:5"
+      },
+      "transparent": {
+        "$value": "#f2f2f300",
+        "$description": "Source: scss/_theme.scss:18"
+      },
+      "success": {
+        "$value": "#006621",
+        "$description": "Source: scss/_theme.scss:21 | Original: $green-dark | Bootstrap override"
+      },
+      "btn-color": {
+        "$value": "#000000",
+        "$description": "Source: scss/_theme.scss:22 | Original: $black"
+      },
+      "no-code-success": {
+        "$value": "#1B9C85",
+        "$description": "Source: scss/_theme.scss:24"
+      },
+      "no-code-secondary": {
+        "$value": "#EA9389",
+        "$description": "Source: scss/_theme.scss:25"
+      },
+      "no-code-warning": {
+        "$value": "#faad14",
+        "$description": "Source: scss/_theme.scss:26"
+      },
+      "theme-colors": {
+        "$value": "map-merge($theme-colors, $custom-colors)",
+        "$description": "Source: scss/_theme.scss:55"
+      },
+      "button-shadow-primary": {
+        "$value": "0 0.125rem 0.5rem rgba(137, 105, 242, 0.15)",
+        "$description": "Source: scss/v8-scss/_button.scss:28"
+      },
+      "button-shadow-secondary": {
+        "$value": "0 0.125rem 0.25rem rgba(0, 0, 0, 0.1)",
+        "$description": "Source: scss/v8-scss/_button.scss:29"
+      },
+      "button-shadow-error": {
+        "$value": "0 0.125rem 0.5rem rgba(255, 87, 34, 0.1)",
+        "$description": "Source: scss/v8-scss/_button.scss:30"
+      },
+      "button-shadow-warning": {
+        "$value": "0 0.125rem 0.5rem rgba(255, 152, 0, 0.1)",
+        "$description": "Source: scss/v8-scss/_button.scss:31"
+      },
+      "table-border-color": {
+        "$value": "#DAD9DA",
+        "$description": "Source: scss/v8-scss/_table.scss:6"
+      },
+      "table-shadow": {
+        "$value": "rgba(0, 0, 0, 0.25)",
+        "$description": "Source: scss/v8-scss/_table.scss:9"
+      },
+      "form-builder-color-text": {
+        "$value": "#535353",
+        "$description": "Source: scss/v8-scss/_formbuilder.scss:13"
+      },
+      "form-builder-color-bg-transparent": {
+        "$value": "transparent",
+        "$description": "Source: scss/v8-scss/_formbuilder.scss:14"
+      },
+      "form-builder-color-bg-black": {
+        "$value": "black",
+        "$description": "Source: scss/v8-scss/_formbuilder.scss:15"
+      },
+      "form-builder-shadow-color": {
+        "$value": "rgb(182 182 182 / 20%)",
+        "$description": "Source: scss/v8-scss/_formbuilder.scss:16"
+      },
+      "multiselect-shadow": {
+        "$value": "0 4px 4px 0 rgba(0, 0, 0, 0.25)",
+        "$description": "Source: scss/v8-scss/_dropdownMultiselect.scss:18"
+      },
+      "multiselect-primary-border": {
+        "$value": "rgba(184, 171, 255, 0.5)",
+        "$description": "Source: scss/v8-scss/_dropdownMultiselect.scss:22"
+      },
+      "multiselect-primary-border-disabled": {
+        "$value": "rgba(184, 171, 255, 0.25)",
+        "$description": "Source: scss/v8-scss/_dropdownMultiselect.scss:24"
+      },
+      "multiselect-secondary-hover-border": {
+        "$value": "rgba(107, 114, 128, 0.3)",
+        "$description": "Source: scss/v8-scss/_dropdownMultiselect.scss:28"
+      },
+      "color-border-light": {
+        "$value": "#ededed",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:34"
+      },
+      "color-text-primary": {
+        "$value": "#212529",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:35"
+      },
+      "color-text-secondary": {
+        "$value": "#222",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:36"
+      },
+      "color-text-muted": {
+        "$value": "#999",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:37"
+      },
+      "color-text-placeholder": {
+        "$value": "#b7b7b8",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:38"
+      },
+      "color-text-light": {
+        "$value": "#b7b7b8",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:39"
+      },
+      "drp-shadow-container": {
+        "$value": "0 0.0625rem 0.125rem rgba(0, 0, 0, 0.03)",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:46"
+      },
+      "drp-shadow-calendar": {
+        "$value": "0 0.5rem 1rem rgba(0, 0, 0, 0.15)",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:47"
+      },
+      "gray-darker": {
+        "$value": "#424243",
+        "$description": "Source: scss/v8-scss/_breadCrumbs.scss:7"
+      },
+      "dropdown-shadow": {
+        "$value": "0 0.25rem 0.25rem rgba(0, 0, 0, 0.25)",
+        "$description": "Source: scss/v8-scss/_selectDropdown.scss:24"
+      },
+      "dropdown-primary-border": {
+        "$value": "rgba(184, 171, 255, 0.5)",
+        "$description": "Source: scss/v8-scss/_selectDropdown.scss:43"
+      },
+      "dropdown-primary-disabled-border": {
+        "$value": "rgba(184, 171, 255, 0.25)",
+        "$description": "Source: scss/v8-scss/_selectDropdown.scss:46"
+      },
+      "dropdown-secondary-hover-border": {
+        "$value": "rgba(107, 114, 128, 0.3)",
+        "$description": "Source: scss/v8-scss/_selectDropdown.scss:52"
+      },
+      "box-shadow": {
+        "$value": "0 10px 25px rgba(0, 0, 0, 0.15)",
+        "$description": "Source: scss/v8-scss/_mixins.scss:125"
+      },
+      "alert-shadow-focus": {
+        "$value": "0 0.125rem 0.5rem rgba(137, 105, 242, 0.1)",
+        "$description": "Source: scss/v8-scss/_alert.scss:24"
+      },
+      "alert-shadow-error": {
+        "$value": "0 0.125rem 0.5rem rgba(255, 87, 34, 0.1)",
+        "$description": "Source: scss/v8-scss/_alert.scss:25"
+      },
+      "alert-shadow-warning": {
+        "$value": "0 0.125rem 0.5rem rgba(255, 152, 0, 0.1)",
+        "$description": "Source: scss/v8-scss/_alert.scss:26"
+      },
+      "color-copy-button-bg": {
+        "$value": "transparent",
+        "$description": "Source: scss/v8-scss/_urlInput.scss:34"
+      },
+      "color-copy-button-hover-bg": {
+        "$value": "transparent",
+        "$description": "Source: scss/v8-scss/_urlInput.scss:36"
+      },
+      "switch-shadow-default": {
+        "$value": "0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.2)",
+        "$description": "Source: scss/v8-scss/_switch.scss:20"
+      },
+      "select-custom-value-border-color": {
+        "$value": "#E5E5E5",
+        "$description": "Source: scss/v8-scss/_selectWithCustomValue.scss:6"
+      },
+      "select-custom-value-placeholder-color": {
+        "$value": "#999",
+        "$description": "Source: scss/v8-scss/_selectWithCustomValue.scss:7"
+      }
+    },
+    "spacing": {
+      "$type": "dimension",
+      "025": {
+        "$value": "0.25rem",
+        "$description": "Spacing scale 025 (v8)"
+      },
+      "050": {
+        "$value": "0.5rem",
+        "$description": "Spacing scale 050 (v8)"
+      },
+      "075": {
+        "$value": "0.75rem",
+        "$description": "Spacing scale 075 (v8)"
+      },
+      "100": {
+        "$value": "1rem",
+        "$description": "Spacing scale 100 (v8)"
+      },
+      "125": {
+        "$value": "1.25rem",
+        "$description": "Spacing scale 125 (v8)"
+      },
+      "150": {
+        "$value": "1.5rem",
+        "$description": "Spacing scale 150 (v8)"
+      },
+      "175": {
+        "$value": "1.75rem",
+        "$description": "Spacing scale 175 (v8)"
+      },
+      "200": {
+        "$value": "2rem",
+        "$description": "Spacing scale 200 (v8)"
+      },
+      "225": {
+        "$value": "2.25rem",
+        "$description": "Spacing scale 225 (v8)"
+      },
+      "250": {
+        "$value": "2.5rem",
+        "$description": "Spacing scale 250 (v8)"
+      },
+      "275": {
+        "$value": "2.75rem",
+        "$description": "Spacing scale 275 (v8)"
+      },
+      "300": {
+        "$value": "3rem",
+        "$description": "Spacing scale 300 (v8)"
+      }
+    },
+    "font-family": {
+      "$type": "fontFamily",
+      "font-family-base": {
+        "$value": "Figtree\", sans-serif",
+        "$description": "Source: CSS custom property --font-family-base (v8-theme)"
+      }
+    },
+    "font-size": {
+      "$type": "dimension",
+      "fontSmallest": {
+        "$value": "0.5rem*0.875",
+        "$description": "Source: scss/_theme.scss:76"
+      },
+      "fontModalTitle": {
+        "$value": "0.5rem*1.5",
+        "$description": "Source: scss/_theme.scss:79"
+      },
+      "fontSectionHead": {
+        "$value": "0.5rem*1.125",
+        "$description": "Source: scss/_theme.scss:77"
+      },
+      "fontChoiceHead": {
+        "$value": "0.5rem*1.25",
+        "$description": "Source: scss/_theme.scss:78"
+      },
+      "drp-font-size": {
+        "$value": "0.9375rem",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:16"
+      },
+      "drp-font-size-small": {
+        "$value": "0.875rem",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:17"
+      },
+      "font-size-default": {
+        "$value": "1.5rem",
+        "$description": "Source: scss/v8-scss/_breadCrumbs.scss:24"
+      },
+      "font-size-minimized": {
+        "$value": "0.75rem",
+        "$description": "Source: scss/v8-scss/_breadCrumbs.scss:25"
+      },
+      "filterable-dropdown-font-size": {
+        "$value": "14px",
+        "$description": "Source: scss/v8-scss/_filterableDropdown.scss:4"
+      },
+      "url-input-font-size": {
+        "$value": "0.9375rem",
+        "$description": "Source: scss/v8-scss/_urlInput.scss:9"
+      }
+    },
+    "font-weight": {
+      "$type": "fontWeight",
+      "drp-font-weight": {
+        "$value": 400,
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:18"
+      },
+      "drp-font-weight-medium": {
+        "$value": 500,
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:19"
+      },
+      "url-input-font-weight": {
+        "$value": 500,
+        "$description": "Source: scss/v8-scss/_urlInput.scss:10"
+      },
+      "font-weight-xs": {
+        "$value": 300,
+        "$description": "Source: CSS custom property --font-weight-xs (theme)"
+      },
+      "font-weight-sm": {
+        "$value": 400,
+        "$description": "Source: CSS custom property --font-weight-sm (theme)"
+      },
+      "font-weight-md": {
+        "$value": 500,
+        "$description": "Source: CSS custom property --font-weight-md (theme)"
+      },
+      "font-weight-lg": {
+        "$value": 600,
+        "$description": "Source: CSS custom property --font-weight-lg (theme)"
+      },
+      "font-weight-xl": {
+        "$value": 700,
+        "$description": "Source: CSS custom property --font-weight-xl (theme)"
+      },
+      "font-weight-light": {
+        "$value": 300,
+        "$description": "Source: CSS custom property --font-weight-light (v8-theme)"
+      },
+      "font-weight-regular": {
+        "$value": 400,
+        "$description": "Source: CSS custom property --font-weight-regular (v8-theme)"
+      },
+      "font-weight-medium": {
+        "$value": 500,
+        "$description": "Source: CSS custom property --font-weight-medium (v8-theme)"
+      },
+      "font-weight-semibold": {
+        "$value": 600,
+        "$description": "Source: CSS custom property --font-weight-semibold (v8-theme)"
+      }
+    },
+    "line-height": {
+      "$type": "number",
+      "text-line-height": {
+        "$value": "120%",
+        "$type": "dimension",
+        "$description": "Source: scss/fileUpload.scss:35"
+      },
+      "drp-line-height": {
+        "$value": 1.5,
+        "$type": "number",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:20"
+      }
+    },
+    "radius": {
+      "$type": "dimension",
+      "borderRadiusModal": {
+        "$value": "1rem*1.5",
+        "$description": "Source: scss/_theme.scss:208"
+      },
+      "btn-border-radius": {
+        "$value": "50%",
+        "$description": "Source: scss/_button.scss:11"
+      },
+      "status-radius": {
+        "$value": "50%",
+        "$description": "Source: scss/_table.scss:6"
+      },
+      "checkbox-border-radius": {
+        "$value": "0.25rem",
+        "$description": "Source: scss/v8-scss/_checkbox.scss:6"
+      },
+      "checkbox-border-radius-small": {
+        "$value": "0.1875rem",
+        "$description": "Source: scss/v8-scss/_checkbox.scss:7"
+      },
+      "button-border-radius": {
+        "$value": "1.5625rem",
+        "$description": "Source: scss/v8-scss/_button.scss:5"
+      },
+      "form-builder-border-radius": {
+        "$value": "4px",
+        "$description": "Source: scss/v8-scss/_formbuilder.scss:5"
+      },
+      "form-builder-border-radius-round": {
+        "$value": "50%",
+        "$description": "Source: scss/v8-scss/_formbuilder.scss:6"
+      },
+      "multiselect-border-radius": {
+        "$value": "5px",
+        "$description": "Source: scss/v8-scss/_dropdownMultiselect.scss:6"
+      },
+      "multiselect-chip-border-radius": {
+        "$value": "25px",
+        "$description": "Source: scss/v8-scss/_dropdownMultiselect.scss:7"
+      },
+      "dropdown-border-radius": {
+        "$value": "0.3125rem",
+        "$description": "Source: scss/v8-scss/_selectDropdown.scss:7"
+      },
+      "dropdown-menu-radius": {
+        "$value": "0.3125rem",
+        "$description": "Source: scss/v8-scss/_dropdownButton.scss:6"
+      },
+      "dropdown-item-radius": {
+        "$value": "0.313rem",
+        "$description": "Source: scss/v8-scss/_dropdownButton.scss:7"
+      },
+      "drp-container-radius": {
+        "$value": ".3125rem",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:8"
+      },
+      "drp-calendar-radius": {
+        "$value": "0.375rem",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:13"
+      },
+      "alert-border-radius": {
+        "$value": "0.313rem",
+        "$description": "Source: scss/v8-scss/_alert.scss:5"
+      },
+      "search-input-border-radius": {
+        "$value": "0.3125rem",
+        "$description": "Source: scss/v8-scss/_search.scss:6"
+      },
+      "url-input-border-radius": {
+        "$value": "0.3125rem",
+        "$description": "Source: scss/v8-scss/_urlInput.scss:5"
+      },
+      "switch-border-radius": {
+        "$value": "0.75rem",
+        "$description": "Source: scss/v8-scss/_switch.scss:7"
+      }
+    },
+    "shadow": {
+      "$type": "shadow",
+      "url-input-shadow-focus": {
+        "$value": {
+          "color": "1px",
+          "offsetX": "0px",
+          "offsetY": "0px",
+          "blur": "0px",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_urlInput.scss:24"
+      },
+      "switch-shadow-hover": {
+        "$value": {
+          "color": "2px",
+          "offsetX": "0px",
+          "offsetY": "0px",
+          "blur": "0px",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_switch.scss:21"
+      },
+      "switch-shadow-focus": {
+        "$value": {
+          "color": "1px",
+          "offsetX": "0px",
+          "offsetY": "0px",
+          "blur": "0px",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_switch.scss:22"
+      }
+    },
+    "duration": {
+      "$type": "duration",
+      "animSpeed": {
+        "$value": "300ms",
+        "$description": "Source: scss/v8-scss/_dragandrop.scss:4"
+      },
+      "checkbox-transition-duration": {
+        "$value": "0.15s",
+        "$description": "Source: scss/v8-scss/_checkbox.scss:21"
+      },
+      "checkbox-transition-timing": {
+        "$value": "ease-in-out",
+        "$description": "Source: scss/v8-scss/_checkbox.scss:22"
+      },
+      "radio-transition-duration": {
+        "$value": "0.15s",
+        "$description": "Source: scss/v8-scss/_radio.scss:11"
+      },
+      "radio-transition-timing": {
+        "$value": "ease-in-out",
+        "$description": "Source: scss/v8-scss/_radio.scss:12"
+      },
+      "button-transition-duration": {
+        "$value": "0.15s",
+        "$description": "Source: scss/v8-scss/_button.scss:14"
+      },
+      "button-transition-timing": {
+        "$value": "ease-in-out",
+        "$description": "Source: scss/v8-scss/_button.scss:15"
+      },
+      "dropdown-transition": {
+        "$value": "0.2s ease",
+        "$description": "Source: scss/v8-scss/_dropdownButton.scss:10"
+      },
+      "drp-transition-duration": {
+        "$value": "0.2s",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:23"
+      },
+      "drp-transition-timing": {
+        "$value": "ease",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:24"
+      },
+      "breadcrumb-transition-duration": {
+        "$value": "0.15s",
+        "$description": "Source: scss/v8-scss/_breadCrumbs.scss:13"
+      },
+      "breadcrumb-transition-timing": {
+        "$value": "ease-in-out",
+        "$description": "Source: scss/v8-scss/_breadCrumbs.scss:14"
+      },
+      "dropdown-transition-duration": {
+        "$value": "0.15s",
+        "$description": "Source: scss/v8-scss/_selectDropdown.scss:20"
+      },
+      "dropdown-transition-timing": {
+        "$value": "ease-in-out",
+        "$description": "Source: scss/v8-scss/_selectDropdown.scss:21"
+      },
+      "alert-transition-duration": {
+        "$value": "0.3s",
+        "$description": "Source: scss/v8-scss/_alert.scss:12"
+      },
+      "alert-transition-timing": {
+        "$value": "ease-in-out",
+        "$description": "Source: scss/v8-scss/_alert.scss:13"
+      },
+      "alert-enter-duration": {
+        "$value": "0.3s",
+        "$description": "Source: scss/v8-scss/_alert.scss:19"
+      },
+      "alert-exit-duration": {
+        "$value": "0.2s",
+        "$description": "Source: scss/v8-scss/_alert.scss:20"
+      },
+      "search-transition-duration": {
+        "$value": "0.2s",
+        "$description": "Source: scss/v8-scss/_search.scss:12"
+      },
+      "search-transition-timing": {
+        "$value": "ease",
+        "$description": "Source: scss/v8-scss/_search.scss:13"
+      },
+      "filterable-dropdown-transition": {
+        "$value": "0.15s ease-in-out",
+        "$description": "Source: scss/v8-scss/_filterableDropdown.scss:9"
+      },
+      "url-input-transition-duration": {
+        "$value": "0.15s",
+        "$description": "Source: scss/v8-scss/_urlInput.scss:11"
+      },
+      "url-input-transition-timing": {
+        "$value": "ease-in-out",
+        "$description": "Source: scss/v8-scss/_urlInput.scss:12"
+      },
+      "switch-transition-duration": {
+        "$value": "0.2s",
+        "$description": "Source: scss/v8-scss/_switch.scss:13"
+      },
+      "switch-transition-timing": {
+        "$value": "ease-in-out",
+        "$description": "Source: scss/v8-scss/_switch.scss:14"
+      }
+    }
+  }
+}

@@ -141,12 +141,16 @@ def _extract_v8_color_palettes(css_props: Dict, var_context: Dict, resolver) -> 
         if prop_data.get('rootBlock') != 'v8-theme':
             continue
 
-        # Look for color shade patterns like --ff-primary-500
-        match = re.match(r'--ff-([a-z]+)-(\d{3})$', prop_name)
+        # Look for color shade patterns like --ff-primary-500 or --blue-100
+        match = re.match(r'--(?:ff-)?([a-z]+)-(\d{3})$', prop_name)
         if not match:
             continue
 
         color_name, shade_num = match.groups()
+
+        # Skip spacer - that's a spacing token, not color
+        if color_name == 'spacer':
+            continue
 
         # Initialize palette if needed
         if color_name not in palettes:
@@ -231,9 +235,12 @@ def _extract_spacing(target: Dict, audit_data: Dict, var_context: Dict, resolver
 def _extract_typography(target: Dict, audit_data: Dict, var_context: Dict, resolver) -> None:
     """Extract typography tokens (font-family, font-size, font-weight, line-height)."""
     scss_vars = audit_data.get('scssVariables', {})
+    css_props = audit_data.get('cssCustomProperties', {})
 
-    # Font families
+    # Font families - check both SCSS vars and CSS custom properties
     target["font-family"] = {"$type": "fontFamily"}
+
+    # From SCSS variables
     for var_name, var_data in scss_vars.items():
         if 'font-family' not in var_name.lower():
             continue
@@ -248,6 +255,23 @@ def _extract_typography(target: Dict, audit_data: Dict, var_context: Dict, resol
         target["font-family"][token_name] = {
             "$value": resolved.strip('"').strip("'"),
             "$description": f"Source: {var_data.get('sourceFile', 'unknown')}:{var_data.get('sourceLine', '?')}"
+        }
+
+    # From CSS custom properties (v8 theme)
+    for prop_name, prop_data in css_props.items():
+        if 'font-family' not in prop_name:
+            continue
+
+        value = prop_data.get('value', '')
+        if not value or value.strip() == '""' or value.strip() == '" "':
+            continue
+
+        resolved = resolver.resolve_scss_expression(value, var_context)
+        token_name = prop_name.lstrip('-').replace('--', '-')
+
+        target["font-family"][token_name] = {
+            "$value": resolved.strip('"').strip("'"),
+            "$description": f"Source: CSS custom property {prop_name} ({prop_data.get('rootBlock', 'unknown')})"
         }
 
     # Font sizes
@@ -279,6 +303,8 @@ def _extract_typography(target: Dict, audit_data: Dict, var_context: Dict, resol
 
     # Font weights - MUST be numbers, not strings
     target["font-weight"] = {"$type": "fontWeight"}
+
+    # From SCSS variables
     for var_name, var_data in scss_vars.items():
         if 'font-weight' not in var_name.lower() and 'weight' not in var_name.lower():
             continue
@@ -300,6 +326,30 @@ def _extract_typography(target: Dict, audit_data: Dict, var_context: Dict, resol
         target["font-weight"][token_name] = {
             "$value": weight_num,  # Number, not string!
             "$description": f"Source: {var_data.get('sourceFile', 'unknown')}:{var_data.get('sourceLine', '?')}"
+        }
+
+    # From CSS custom properties (v8 theme)
+    for prop_name, prop_data in css_props.items():
+        if 'font-weight' not in prop_name:
+            continue
+
+        value = prop_data.get('value', '')
+        if not value or value.startswith('var('):
+            continue
+
+        resolved = resolver.resolve_scss_expression(value, var_context)
+
+        # Convert to number
+        try:
+            weight_num = int(resolved)
+        except (ValueError, TypeError):
+            continue
+
+        token_name = prop_name.lstrip('-').replace('--', '-')
+
+        target["font-weight"][token_name] = {
+            "$value": weight_num,  # Number, not string!
+            "$description": f"Source: CSS custom property {prop_name} ({prop_data.get('rootBlock', 'unknown')})"
         }
 
     # Line heights
@@ -465,35 +515,64 @@ def _extract_semantic_colors(target: Dict, audit_data: Dict, core_tokens: Dict) 
     """Extract semantic color tokens."""
     target["color"] = {"$type": "color"}
 
-    # Bootstrap semantic names
-    bootstrap_colors = {
-        "primary": "primary-500",
-        "secondary": "secondary-500",
-        "success": "success-500",
-        "danger": "danger-500",
-        "warning": "warning-500",
-        "info": "info-500",
-        "light": "light-500",
-        "dark": "dark-500"
+    core_colors = core_tokens.get("ff", {}).get("color", {})
+
+    # Bootstrap semantic names - try to map to existing core tokens
+    bootstrap_mappings = [
+        ("primary", ["primary", "indigo-100", "blue-100"]),
+        ("secondary", ["secondary", "gray-500", "gray-medium"]),
+        ("success", ["success", "green", "green-100"]),
+        ("danger", ["danger", "red-100", "error"]),
+        ("warning", ["warning", "yellow-100", "orange-100"]),
+        ("info", ["info", "cyan-100", "blue-100"]),
+        ("light", ["light", "gray-100", "white-100"]),
+        ("dark", ["dark", "gray-900", "black"])
+    ]
+
+    for semantic_name, core_candidates in bootstrap_mappings:
+        # Find first matching core token
+        for candidate in core_candidates:
+            # Try exact match
+            if candidate in core_colors:
+                target["color"][semantic_name] = {
+                    "$value": f"{{ff.color.{candidate}}}",
+                    "$description": f"Bootstrap semantic: {semantic_name}"
+                }
+                break
+            # Try with -500 suffix
+            if f"{candidate}-500" in core_colors:
+                target["color"][semantic_name] = {
+                    "$value": f"{{ff.color.{candidate}-500}}",
+                    "$description": f"Bootstrap semantic: {semantic_name}"
+                }
+                break
+
+    # Add action/background/text semantic groups with actual mappings
+    target["color"]["action"] = {
+        "primary": {
+            "$value": "{ff.color.indigo-100}",
+            "$description": "Primary action color"
+        } if "indigo-100" in core_colors else None
     }
 
-    for semantic_name, core_ref in bootstrap_colors.items():
-        # Check if the core token exists
-        if core_ref in core_tokens.get("ff", {}).get("color", {}):
-            target["color"][semantic_name] = {
-                "$value": f"{{ff.color.{core_ref}}}",
-                "$description": f"Bootstrap semantic: {semantic_name}"
-            }
+    target["color"]["background"] = {
+        "default": {
+            "$value": "{ff.color.white}",
+            "$description": "Default background"
+        } if "white" in core_colors else None
+    }
 
-    # Add action/background/text semantic groups
-    if "action" not in target["color"]:
-        target["color"]["action"] = {}
+    target["color"]["text"] = {
+        "primary": {
+            "$value": "{ff.color.black}",
+            "$description": "Primary text color"
+        } if "black" in core_colors else None
+    }
 
-    if "background" not in target["color"]:
-        target["color"]["background"] = {}
-
-    if "text" not in target["color"]:
-        target["color"]["text"] = {}
+    # Remove None values
+    for group_name in ["action", "background", "text"]:
+        if group_name in target["color"]:
+            target["color"][group_name] = {k: v for k, v in target["color"][group_name].items() if v is not None}
 
 
 def _extract_semantic_spacing(target: Dict, audit_data: Dict, core_tokens: Dict) -> None:
@@ -519,10 +598,36 @@ def _extract_semantic_spacing(target: Dict, audit_data: Dict, core_tokens: Dict)
 
 def _extract_semantic_typography(target: Dict, audit_data: Dict, core_tokens: Dict) -> None:
     """Extract semantic typography tokens."""
+    core_ff = core_tokens.get("ff", {})
+
     # Font family semantic
     target["font-family"] = {"$type": "fontFamily"}
+    if "font-family-base" in core_ff.get("font-family", {}):
+        target["font-family"]["body"] = {
+            "$value": "{ff.font-family.font-family-base}",
+            "$description": "Body text font family"
+        }
+        target["font-family"]["heading"] = {
+            "$value": "{ff.font-family.font-family-base}",
+            "$description": "Heading font family"
+        }
+
     # Font weight semantic
     target["font-weight"] = {"$type": "fontWeight"}
+    weight_mappings = [
+        ("normal", ["font-weight-regular", "font-weight-sm", "400"]),
+        ("medium", ["font-weight-medium", "font-weight-md", "500"]),
+        ("semibold", ["font-weight-semibold", "600"]),
+        ("bold", ["font-weight-xl", "font-weight-lg", "700"])
+    ]
+    for semantic, candidates in weight_mappings:
+        for candidate in candidates:
+            if candidate in core_ff.get("font-weight", {}):
+                target["font-weight"][semantic] = {
+                    "$value": f"{{ff.font-weight.{candidate}}}",
+                    "$description": f"{semantic.capitalize()} font weight"
+                }
+                break
 
 
 def _extract_semantic_radius(target: Dict, core_tokens: Dict) -> None:

@@ -1,0 +1,113 @@
+{
+  "color": {
+    "$type": "color",
+    "primary": {
+      "$value": "{ff.color.indigo-100}",
+      "$description": "Bootstrap semantic: primary"
+    },
+    "success": {
+      "$value": "{ff.color.success}",
+      "$description": "Bootstrap semantic: success"
+    },
+    "danger": {
+      "$value": "{ff.color.red-100}",
+      "$description": "Bootstrap semantic: danger"
+    },
+    "warning": {
+      "$value": "{ff.color.yellow-100}",
+      "$description": "Bootstrap semantic: warning"
+    },
+    "info": {
+      "$value": "{ff.color.cyan-100}",
+      "$description": "Bootstrap semantic: info"
+    },
+    "light": {
+      "$value": "{ff.color.white-100}",
+      "$description": "Bootstrap semantic: light"
+    },
+    "dark": {
+      "$value": "{ff.color.black}",
+      "$description": "Bootstrap semantic: dark"
+    },
+    "action": {
+      "primary": {
+        "$value": "{ff.color.indigo-100}",
+        "$description": "Primary action color"
+      }
+    },
+    "background": {
+      "default": {
+        "$value": "{ff.color.white}",
+        "$description": "Default background"
+      }
+    },
+    "text": {
+      "primary": {
+        "$value": "{ff.color.black}",
+        "$description": "Primary text color"
+      }
+    }
+  },
+  "spacing": {
+    "$type": "dimension",
+    "xs": {
+      "$value": "{ff.spacing.025}",
+      "$description": "Semantic spacing: xs"
+    },
+    "sm": {
+      "$value": "{ff.spacing.050}",
+      "$description": "Semantic spacing: sm"
+    },
+    "md": {
+      "$value": "{ff.spacing.100}",
+      "$description": "Semantic spacing: md"
+    },
+    "lg": {
+      "$value": "{ff.spacing.150}",
+      "$description": "Semantic spacing: lg"
+    },
+    "xl": {
+      "$value": "{ff.spacing.200}",
+      "$description": "Semantic spacing: xl"
+    }
+  },
+  "font-family": {
+    "$type": "fontFamily",
+    "body": {
+      "$value": "{ff.font-family.font-family-base}",
+      "$description": "Body text font family"
+    },
+    "heading": {
+      "$value": "{ff.font-family.font-family-base}",
+      "$description": "Heading font family"
+    }
+  },
+  "font-weight": {
+    "$type": "fontWeight",
+    "normal": {
+      "$value": "{ff.font-weight.font-weight-regular}",
+      "$description": "Normal font weight"
+    },
+    "medium": {
+      "$value": "{ff.font-weight.font-weight-medium}",
+      "$description": "Medium font weight"
+    },
+    "semibold": {
+      "$value": "{ff.font-weight.font-weight-semibold}",
+      "$description": "Semibold font weight"
+    },
+    "bold": {
+      "$value": "{ff.font-weight.font-weight-xl}",
+      "$description": "Bold font weight"
+    }
+  },
+  "radius": {
+    "$type": "dimension"
+  },
+  "shadow": {
+    "$type": "shadow"
+  },
+  "duration": {
+    "$type": "duration"
+  }
+}
