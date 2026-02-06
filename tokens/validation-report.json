@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-02-04T23:03:57.245745",
+  "timestamp": "2026-02-05T21:27:52.495002",
   "files": {
     "core": "tokens/core.json",
     "semantic": "tokens/semantic.json",
@@ -24,7 +24,7 @@
     },
     "dtcg_schema_semantic": {
       "status": "PASS",
-      "token_count": 21,
+      "token_count": 32,
       "categories": {},
       "errors": []
     },
@@ -42,8 +42,8 @@
     },
     "audit_diff": {
       "status": "PASS",
-      "coverage_percent": 21.5,
-      "found_in_tokens": 121,
+      "coverage_percent": 23.4,
+      "found_in_tokens": 132,
       "total_extractable": 564,
       "mismatches": [],
       "not_found_count": 316

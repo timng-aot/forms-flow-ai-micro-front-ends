@@ -130,6 +130,14 @@ def compare_to_audit(core_path: str, semantic_path: str, audit_path: str) -> Dic
             if isinstance(token_value, str) and "{" in token_value:
                 continue
 
+            # Skip shadow comparisons (shadows are now DTCG objects, audit has CSS strings)
+            if isinstance(token_value, dict) and "color" in token_value and "offsetX" in token_value:
+                continue
+
+            # Skip if audit value is a var() reference (not computed)
+            if isinstance(prop_value, str) and prop_value.startswith("var("):
+                continue
+
             if not _values_match(prop_value, token_value, "css-prop"):
                 mismatches.append({
                     "audit_var": prop_name,
