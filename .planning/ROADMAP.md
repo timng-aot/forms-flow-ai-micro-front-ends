@@ -13,7 +13,7 @@ This roadmap transforms the existing forms-flow-theme SCSS codebase into W3C DTC
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Audit & Foundation** - Identify design values and establish DTCG structure
-- [ ] **Phase 2: Token Extraction** - Extract tokens across all categories with tooling
+- [x] **Phase 2: Token Extraction** - Extract tokens across all categories with tooling
 - [ ] **Phase 3: Build Pipeline** - Configure Style Dictionary transformation
 - [ ] **Phase 4: Documentation & Validation** - Document methodology and validate outputs
 
@@ -57,7 +57,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md -- Build extraction scripts and generate production token files (core.json + semantic.json)
 - [x] 02-02-PLAN.md -- Validate tokens against DTCG schema, references, and audit data
-- [ ] 02-03-PLAN.md -- Gap closure: Add semantic radius and shadow tokens (closes RADIUS-02, SHADOW-02)
+- [x] 02-03-PLAN.md -- Gap closure: Add semantic radius and shadow tokens (closes RADIUS-02, SHADOW-02)
 
 ### Phase 3: Build Pipeline
 **Goal**: Style Dictionary successfully transforms token JSON into CSS custom properties and SCSS outputs, with validation ensuring reference integrity.
@@ -103,10 +103,10 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Audit & Foundation | 3/3 | Complete | 2026-02-04 |
-| 2. Token Extraction | 2/3 | In Progress | - |
+| 2. Token Extraction | 3/3 | Complete | 2026-02-05 |
 | 3. Build Pipeline | 0/TBD | Not started | - |
 | 4. Documentation & Validation | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-02-03*
-*Last updated: 2026-02-04 (Phase 2 planned)*
+*Last updated: 2026-02-05 (Phase 2 complete)*
