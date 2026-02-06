@@ -64,10 +64,10 @@ def format_semantic_tokens(audit_data: Dict[str, Any], core_tokens: Dict[str, An
     _extract_semantic_typography(semantic, audit_data, core_tokens)
 
     # Extract semantic radius tokens
-    _extract_semantic_radius(semantic, core_tokens)
+    _extract_semantic_radius(semantic, audit_data, core_tokens)
 
     # Extract semantic shadow tokens
-    _extract_semantic_shadows(semantic, core_tokens)
+    _extract_semantic_shadows(semantic, audit_data, core_tokens)
 
     # Extract semantic duration tokens
     _extract_semantic_durations(semantic, core_tokens)
@@ -668,14 +668,65 @@ def _extract_semantic_typography(target: Dict, audit_data: Dict, core_tokens: Di
                 break
 
 
-def _extract_semantic_radius(target: Dict, core_tokens: Dict) -> None:
-    """Extract semantic radius tokens."""
+def _extract_semantic_radius(target: Dict, audit_data: Dict, core_tokens: Dict) -> None:
+    """Extract semantic radius tokens from CSS custom properties."""
     target["radius"] = {"$type": "dimension"}
 
+    css_props = audit_data.get('cssCustomProperties', {})
 
-def _extract_semantic_shadows(target: Dict, core_tokens: Dict) -> None:
-    """Extract semantic shadow tokens."""
+    for prop_name, prop_data in css_props.items():
+        # Only extract from theme rootBlock (not v8-theme)
+        if prop_data.get('rootBlock') != 'theme':
+            continue
+
+        # Match --radius-* pattern
+        match = re.match(r'^--radius-([a-z]+)$', prop_name)
+        if not match:
+            continue
+
+        token_name = match.group(1)
+        value = prop_data.get('value', '')
+
+        if not value:
+            continue
+
+        target["radius"][token_name] = {
+            "$value": value,
+            "$description": f"Semantic radius from CSS custom property {prop_name}"
+        }
+
+
+def _extract_semantic_shadows(target: Dict, audit_data: Dict, core_tokens: Dict) -> None:
+    """Extract semantic shadow tokens from CSS custom properties."""
     target["shadow"] = {"$type": "shadow"}
+
+    css_props = audit_data.get('cssCustomProperties', {})
+
+    for prop_name, prop_data in css_props.items():
+        # Only extract from theme rootBlock (not v8-theme)
+        if prop_data.get('rootBlock') != 'theme':
+            continue
+
+        # Match --shadow-* pattern
+        match = re.match(r'^--shadow-([a-z0-9]+)$', prop_name)
+        if not match:
+            continue
+
+        token_name = match.group(1)
+        value = prop_data.get('value', '')
+
+        if not value:
+            continue
+
+        # Convert CSS shadow string to DTCG object
+        shadow_obj = shadow_css_to_dtcg(value)
+        if not shadow_obj:
+            continue
+
+        target["shadow"][token_name] = {
+            "$value": shadow_obj,
+            "$description": f"Semantic shadow from CSS custom property {prop_name}"
+        }
 
 
 def _extract_semantic_durations(target: Dict, core_tokens: Dict) -> None:

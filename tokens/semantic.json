@@ -102,10 +102,96 @@
     }
   },
   "radius": {
-    "$type": "dimension"
+    "$type": "dimension",
+    "sm": {
+      "$value": "1.09375rem",
+      "$description": "Semantic radius from CSS custom property --radius-sm"
+    },
+    "md": {
+      "$value": "1.34375rem",
+      "$description": "Semantic radius from CSS custom property --radius-md"
+    },
+    "lg": {
+      "$value": "1.59375rem",
+      "$description": "Semantic radius from CSS custom property --radius-lg"
+    },
+    "modal": {
+      "$value": "1.5rem",
+      "$description": "Semantic radius from CSS custom property --radius-modal"
+    }
   },
   "shadow": {
-    "$type": "shadow"
+    "$type": "shadow",
+    "sm": {
+      "$value": {
+        "color": "rgba(48, 52, 54, 0.04)",
+        "offsetX": "0px",
+        "offsetY": "2px",
+        "blur": "2px",
+        "spread": "0px"
+      },
+      "$description": "Semantic shadow from CSS custom property --shadow-sm"
+    },
+    "md": {
+      "$value": {
+        "color": "rgba(48, 52, 54, 0.08)",
+        "offsetX": "0px",
+        "offsetY": "2px",
+        "blur": "4px",
+        "spread": "0px"
+      },
+      "$description": "Semantic shadow from CSS custom property --shadow-md"
+    },
+    "lg": {
+      "$value": {
+        "color": "rgba(48, 52, 54, 0.08)",
+        "offsetX": "0px",
+        "offsetY": "4px",
+        "blur": "8px",
+        "spread": "-2px"
+      },
+      "$description": "Semantic shadow from CSS custom property --shadow-lg"
+    },
+    "xl": {
+      "$value": {
+        "color": "rgba(48, 52, 54, 0.08)",
+        "offsetX": "0px",
+        "offsetY": "12px",
+        "blur": "16px",
+        "spread": "-4px"
+      },
+      "$description": "Semantic shadow from CSS custom property --shadow-xl"
+    },
+    "2xl": {
+      "$value": {
+        "color": "rgba(48, 52, 54, 0.08)",
+        "offsetX": "0px",
+        "offsetY": "20px",
+        "blur": "24px",
+        "spread": "-4px"
+      },
+      "$description": "Semantic shadow from CSS custom property --shadow-2xl"
+    },
+    "3xl": {
+      "$value": {
+        "color": "rgba(48, 52, 54, 0.016)",
+        "offsetX": "0px",
+        "offsetY": "24px",
+        "blur": "48px",
+        "spread": "-8px"
+      },
+      "$description": "Semantic shadow from CSS custom property --shadow-3xl"
+    },
+    "nav": {
+      "$value": {
+        "color": "rgba(48, 52, 54, 0.08)",
+        "offsetX": "4px",
+        "offsetY": "0px",
+        "blur": "8px",
+        "spread": "-2px"
+      },
+      "$description": "Semantic shadow from CSS custom property --shadow-nav"
+    }
   },
   "duration": {
     "$type": "duration"
