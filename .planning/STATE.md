@@ -6,22 +6,22 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 
 **Core value:** Accurate extraction of design values that actually exist in the codebase — reflecting reality before restructuring, enabling Figma to become the source of truth for future design iterations.
 
-**Current focus:** Phase 2 in progress (Token Extraction)
+**Current focus:** Phase 2 complete (Token Extraction) - gap closure done
 
 ## Current Position
 
 Phase: 2 of 4 (Token Extraction)
-Plan: 2 of 2 in current phase — COMPLETE ✓
-Status: Phase 2 complete
-Last activity: 2026-02-05 — Completed 02-02-PLAN.md (validation pipeline + clean tokens)
+Plan: 3 of 3 in current phase (gap closure) — COMPLETE
+Status: Phase 2 fully complete (including gap closure)
+Last activity: 2026-02-05 — Completed 02-03-PLAN.md (semantic radius/shadow gap closure)
 
-Progress: [█████░░░░░] 50% (5/10 total plans)
+Progress: [██████░░░░] 60% (6/10 total plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: 5.7 minutes
+- Total plans completed: 6
+- Average duration: 5.1 minutes
 - Total execution time: 0.5 hours
 
 **By Phase:**
@@ -29,11 +29,11 @@ Progress: [█████░░░░░] 50% (5/10 total plans)
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-audit-foundation | 3/3 | 11.4min | 3.8min |
-| 02-token-extraction | 2/2 | 14.2min | 7.1min |
+| 02-token-extraction | 3/3 | 16.2min | 5.4min |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (3min), 01-03 (3min), 02-01 (9.2min), 02-02 (5min)
-- Trend: Phase 2 complete, both extraction and validation pipelines operational
+- Last 5 plans: 01-03 (3min), 02-01 (9.2min), 02-02 (5min), 02-03 (2min)
+- Trend: Phase 2 fully complete with gap closure, all 192 tokens validated
 
 *Updated after each plan completion*
 
@@ -83,6 +83,11 @@ Recent decisions affecting current work:
 - Detect shadows by pattern (contains 'shadow' + looks like CSS shadow) to fix categorization
 - DTCG shadow objects vs CSS strings are acceptable (format upgrade, not mismatch)
 
+**From 02-03 (Gap Closure - Radius/Shadow):**
+- Semantic radius tokens use direct dimension values (theme CSS props don't match core tokens)
+- rootBlock='theme' filtering for semantic tokens vs 'v8-theme' for core tokens
+- diff_validator CSS custom properties path now handles DTCG shadow objects and var() references
+
 ### Pending Todos
 
 [From .planning/todos/pending/ — ideas captured during sessions]
@@ -126,12 +131,19 @@ None yet.
 - Token files ready for Phase 3 Token Studio import
 - No blockers for Phase 3
 
+**From 02-03 (Gap Closure - Radius/Shadow):**
+- All 160 core + 32 semantic tokens (192 total) pass validation with zero errors
+- RADIUS-02 and SHADOW-02 verification gaps closed
+- Semantic radius: 4 tokens (sm, md, lg, modal) from theme CSS custom properties
+- Semantic shadow: 7 tokens (sm, md, lg, xl, 2xl, 3xl, nav) in DTCG object format
+- No blockers for Phase 3
+
 ## Session Continuity
 
-Last session: 2026-02-05 (Phase 2 execution)
-Stopped at: Phase 2 complete — all tokens validated, ready for Phase 3
+Last session: 2026-02-05 (Phase 2 gap closure)
+Stopped at: Phase 2 fully complete — 192 tokens validated, gap closure done, ready for Phase 3
 Resume file: None
 
 ---
 *State initialized: 2026-02-03*
-*Last updated: 2026-02-05 (Phase 2 Plan 02 complete)*
+*Last updated: 2026-02-05 (Phase 2 Plan 03 gap closure complete)*
