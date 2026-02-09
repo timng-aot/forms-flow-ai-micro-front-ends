@@ -6,22 +6,22 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 
 **Core value:** Accurate extraction of design values that actually exist in the codebase — reflecting reality before restructuring, enabling Figma to become the source of truth for future design iterations.
 
-**Current focus:** Phase 2 complete (Token Extraction) - gap closure done
+**Current focus:** Phase 3 (Build Pipeline) - Style Dictionary setup in progress
 
 ## Current Position
 
-Phase: 2 of 4 (Token Extraction)
-Plan: 3 of 3 in current phase (gap closure) — COMPLETE
-Status: Phase 2 fully complete (including gap closure)
-Last activity: 2026-02-05 — Completed 02-03-PLAN.md (semantic radius/shadow gap closure)
+Phase: 3 of 4 (Build Pipeline)
+Plan: 1 of 2 in current phase — COMPLETE
+Status: Phase 3 in progress (pre-computation complete, config next)
+Last activity: 2026-02-09 — Completed 03-01-PLAN.md (Style Dictionary tooling + pre-computation)
 
-Progress: [██████░░░░] 60% (6/10 total plans)
+Progress: [███████░░░] 70% (7/10 total plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: 5.1 minutes
+- Total plans completed: 7
+- Average duration: 4.7 minutes
 - Total execution time: 0.5 hours
 
 **By Phase:**
@@ -30,10 +30,11 @@ Progress: [██████░░░░] 60% (6/10 total plans)
 |-------|-------|-------|----------|
 | 01-audit-foundation | 3/3 | 11.4min | 3.8min |
 | 02-token-extraction | 3/3 | 16.2min | 5.4min |
+| 03-build-pipeline | 1/2 | 2.0min | 2.0min |
 
 **Recent Trend:**
-- Last 5 plans: 01-03 (3min), 02-01 (9.2min), 02-02 (5min), 02-03 (2min)
-- Trend: Phase 2 fully complete with gap closure, all 192 tokens validated
+- Last 5 plans: 02-01 (9.2min), 02-02 (5min), 02-03 (2min), 03-01 (2min)
+- Trend: Phase 3 started with fast setup (pre-computation + tooling in 2min)
 
 *Updated after each plan completion*
 
@@ -88,6 +89,13 @@ Recent decisions affecting current work:
 - rootBlock='theme' filtering for semantic tokens vs 'v8-theme' for core tokens
 - diff_validator CSS custom properties path now handles DTCG shadow objects and var() references
 
+**From 03-01 (Pre-computation Setup):**
+- Style Dictionary v5+ installed in forms-flow-theme package.json (colocated with SCSS build tooling)
+- Pre-computation scripts resolve SCSS expressions before Style Dictionary runs
+- Clean hex values only in token files (no preservation of blend-with-white-to-hex expressions)
+- Alpha compositing formula for color blending: newRGB = (baseRGB * opacity) + (whiteRGB * (1 - opacity))
+- All 24 blend expressions resolved to clean hex values (core.json ready for Style Dictionary and Figma import)
+
 ### Pending Todos
 
 [From .planning/todos/pending/ — ideas captured during sessions]
@@ -138,12 +146,20 @@ None yet.
 - Semantic shadow: 7 tokens (sm, md, lg, xl, 2xl, 3xl, nav) in DTCG object format
 - No blockers for Phase 3
 
+**From 03-01 (Pre-computation Setup):**
+- Style Dictionary v5.3.0 and Token Studio transforms v2.0.3 installed in forms-flow-theme
+- Pre-computation script created: tokens/scripts/precompute-colors.js (standalone, idempotent)
+- All 24 blend-with-white-to-hex() expressions resolved to clean hex values
+- core.json ready for Style Dictionary transformation and Token Studio import
+- Pre-computation script is rerunnable for future token updates
+- No blockers for 03-02 (Style Dictionary configuration)
+
 ## Session Continuity
 
-Last session: 2026-02-05 (Phase 2 gap closure)
-Stopped at: Phase 2 fully complete — 192 tokens validated, gap closure done, ready for Phase 3
+Last session: 2026-02-09 (Phase 3 plan 01)
+Stopped at: Completed 03-01-PLAN.md — Style Dictionary tooling + pre-computation complete
 Resume file: None
 
 ---
 *State initialized: 2026-02-03*
-*Last updated: 2026-02-05 (Phase 2 Plan 03 gap closure complete)*
+*Last updated: 2026-02-09 (Phase 3 Plan 01 pre-computation setup complete)*
