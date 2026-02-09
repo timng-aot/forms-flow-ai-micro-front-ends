@@ -13,16 +13,20 @@ const __dirname = dirname(__filename);
 /**
  * Custom transform: name/css/ff-prefix
  * Converts token paths to CSS variable names with --ff- prefix
- * Example: ['ff', 'color', 'indigo-100'] -> 'ff-color-indigo-100'
+ * For core tokens: ['ff', 'color', 'indigo-100'] -> 'ff-color-indigo-100'
+ * For semantic tokens: ['color', 'primary'] -> 'ff-color-primary'
  * (css/variables format will prepend -- automatically)
  */
 StyleDictionary.registerTransform({
   name: 'name/css/ff-prefix',
   type: 'name',
   transform: (token) => {
+    // If path starts with 'ff', keep it as-is
+    // Otherwise, prepend 'ff' to the path
+    const path = token.path[0] === 'ff' ? token.path : ['ff', ...token.path];
     // Join path with hyphens
     // Style Dictionary's css/variables format will add -- prefix
-    return token.path.join('-');
+    return path.join('-');
   }
 });
 
@@ -130,7 +134,7 @@ StyleDictionary.registerPreprocessor({
 async function buildTokens(sourcePath, destinationFilename) {
   // Resolve absolute paths
   const absoluteSourcePath = resolve(__dirname, sourcePath);
-  const buildPath = resolve(__dirname, '../dist/');
+  const buildPath = resolve(__dirname, '../../tokens/dist/');
 
   // Verify source file exists
   if (!fs.existsSync(absoluteSourcePath)) {
@@ -144,7 +148,7 @@ async function buildTokens(sourcePath, destinationFilename) {
   const isSemanticBuild = sourcePath.includes('semantic');
   const sources = isSemanticBuild
     ? [
-        resolve(__dirname, '../core.json'),
+        resolve(__dirname, '../../tokens/core.json'),
         absoluteSourcePath
       ]
     : [absoluteSourcePath];
@@ -158,23 +162,33 @@ async function buildTokens(sourcePath, destinationFilename) {
     },
     platforms: {
       css: {
-        transformGroup: 'tokens-studio',
+        // Use tokens-studio transformGroup but override the name transform
+        // tokens-studio group includes all DTCG transforms we need
         transforms: [
-          // Token Studio transforms for DTCG format
           'ts/descriptionToComment',
+          'ts/resolveMath',
           'ts/size/px',
           'ts/opacity',
           'ts/size/lineheight',
-          'ts/type/fontWeight',
-          'ts/resolveMath',
-          'ts/size/css/letterspacing',
-          'ts/typography/css/shorthand',
-          'ts/border/css/shorthand',
-          'ts/shadow/css/shorthand',
-          'ts/color/css/hexrgba',
+          'ts/typography/fontWeight',
           'ts/color/modifiers',
-          // Custom name transform for --ff- prefix
-          'name/css/ff-prefix'
+          'ts/color/css/hexrgba',
+          'ts/size/css/letterspacing',
+          'ts/shadow/innerShadow',
+          'attribute/cti',
+          'name/css/ff-prefix',  // Custom name transform replaces name/kebab
+          'time/seconds',
+          'html/icon',
+          'size/rem',
+          'color/css',
+          'asset/url',
+          'fontFamily/css',
+          'cubicBezier/css',
+          'strokeStyle/css/shorthand',
+          'border/css/shorthand',
+          'typography/css/shorthand',
+          'transition/css/shorthand',
+          'shadow/css/shorthand'
         ],
         buildPath: buildPath,
         files: [
