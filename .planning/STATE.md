@@ -11,18 +11,18 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 ## Current Position
 
 Phase: 3 of 4 (Build Pipeline)
-Plan: 1 of 2 in current phase — COMPLETE
-Status: Phase 3 in progress (pre-computation complete, config next)
-Last activity: 2026-02-09 — Completed 03-01-PLAN.md (Style Dictionary tooling + pre-computation)
+Plan: 2 of 2 in current phase — COMPLETE
+Status: Phase 3 complete (Style Dictionary config and CSS generation complete)
+Last activity: 2026-02-09 — Completed 03-02-PLAN.md (Style Dictionary config + CSS generation)
 
-Progress: [███████░░░] 70% (7/10 total plans)
+Progress: [████████░░] 80% (8/10 total plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
-- Average duration: 4.7 minutes
-- Total execution time: 0.5 hours
+- Total plans completed: 8
+- Average duration: 4.8 minutes
+- Total execution time: 0.6 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [███████░░░] 70% (7/10 total plans)
 |-------|-------|-------|----------|
 | 01-audit-foundation | 3/3 | 11.4min | 3.8min |
 | 02-token-extraction | 3/3 | 16.2min | 5.4min |
-| 03-build-pipeline | 1/2 | 2.0min | 2.0min |
+| 03-build-pipeline | 2/2 | 7.5min | 3.8min |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (9.2min), 02-02 (5min), 02-03 (2min), 03-01 (2min)
-- Trend: Phase 3 started with fast setup (pre-computation + tooling in 2min)
+- Last 5 plans: 02-02 (5min), 02-03 (2min), 03-01 (2min), 03-02 (5.5min)
+- Trend: Phase 3 complete - config and build pipeline operational
 
 *Updated after each plan completion*
 
@@ -96,6 +96,12 @@ Recent decisions affecting current work:
 - Alpha compositing formula for color blending: newRGB = (baseRGB * opacity) + (whiteRGB * (1 - opacity))
 - All 24 blend expressions resolved to clean hex values (core.json ready for Style Dictionary and Figma import)
 
+**From 03-02 (Style Dictionary Config):**
+- Config location: forms-flow-theme/config/ (colocated with node_modules for ES module resolution)
+- Semantic tokens remain at root level without ff wrapper to avoid naming collisions with core tokens
+- Custom name transform adds ff- prefix to all tokens for consistent --ff- CSS variables
+- ES module support enabled via "type": "module" in package.json
+
 ### Pending Todos
 
 [From .planning/todos/pending/ — ideas captured during sessions]
@@ -154,12 +160,21 @@ None yet.
 - Pre-computation script is rerunnable for future token updates
 - No blockers for 03-02 (Style Dictionary configuration)
 
+**From 03-02 (Style Dictionary Config):**
+- Style Dictionary configuration operational with DTCG validation and Token Studio integration
+- CSS generation pipeline complete: npm run build:tokens chains precompute -> core -> semantic
+- Generated tokens/dist/core-tokens.css (216 CSS custom properties with --ff- prefix)
+- Generated tokens/dist/semantic-tokens.css (57 CSS custom properties with var() references)
+- DTCG validation passes at build time confirming Token Studio importability
+- Bidirectional config ready for code-extracted or Figma-exported tokens
+- Phase 3 (Build Pipeline) complete - ready for Phase 4 (Figma setup)
+
 ## Session Continuity
 
-Last session: 2026-02-09 (Phase 3 plan 01)
-Stopped at: Completed 03-01-PLAN.md — Style Dictionary tooling + pre-computation complete
+Last session: 2026-02-09 (Phase 3 plan 02)
+Stopped at: Completed 03-02-PLAN.md — Style Dictionary config and CSS generation complete
 Resume file: None
 
 ---
 *State initialized: 2026-02-03*
-*Last updated: 2026-02-09 (Phase 3 Plan 01 pre-computation setup complete)*
+*Last updated: 2026-02-09 (Phase 3 Plan 02 Style Dictionary config and CSS generation complete)*
