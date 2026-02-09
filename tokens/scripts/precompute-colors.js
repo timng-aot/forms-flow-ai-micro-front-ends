@@ -71,7 +71,7 @@ function resolveBlendExpressions(obj) {
 }
 
 // Main execution
-const tokensPath = path.resolve(__dirname, '../../core.json');
+const tokensPath = path.resolve(__dirname, '../core.json');
 console.log(`Reading tokens from: ${tokensPath}`);
 
 try {

@@ -3,99 +3,99 @@
     "color": {
       "$type": "color",
       "yellow-100": {
-        "$value": "blend-with-white-to-hex(#EFC005, 1.0)",
+        "$value": "#efc005",
         "$description": "v8 yellow palette shade 100"
       },
       "yellow-200": {
-        "$value": "blend-with-white-to-hex(#EFC005, 0.5)",
+        "$value": "#f7e082",
         "$description": "v8 yellow palette shade 200"
       },
       "yellow-300": {
-        "$value": "blend-with-white-to-hex(#EFC005, 0.25)",
+        "$value": "#fbefc1",
         "$description": "v8 yellow palette shade 300"
       },
       "green-100": {
-        "$value": "blend-with-white-to-hex(#00C49A, 1.0)",
+        "$value": "#00c49a",
         "$description": "v8 green palette shade 100"
       },
       "green-200": {
-        "$value": "blend-with-white-to-hex(#00C49A, 0.5)",
+        "$value": "#80e2cd",
         "$description": "v8 green palette shade 200"
       },
       "green-300": {
-        "$value": "blend-with-white-to-hex(#00C49A, 0.25)",
+        "$value": "#bff0e6",
         "$description": "v8 green palette shade 300"
       },
       "cyan-100": {
-        "$value": "blend-with-white-to-hex(#00BCD4, 1.0)",
+        "$value": "#00bcd4",
         "$description": "v8 cyan palette shade 100"
       },
       "cyan-200": {
-        "$value": "blend-with-white-to-hex(#00BCD4, 0.5)",
+        "$value": "#80deea",
         "$description": "v8 cyan palette shade 200"
       },
       "cyan-300": {
-        "$value": "blend-with-white-to-hex(#00BCD4, 0.25)",
+        "$value": "#bfeef4",
         "$description": "v8 cyan palette shade 300"
       },
       "blue-100": {
-        "$value": "blend-with-white-to-hex(#0087D9, 1.0)",
+        "$value": "#0087d9",
         "$description": "v8 blue palette shade 100"
       },
       "blue-200": {
-        "$value": "blend-with-white-to-hex(#0087D9, 0.5)",
+        "$value": "#80c3ec",
         "$description": "v8 blue palette shade 200"
       },
       "blue-300": {
-        "$value": "blend-with-white-to-hex(#0087D9, 0.25)",
+        "$value": "#bfe1f6",
         "$description": "v8 blue palette shade 300"
       },
       "orange-100": {
-        "$value": "blend-with-white-to-hex(#FF9100, 1.0)",
+        "$value": "#ff9100",
         "$description": "v8 orange palette shade 100"
       },
       "orange-200": {
-        "$value": "blend-with-white-to-hex(#FF9100, 0.5)",
+        "$value": "#ffc880",
         "$description": "v8 orange palette shade 200"
       },
       "orange-300": {
-        "$value": "blend-with-white-to-hex(#FF9100, 0.25)",
+        "$value": "#ffe4bf",
         "$description": "v8 orange palette shade 300"
       },
       "vivid-100": {
-        "$value": "blend-with-white-to-hex(#7C80FE, 1.0)",
+        "$value": "#7c80fe",
         "$description": "v8 vivid palette shade 100"
       },
       "vivid-200": {
-        "$value": "blend-with-white-to-hex(#7C80FE, 0.5)",
+        "$value": "#bec0ff",
         "$description": "v8 vivid palette shade 200"
       },
       "vivid-300": {
-        "$value": "blend-with-white-to-hex(#7C80FE, 0.25)",
+        "$value": "#dedfff",
         "$description": "v8 vivid palette shade 300"
       },
       "red-100": {
-        "$value": "blend-with-white-to-hex(#E57373, 1.0)",
+        "$value": "#e57373",
         "$description": "v8 red palette shade 100"
       },
       "red-200": {
-        "$value": "blend-with-white-to-hex(#E57373, 0.5)",
+        "$value": "#f2b9b9",
         "$description": "v8 red palette shade 200"
       },
       "red-300": {
-        "$value": "blend-with-white-to-hex(#E57373, 0.25)",
+        "$value": "#f9dcdc",
         "$description": "v8 red palette shade 300"
       },
       "indigo-100": {
-        "$value": "blend-with-white-to-hex(#3248F4, 1.0)",
+        "$value": "#3248f4",
         "$description": "v8 indigo palette shade 100"
       },
       "indigo-200": {
-        "$value": "blend-with-white-to-hex(#3248F4, 0.5)",
+        "$value": "#99a4fa",
         "$description": "v8 indigo palette shade 200"
       },
       "indigo-300": {
-        "$value": "blend-with-white-to-hex(#3248F4, 0.25)",
+        "$value": "#ccd1fc",
         "$description": "v8 indigo palette shade 300"
       },
       "white-100": {
@@ -264,19 +264,6 @@
       }
     },
     "spacing": {
-      "$type": "dimension",
-      "025": {
-        "$value": "0.25rem",
-        "$description": "Spacing scale 025 (v8)"
-      },
-      "050": {
-        "$value": "0.5rem",
-        "$description": "Spacing scale 050 (v8)"
-      },
-      "075": {
-        "$value": "0.75rem",
-        "$description": "Spacing scale 075 (v8)"
-      },
       "100": {
         "$value": "1rem",
         "$description": "Spacing scale 100 (v8)"
@@ -312,6 +299,19 @@
       "300": {
         "$value": "3rem",
         "$description": "Spacing scale 300 (v8)"
+      },
+      "$type": "dimension",
+      "025": {
+        "$value": "0.25rem",
+        "$description": "Spacing scale 025 (v8)"
+      },
+      "050": {
+        "$value": "0.5rem",
+        "$description": "Spacing scale 050 (v8)"
+      },
+      "075": {
+        "$value": "0.75rem",
+        "$description": "Spacing scale 075 (v8)"
       }
     },
     "font-family": {
