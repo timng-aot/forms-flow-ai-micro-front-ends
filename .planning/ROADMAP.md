@@ -72,10 +72,11 @@ Plans:
   3. Build validation catches broken references, invalid types, and schema violations before transformation
   4. Generated output files can be imported by React components without breaking existing builds
 
-**Plans**: TBD (1-2 plans: configuration + validation)
+**Plans**: 2 plans in 2 waves
 
 Plans:
-- [ ] 03-01: [To be defined during planning]
+- [ ] 03-01-PLAN.md -- Pre-computation script and Style Dictionary dependencies
+- [ ] 03-02-PLAN.md -- Style Dictionary pipeline configuration, CSS generation, and npm script orchestration
 
 ### Phase 4: Documentation & Validation
 **Goal**: Complete documentation exists explaining extraction methodology, naming conventions, and Token Studio import workflow, with all outputs validated.
@@ -104,9 +105,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 |-------|----------------|--------|-----------|
 | 1. Audit & Foundation | 3/3 | Complete | 2026-02-04 |
 | 2. Token Extraction | 3/3 | Complete | 2026-02-05 |
-| 3. Build Pipeline | 0/TBD | Not started | - |
+| 3. Build Pipeline | 0/2 | In progress | - |
 | 4. Documentation & Validation | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-02-03*
-*Last updated: 2026-02-05 (Phase 2 complete)*
+*Last updated: 2026-02-09 (Phase 3 planned)*
