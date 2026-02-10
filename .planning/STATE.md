@@ -6,23 +6,23 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 
 **Core value:** Accurate extraction of design values that actually exist in the codebase — reflecting reality before restructuring, enabling Figma to become the source of truth for future design iterations.
 
-**Current focus:** Phase 4 (Documentation & Validation) - Developer documentation complete
+**Current focus:** Phase 4 (Documentation & Validation) - All plans complete, pending verification
 
 ## Current Position
 
 Phase: 4 of 4 (Documentation & Validation)
-Plan: 1 of 2 in current phase — IN PROGRESS
-Status: Phase 4 in progress (Developer-facing documentation complete)
-Last activity: 2026-02-09 — Completed 04-01-PLAN.md (Developer documentation with quick-start and methodology)
+Plan: 2 of 2 in current phase — COMPLETE
+Status: Phase 4 plans complete (all documentation created, Figma import validated)
+Last activity: 2026-02-09 — Completed 04-02-PLAN.md (Designer docs + Figma import + gap docs)
 
-Progress: [█████████░] 90% (9/10 total plans)
+Progress: [██████████] 100% (10/10 total plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
-- Average duration: 4.4 minutes
-- Total execution time: 0.7 hours
+- Total plans completed: 10
+- Average duration: 5.1 minutes
+- Total execution time: 0.9 hours
 
 **By Phase:**
 
@@ -31,11 +31,11 @@ Progress: [█████████░] 90% (9/10 total plans)
 | 01-audit-foundation | 3/3 | 11.4min | 3.8min |
 | 02-token-extraction | 3/3 | 16.2min | 5.4min |
 | 03-build-pipeline | 2/2 | 7.5min | 3.8min |
-| 04-documentation-validation | 1/2 | 3.0min | 3.0min |
+| 04-documentation-validation | 2/2 | 15.0min | 7.5min |
 
 **Recent Trend:**
-- Last 5 plans: 02-03 (2min), 03-01 (2min), 03-02 (5.5min), 04-01 (3min)
-- Trend: Phase 4 in progress - documentation foundation established
+- Last 5 plans: 03-01 (2min), 03-02 (5.5min), 04-01 (3min), 04-02 (12min)
+- Trend: All phases complete
 
 *Updated after each plan completion*
 
@@ -183,12 +183,19 @@ None yet.
 - Component adoption guidance with before/after examples for replacing hardcoded values
 - No token counts in documentation (per user decision: counts change over time)
 
+**From 04-02 (Designer Documentation & Figma Validation):**
+- Token Studio free tier cannot resolve cross-file references; created merge script (tokens/scripts/merge-for-figma.js)
+- Token Studio interprets top-level JSON keys as separate sets; wrapped in $themes/$metadata with single "global" set
+- Merged file is build artifact (gitignored in tokens/dist/), generated via npm run build:tokens:figma
+- Figma import validated by human testing — Variables created with correct names and values
+- All documentation complete: DOCS-01, DOCS-02, DOCS-03, DOCS-04 requirements satisfied
+
 ## Session Continuity
 
-Last session: 2026-02-09 (Phase 4 plan 01)
-Stopped at: Completed 04-01-PLAN.md — Developer-facing documentation complete
+Last session: 2026-02-09 (Phase 4 plan 02)
+Stopped at: Completed 04-02-PLAN.md — Designer docs, Figma import validated, all plans complete
 Resume file: None
 
 ---
 *State initialized: 2026-02-03*
-*Last updated: 2026-02-09 (Phase 4 Plan 01 Developer documentation complete)*
+*Last updated: 2026-02-09 (Phase 4 complete — all 10 plans executed)*
