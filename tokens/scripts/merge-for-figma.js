@@ -20,10 +20,19 @@ const distDir = resolve(tokensDir, 'dist');
 const core = JSON.parse(readFileSync(resolve(tokensDir, 'core.json'), 'utf8'));
 const semantic = JSON.parse(readFileSync(resolve(tokensDir, 'semantic.json'), 'utf8'));
 
-// Merge: core tokens (under "ff" group) + semantic tokens (at root level).
-// Semantic tokens reference core via {ff.color.xxx} — both must be in the
-// same file for Token Studio free tier to resolve them.
-const merged = { ...core, ...semantic };
+// Token Studio interprets top-level keys as separate token sets. To keep
+// everything in a single set (so {ff.color.xxx} references resolve), we
+// wrap all tokens under one set name and add Token Studio metadata.
+const merged = {
+  $themes: [],
+  $metadata: {
+    tokenSetOrder: ['global']
+  },
+  global: {
+    ...core,
+    ...semantic
+  }
+};
 
 mkdirSync(distDir, { recursive: true });
 writeFileSync(
