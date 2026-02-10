@@ -91,10 +91,11 @@ Plans:
   3. Token Studio import guide created with step-by-step Figma Variable import instructions
   4. Gaps and manual interventions documented (computed values, missing semantic tokens, component-specific values)
 
-**Plans**: TBD (1-2 plans: methodology docs + import guide)
+**Plans**: 2 plans in 1 wave
 
 Plans:
-- [ ] 04-01: [To be defined during planning]
+- [ ] 04-01-PLAN.md -- Developer docs: quick-start README + methodology + naming conventions (DOCS-01, DOCS-02)
+- [ ] 04-02-PLAN.md -- Designer docs: Figma import guide + gap documentation + README update + Figma validation (DOCS-03, DOCS-04)
 
 ## Progress
 
@@ -106,7 +107,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. Audit & Foundation | 3/3 | Complete | 2026-02-04 |
 | 2. Token Extraction | 3/3 | Complete | 2026-02-05 |
 | 3. Build Pipeline | 2/2 | Complete | 2026-02-09 |
-| 4. Documentation & Validation | 0/TBD | Not started | - |
+| 4. Documentation & Validation | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-02-03*
