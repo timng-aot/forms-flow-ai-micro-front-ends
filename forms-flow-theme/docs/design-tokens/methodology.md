@@ -148,6 +148,7 @@ Style Dictionary transforms DTCG JSON files into CSS custom properties.
 2. Custom name transform adds `--ff-` prefix to all tokens
 3. CSS variables format outputs to `tokens/dist/core-tokens.css` and `tokens/dist/semantic-tokens.css`
 4. Semantic tokens use `outputReferences: true` to generate `var()` references to core tokens
+5. Merge script combines core + semantic into `tokens/dist/tokens-figma.json` for Token Studio import
 
 **Output example:**
 

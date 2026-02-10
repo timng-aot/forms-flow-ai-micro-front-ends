@@ -11,7 +11,8 @@
     "build:tokens:precompute": "node ../tokens/scripts/precompute-colors.js",
     "build:tokens:core": "node config/style-dictionary.config.js ../../tokens/core.json core-tokens.css",
     "build:tokens:semantic": "node config/style-dictionary.config.js ../../tokens/semantic.json semantic-tokens.css",
-    "build:tokens": "npm run build:tokens:precompute && npm run build:tokens:core && npm run build:tokens:semantic"
+    "build:tokens:figma": "node ../tokens/scripts/merge-for-figma.js",
+    "build:tokens": "npm run build:tokens:precompute && npm run build:tokens:core && npm run build:tokens:semantic && npm run build:tokens:figma"
   },
   "devDependencies": {
     "@tokens-studio/sd-transforms": "^2.0.3",

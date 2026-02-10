@@ -19,8 +19,8 @@ This is your quick reference for working with the Forms Flow AI design token sys
 ### How to import tokens to Figma
 
 1. Open Figma → Plugins → Token Studio
-2. Import → Select `tokens/core.json` from your local filesystem
-3. Repeat import process for `tokens/semantic.json`
+2. Import → Select `tokens/dist/tokens-figma.json` from your local filesystem
+3. Sync Variables → Export to Figma
 
 ## Full Documentation
 
@@ -36,7 +36,8 @@ tokens/
 ├── semantic.json          # Purpose-based tokens (references to core tokens)
 ├── dist/
 │   ├── core-tokens.css    # Generated CSS custom properties from core.json
-│   └── semantic-tokens.css # Generated CSS custom properties from semantic.json
+│   ├── semantic-tokens.css # Generated CSS custom properties from semantic.json
+│   └── tokens-figma.json  # Merged token file for Token Studio import
 ├── audit/
 │   ├── dtcg-spec.md       # W3C DTCG format specification for this project
 │   ├── gap-analysis.json  # Component hardcoded values analysis
@@ -44,7 +45,8 @@ tokens/
 └── scripts/
     ├── extract-scss-tokens.py      # Extracts tokens from SCSS to DTCG JSON
     ├── validate-tokens.py          # Validates DTCG format compliance
-    └── precompute-colors.js        # Resolves blend-with-white-to-hex() expressions
+    ├── precompute-colors.js        # Resolves blend-with-white-to-hex() expressions
+    └── merge-for-figma.js          # Merges core + semantic into single file for Token Studio
 ```
 
 ## Token Categories
