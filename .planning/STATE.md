@@ -6,23 +6,23 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 
 **Core value:** Accurate extraction of design values that actually exist in the codebase — reflecting reality before restructuring, enabling Figma to become the source of truth for future design iterations.
 
-**Current focus:** Phase 3 (Build Pipeline) - Style Dictionary setup in progress
+**Current focus:** Phase 4 (Documentation & Validation) - Developer documentation complete
 
 ## Current Position
 
-Phase: 3 of 4 (Build Pipeline)
-Plan: 2 of 2 in current phase — COMPLETE
-Status: Phase 3 complete (Style Dictionary config and CSS generation complete)
-Last activity: 2026-02-09 — Completed 03-02-PLAN.md (Style Dictionary config + CSS generation)
+Phase: 4 of 4 (Documentation & Validation)
+Plan: 1 of 2 in current phase — IN PROGRESS
+Status: Phase 4 in progress (Developer-facing documentation complete)
+Last activity: 2026-02-09 — Completed 04-01-PLAN.md (Developer documentation with quick-start and methodology)
 
-Progress: [████████░░] 80% (8/10 total plans)
+Progress: [█████████░] 90% (9/10 total plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
-- Average duration: 4.8 minutes
-- Total execution time: 0.6 hours
+- Total plans completed: 9
+- Average duration: 4.4 minutes
+- Total execution time: 0.7 hours
 
 **By Phase:**
 
@@ -31,10 +31,11 @@ Progress: [████████░░] 80% (8/10 total plans)
 | 01-audit-foundation | 3/3 | 11.4min | 3.8min |
 | 02-token-extraction | 3/3 | 16.2min | 5.4min |
 | 03-build-pipeline | 2/2 | 7.5min | 3.8min |
+| 04-documentation-validation | 1/2 | 3.0min | 3.0min |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (5min), 02-03 (2min), 03-01 (2min), 03-02 (5.5min)
-- Trend: Phase 3 complete - config and build pipeline operational
+- Last 5 plans: 02-03 (2min), 03-01 (2min), 03-02 (5.5min), 04-01 (3min)
+- Trend: Phase 4 in progress - documentation foundation established
 
 *Updated after each plan completion*
 
@@ -101,6 +102,9 @@ Recent decisions affecting current work:
 - Semantic tokens remain at root level without ff wrapper to avoid naming collisions with core tokens
 - Custom name transform adds ff- prefix to all tokens for consistent --ff- CSS variables
 - ES module support enabled via "type": "module" in package.json
+- [Phase 04]: Split documentation into quick-start README (3-line tasks) and comprehensive methodology (WHY behind decisions)
+- [Phase 04]: Used real token values from core.json/semantic.json in all examples (no placeholder data)
+- [Phase 04]: Documented SCSS source → DTCG token transformation showing blend-with-white-to-hex() pre-computation
 
 ### Pending Todos
 
@@ -169,12 +173,22 @@ None yet.
 - Bidirectional config ready for code-extracted or Figma-exported tokens
 - Phase 3 (Build Pipeline) complete - ready for Phase 4 (Figma setup)
 
+**From 04-01 (Developer Documentation):**
+- Developer-facing documentation split into quick-start README and comprehensive methodology guide
+- Quick-start provides 3-line instructions for: add token, rebuild CSS, import to Figma
+- Methodology explains WHY behind DTCG format (tool compatibility), two files (theme switching), ff- prefix (namespacing)
+- SCSS → DTCG transformation examples show blend-with-white-to-hex() pre-computation with real values
+- Naming conventions documented for all 8 token categories with valid/invalid examples
+- Token pipeline stages (extraction, pre-computation, CSS generation) documented with maintenance workflows
+- Component adoption guidance with before/after examples for replacing hardcoded values
+- No token counts in documentation (per user decision: counts change over time)
+
 ## Session Continuity
 
-Last session: 2026-02-09 (Phase 3 plan 02)
-Stopped at: Completed 03-02-PLAN.md — Style Dictionary config and CSS generation complete
+Last session: 2026-02-09 (Phase 4 plan 01)
+Stopped at: Completed 04-01-PLAN.md — Developer-facing documentation complete
 Resume file: None
 
 ---
 *State initialized: 2026-02-03*
-*Last updated: 2026-02-09 (Phase 3 Plan 02 Style Dictionary config and CSS generation complete)*
+*Last updated: 2026-02-09 (Phase 4 Plan 01 Developer documentation complete)*
