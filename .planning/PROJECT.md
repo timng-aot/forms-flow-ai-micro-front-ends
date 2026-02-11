@@ -1,12 +1,24 @@
-# Design Token Extraction
+# Design Token System
 
 ## What This Is
 
-A design token system for forms-flow-ai-micro-front-ends that extracts existing SCSS design values into W3C DTCG-formatted JSON tokens, transforms them via Style Dictionary into CSS custom properties, and enables import into Figma via Token Studio. This creates a bidirectional design-to-code pipeline using Figma MCP and Claude.
+A design token system for forms-flow-ai-micro-front-ends that provides component-level tokens for buttons and forms, built on top of the v1.0 core primitives extracted from SCSS. Tokens use CSS property naming and are structured for practical use in both code and Figma via Token Studio.
 
 ## Core Value
 
-Accurate extraction of design values that actually exist in the codebase -- reflecting reality before restructuring, enabling Figma to become the source of truth for future design iterations.
+Usable component tokens that map cleanly between code (CSS properties) and Figma components -- fewer, well-named tokens that designers and developers can actually adopt.
+
+## Current Milestone: v2.0 Component Token System (Buttons & Forms)
+
+**Goal:** Create component-level tokens for buttons and forms that reduce the v1.0 token set to what these components actually use, with CSS property naming that maps to Figma component properties.
+
+**Target features:**
+- Audit button and form SCSS to identify which v1.0 core tokens are actually used
+- Create component-level tokens (e.g. button.primary.background, input.border.color)
+- Reduce core token set to primitives these components reference
+- Align token naming with CSS properties (background, border, color, shadow)
+- Update Style Dictionary pipeline for component token output
+- Update Figma Token Studio import for component-level structure
 
 ## Requirements
 
@@ -30,47 +42,59 @@ Accurate extraction of design values that actually exist in the codebase -- refl
 
 ### Active
 
-(No active requirements -- next milestone not yet defined)
+- [ ] Component-level tokens for buttons (all variants)
+- [ ] Component-level tokens for forms (inputs, selects, checkboxes, radios)
+- [ ] Reduced core token set scoped to button/form usage
+- [ ] CSS property naming convention (background, border, color, shadow)
+- [ ] Updated Style Dictionary pipeline for component tokens
+- [ ] Updated Figma Token Studio import
 
 ### Out of Scope
 
-- Refactoring codebase to consume generated tokens -- v2 scope
-- Component-level token layer (3-tier hierarchy) -- v2 scope
+- Full codebase refactoring to consume generated tokens -- future scope
+- Component tokens beyond buttons & forms -- v2.0 proves the pattern first
 - Multi-theme support (light/dark) -- not in codebase yet
 - Figma-to-code generation -- downstream separate project
-- Token versioning and governance -- v2 scope
-- Automated Figma sync via Token Studio GitHub integration -- v2 scope
-- CI/CD pipeline for token validation -- v2 scope
+- Token versioning and governance -- future scope
+- Automated Figma sync via Token Studio GitHub integration -- future scope
+- CI/CD pipeline for token validation -- future scope
+- Figma property naming model (fill, stroke, effect) -- using CSS model instead
 
 ## Context
 
-**Current state (v1.0 shipped):**
+**v1.0 foundation (shipped 2026-02-10):**
 - 192 W3C DTCG tokens (160 core + 32 semantic) across 9 categories
-- Automated Python extraction pipeline (scripts/extract-tokens.py)
 - Style Dictionary v5.3.0 build pipeline (npm run build:tokens)
-- 273 CSS custom properties generated (216 core + 57 semantic)
+- 273 CSS custom properties generated with --ff- prefix
 - Token Studio import validated by human testing
-- 1,356 lines of documentation (methodology, naming, Figma import, gaps)
-- Tech stack: Python (extraction), Node.js/Style Dictionary (build), SCSS (source)
+
+**v1.0 pain points driving v2.0:**
+- Too many tokens -- 192 is overwhelming, hard to know which to use for a given component
+- No component-level mapping -- core/semantic tokens don't tell you what a button's primary background is
+- Naming confusion -- token names don't map to component properties in Figma
+- Figma adoption impractical without component-level structure
 
 **Codebase structure:**
 - Micro-frontend architecture with 7 modules sharing `@formsflow/theme`
 - Theme layer at `/forms-flow-theme/scss` provides centralized CSS variables
-- Bootstrap 5 foundation with dual design systems (legacy + v8)
-- v8 design system takes precedence where conflicts exist
+- Bootstrap 5 foundation with `$prefix: "ff-"` generating --ff- CSS custom properties
+- Dual design systems (legacy + v8); v8 takes precedence
+- Button SCSS: `scss/v8-scss/_button.scss`, `scss/_button.scss`
+- Form SCSS: `scss/v8-scss/_checkbox.scss`, `scss/v8-scss/_radio.scss`, `scss/v8-scss/_selectDropdown.scss`, `scss/v8-scss/_search.scss`, `scss/v8-scss/_urlInput.scss`, `scss/inputBox.scss`, `scss/_forms.scss`
 
-**Known gaps:**
-- 18 component-specific hardcoded values not yet tokenized (documented in gaps-and-coverage.md)
-- 41.2% component coverage from shared theme (33 exist, 29 close match, 18 missing)
-- forms-flow-admin has most hardcoded values (51 unique) -- primary migration target
+**Figma state:**
+- Preliminary component standardization underway (buttons & forms)
+- Token Studio import working from v1.0 merged token file
+- Component library being built alongside token organization
 
 ## Constraints
 
 - **Format**: W3C DTCG JSON specification -- required for Token Studio compatibility
-- **Scope**: Shared styles only (`forms-flow-theme`) -- not component-specific styles
-- **Naming**: ff- prefix for all tokens, kebab-case, Bootstrap semantic names preserved
-- **Files**: Two token files (tokens/core.json + tokens/semantic.json)
-- **Build**: Style Dictionary in forms-flow-theme/config/ with ES module support
+- **Scope**: Buttons and forms only -- prove the component token pattern before expanding
+- **Naming**: CSS property model (background, border, color, shadow) with ff- prefix
+- **Foundation**: v1.0 core tokens as primitives; component tokens reference them
+- **Build**: Style Dictionary v5.3.0 in forms-flow-theme/ with ES module support
+- **Figma**: Must work with Token Studio free tier (merged file approach from v1.0)
 
 ## Key Decisions
 
@@ -85,6 +109,9 @@ Accurate extraction of design values that actually exist in the codebase -- refl
 | Pre-compute blend expressions | Clean hex values for Figma import, no SCSS runtime needed | ✓ Good -- 24 expressions resolved |
 | Merged token file for Figma | Token Studio free tier can't resolve cross-file references | ✓ Good -- human-verified import |
 | Documentation split (quick-start + methodology) | Different audiences: returning users vs maintainers | ✓ Good -- actionable and comprehensive |
+| Narrow v2.0 to buttons & forms | Proves component token pattern on highest-touch components before expanding | -- Pending |
+| CSS property naming over Figma property naming | Code is source of truth; Figma adapts to code conventions | -- Pending |
+| Reduce core tokens to component usage | 192 tokens is overwhelming; only include what buttons & forms reference | -- Pending |
 
 ---
-*Last updated: 2026-02-10 after v1.0 milestone*
+*Last updated: 2026-02-10 after v2.0 milestone started*
