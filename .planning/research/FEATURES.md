@@ -1,842 +1,394 @@
-# Feature Landscape: Design Token Extraction
+# Feature Landscape: Component-Level Design Tokens for Buttons & Forms
 
-**Domain:** Design token extraction from SCSS to W3C DTCG format
-**Researched:** 2026-02-03
-**Confidence:** HIGH
+**Domain:** Design token system (component layer)
+**Researched:** 2026-02-10
+**Focus:** Button and form component tokens for forms-flow-ai micro-frontends
 
-## Executive Summary
+## Context
 
-Design token extraction for Token Studio/Figma integration requires careful attention to W3C DTCG format compliance, semantic organization, and transformation tooling. The landscape has matured significantly with the W3C DTCG specification reaching its first stable version (v1.0) in October 2025, establishing clear standards for interoperability.
+This research builds on v1.0 (192 W3C DTCG tokens: 160 core + 32 semantic). v2.0 narrows scope to component-level tokens for buttons and forms, using CSS property-based naming instead of Figma-centric naming.
 
-For an SCSS-based React codebase with Bootstrap 5 foundation, the extraction project must prioritize proper JSON format structure, token type compliance, and semantic layering over primitive values. The five target categories (colors, spacing, typography, border radius, shadows) are all officially supported by the W3C DTCG specification and Token Studio.
+**Existing foundation:**
+- Core tokens: colors (palettes), spacing, typography, borders, shadows, radius
+- Semantic tokens: action.primary, background.default, text.primary, spacing.xs-xl
+- Current SCSS: hardcoded values and basic var() references scattered across 7+ files
 
-**Critical finding:** Token Studio requires the `@tokens-studio/sd-transforms` npm package to prepare tokens for Style Dictionary, which then handles platform-specific code generation. This is a hard dependency for the transformation pipeline.
+**Gap:** No component token layer mapping semantic tokens to specific button/form CSS properties and states.
 
 ---
 
 ## Table Stakes
 
-Features users expect. Missing = product feels incomplete or Token Studio import will fail.
+Features users expect from component tokens. Missing = incomplete system, poor DX.
 
-### 1. W3C DTCG Format Compliance
-**Why Expected:** Industry standard format; Token Studio requires it for modern workflows
-**Complexity:** Medium
-**Notes:**
-- Required file structure: JSON with `$value`, `$type`, `$description` properties
-- File extensions: `.tokens` or `.tokens.json`
-- Media type: `application/design-tokens+json`
-- Naming restrictions: No `$`, `{`, `}`, or `.` in token/group names
-- **Dependencies:** Without this, tokens won't import into Token Studio correctly
-
-**Technical Requirements:**
-```json
-{
-  "tokenName": {
-    "$value": "value-here",
-    "$type": "color",
-    "$description": "Optional description"
-  }
-}
-```
-
-**Sources:**
-- [W3C DTCG Format Specification](https://www.designtokens.org/TR/drafts/format/)
-- [Token Studio Format Documentation](https://docs.tokens.studio/manage-settings/token-format)
-
-### 2. Core Token Categories (Official W3C Types)
-**Why Expected:** Five prioritized categories align with W3C DTCG spec and Token Studio support
-**Complexity:** Medium
-**Notes:**
-
-| Category | W3C Type | Bootstrap 5 Source | Extraction Complexity |
-|----------|----------|-------------------|----------------------|
-| **Colors** | `color` | `$gray-darkest`, `$primary`, etc. | Low - direct mapping |
-| **Spacing** | `dimension` | CSS variables like `--spacer-050` | Low - unit conversion |
-| **Typography** | `typography` (composite) | `$fontBase`, `--font-size-xs`, etc. | Medium - multi-property |
-| **Border Radius** | `dimension` | `$borderRadiusHeightSM`, `--radius-md` | Low - direct mapping |
-| **Shadows** | `shadow` (composite) | `--shadow-sm`, `--shadow-2xl` | Medium - parse syntax |
-
-**Token Studio Support:**
-- Colors: Official type ✓
-- Dimension (spacing, border radius): Official type ✓
-- Typography: Official composite type ✓
-- Shadow: Official composite type ✓
-
-**Note:** Current codebase uses mix of SCSS variables (`$variable`) and CSS custom properties (`--variable`). Extraction must handle both.
-
-**Sources:**
-- [Token Studio Token Types](https://docs.tokens.studio/manage-tokens/token-types)
-- [Design Token Categories Overview](https://medium.com/bumble-tech/design-tokens-beyond-colors-typography-and-spacing-ad7c98f4f228)
-
-### 3. Required Token Properties
-**Why Expected:** W3C spec mandate; Token Studio validation
-**Complexity:** Low
-**Notes:**
-
-**Required (per W3C spec):**
-- `$value` - The actual token value (REQUIRED)
-- Token name - Valid JSON key (REQUIRED)
-
-**Strongly Recommended:**
-- `$type` - Token category (color, dimension, etc.)
-  - If missing, must be inherited from parent group
-  - Token Studio treats tokens without `$type` as invalid
-- `$description` - Plain text explanation of purpose/usage
-
-**Optional but Valuable:**
-- `$extensions` - Vendor-specific metadata (use reverse domain notation)
-- `$deprecated` - Boolean or string marking obsolete tokens
-
-**Sources:**
-- [W3C DTCG Required Fields](https://www.designtokens.org/TR/drafts/format/)
-
-### 4. Token Aliasing/Referencing
-**Why Expected:** Core feature for semantic token architecture; prevents duplication
-**Complexity:** Medium
-**Notes:**
-
-**Syntax:** `{groupName.tokenName}` within `$value` field
-
-```json
-{
-  "primitive": {
-    "blue": {
-      "$value": "#253DF4",
-      "$type": "color"
-    }
-  },
-  "semantic": {
-    "primary": {
-      "$value": "{primitive.blue}",
-      "$type": "color",
-      "$description": "Primary brand color for buttons, links"
-    }
-  }
-}
-```
-
-**Bootstrap 5 Example Mapping:**
-```scss
-// Current SCSS
-$primary: #253DF4;
-$primary-light: #E2E1FC;
-
-// Extracted Tokens
-{
-  "color": {
-    "base": {
-      "blue-500": { "$value": "#253DF4", "$type": "color" }
-    },
-    "semantic": {
-      "primary": {
-        "$value": "{color.base.blue-500}",
-        "$type": "color",
-        "$description": "Primary brand color"
-      }
-    }
-  }
-}
-```
-
-**Reference Syntax Rules:**
-- Opening character: `{`
-- Closing character: `}`
-- Separator: `.` (dot notation for nested groups)
-- Cannot reference across files unless multi-file support implemented
-
-**Sources:**
-- [Design Token Aliasing Patterns](https://medium.com/design-bootcamp/design-tokens-2-0-the-ultimate-guide-32b4a047503)
-- [W3C DTCG Reference Syntax](https://www.designtokens.org/TR/drafts/format/)
-
-### 5. Hierarchical Token Organization (Groups)
-**Why Expected:** Required for semantic layering; makes tokens maintainable
-**Complexity:** Medium
-**Notes:**
-
-**Group Structure:**
-- Objects without `$value` property = groups (containers)
-- Objects with `$value` property = tokens (values)
-- Groups can nest infinitely
-- `$type` inheritance: Child tokens inherit parent group's `$type` if not explicitly set
-
-**Recommended Hierarchy:**
-```
-root
-├── primitive (raw values)
-│   ├── colors
-│   ├── spacing
-│   └── typography
-└── semantic (meaningful references)
-    ├── colors (references primitive)
-    ├── spacing (references primitive)
-    └── typography (references primitive)
-```
-
-**Bootstrap 5 Mapping Example:**
-```json
-{
-  "spacing": {
-    "$type": "dimension",
-    "primitive": {
-      "base": { "$value": "0.5rem" },
-      "050": { "$value": "0.5rem" },
-      "100": { "$value": "1rem" }
-    },
-    "semantic": {
-      "container-padding": { "$value": "{spacing.primitive.050}" },
-      "button-padding": { "$value": "{spacing.primitive.100}" }
-    }
-  }
-}
-```
-
-**Sources:**
-- [Design Token Organization Best Practices](https://www.contentful.com/blog/design-token-system/)
-- [Semantic vs Primitive Token Structure](https://goodpractices.design/articles/design-tokens)
-
-### 6. Style Dictionary Integration
-**Why Expected:** Industry standard transformation tool; required for platform output
-**Complexity:** High
-**Notes:**
-
-**Transformation Pipeline:**
-```
-SCSS Variables → W3C DTCG JSON → Style Dictionary → Platform Outputs
-                                      ↑
-                          @tokens-studio/sd-transforms
-```
-
-**Required Setup:**
-1. Install `@tokens-studio/sd-transforms` (Token Studio-specific preprocessor)
-2. Install `style-dictionary` v4.0+ (W3C DTCG format support)
-3. Configure Style Dictionary config file
-4. Define output targets (CSS variables, SCSS, JS, etc.)
-
-**Style Dictionary v4 Features:**
-- First-class W3C DTCG format support
-- Format conversion tools (legacy → DTCG)
-- Reference syntax aligned with spec
-- Dual format support (can't mix within single instance)
-
-**Token Studio Specific Requirement:**
-Token Studio tokens require `@tokens-studio/sd-transforms` package to convert unofficial token types (e.g., `borderRadius`, `spacing`) to official W3C types before Style Dictionary processes them.
-
-**Sources:**
-- [Style Dictionary DTCG Support](https://styledictionary.com/info/dtcg/)
-- [Token Studio Style Dictionary Integration](https://docs.tokens.studio/transform-tokens/style-dictionary)
-- [Style Dictionary v4 Features](https://www.w3.org/community/design-tokens/2025/10/28/design-tokens-specification-reaches-first-stable-version/)
+| Feature | Why Expected | Complexity | Dependencies | Notes |
+|---------|--------------|------------|--------------|-------|
+| **Button variant tokens** (primary, secondary, outlined, ghost) | Standard across all design systems (Material, Carbon, Atlassian) | Medium | Semantic color, spacing tokens | Each variant needs 4-5 states (default, hover, active, focus, disabled) |
+| **Button state coverage** (default, hover, active, focus, disabled) | CSS requires state-specific values for proper UX | High | Core colors, opacity tokens | 5 states × 4 variants × 3-5 CSS properties = 60-100 tokens |
+| **Button CSS property tokens** (background, border, color, shadow, padding, height, border-radius, font-size) | Direct mapping to CSS needed for DX | Medium | Core typography, spacing, shadow, radius | Must match CSS property names exactly |
+| **Form input state tokens** (default, focus, error/invalid, disabled, valid) | HTML form validation requires distinct visual states | High | Semantic color tokens (success, danger, warning) | :focus, :invalid, :valid, :disabled pseudo-classes |
+| **Form input CSS property tokens** (border, background, color, outline, shadow) | Core styling properties for text inputs, selects, textareas | Medium | Core colors, borders, shadows | Focus ring pattern especially critical for a11y |
+| **Checkbox/radio state tokens** (unchecked, checked, indeterminate, hover, focus, disabled) | HTML checkbox supports indeterminate state via JS | High | Core colors for checkmark, box background, border | Indeterminate = horizontal line icon state |
+| **Form validation visual feedback** (error border, error shadow, success border, warning) | Expected pattern across Bootstrap, Material, Carbon | Medium | Semantic danger, success, warning colors | Uses :valid/:invalid/:user-valid/:user-invalid pseudo-classes |
+| **Size variants** (small, medium, large for buttons; standard, small for checkboxes) | Common across all component libraries | Low | Spacing, typography scale tokens | Existing SCSS has checkbox-size vs checkbox-size-small |
+| **Semantic → component aliasing** (e.g., button.primary.background → color.action.primary) | Token architecture best practice (primitive → semantic → component) | Low | v1.0 semantic tokens | Establishes token relationships and single source of truth |
+| **Focus indicators** (outline width, outline offset, outline color) | WCAG 2.1 accessibility requirement | Medium | Core colors (high contrast), spacing for offset | Must meet 3:1 contrast ratio minimum |
 
 ---
 
 ## Differentiators
 
-Features that set product apart. Not expected, but valued when implementing design tokens.
+Features that set this system apart. Not expected, but valued for this project.
 
-### 1. Multi-File Token Organization
-**Value Proposition:** Improves maintainability; allows team collaboration on different token categories
-**Complexity:** Medium
-**Notes:**
-
-W3C DTCG spec supports multi-file token systems. Style Dictionary can merge multiple JSON files.
-
-**Structure Example:**
-```
-tokens/
-├── colors.tokens.json
-├── spacing.tokens.json
-├── typography.tokens.json
-├── shadows.tokens.json
-└── border-radius.tokens.json
-```
-
-**Benefits:**
-- Smaller, focused files easier to review/edit
-- Parallel development on different categories
-- Selective loading/import
-- Better git diff/merge behavior
-
-**Cross-File References:**
-Tokens can reference tokens in other files if transformation tool supports it (Style Dictionary does).
-
-**Sources:**
-- [Design Tokens Specification Multi-File Support](https://zeroheight.com/blog/whats-new-in-the-design-tokens-spec/)
-
-### 2. Component-Level Tokens (Third Layer)
-**Value Proposition:** Bridge between semantic tokens and actual UI components
-**Complexity:** High
-**Notes:**
-
-**Three-Tier Architecture:**
-```
-Primitive → Semantic → Component
-```
-
-**Example:**
-```json
-{
-  "primitive": {
-    "blue-500": { "$value": "#253DF4", "$type": "color" }
-  },
-  "semantic": {
-    "action-primary": { "$value": "{primitive.blue-500}", "$type": "color" }
-  },
-  "component": {
-    "button": {
-      "primary": {
-        "background": { "$value": "{semantic.action-primary}", "$type": "color" },
-        "border-radius": { "$value": "{semantic.radius-md}", "$type": "dimension" }
-      }
-    }
-  }
-}
-```
-
-**When to Use:**
-- Large component libraries
-- Multiple themes/brands
-- Complex design systems with component-specific overrides
-
-**Trade-off:** Adds complexity; only valuable for mature design systems.
-
-**Sources:**
-- [Design Token Hierarchy Best Practices](https://medium.com/eightshapes-llc/naming-tokens-in-design-systems-9e86c7444676)
-
-### 3. Token Metadata & Documentation
-**Value Proposition:** Self-documenting tokens; improves adoption and correct usage
-**Complexity:** Low
-**Notes:**
-
-**Metadata Fields:**
-- `$description` - Usage guidelines, context, examples
-- `$extensions` - Custom metadata (vendor-specific)
-  - Use reverse domain notation: `com.yourcompany.customField`
-
-**Example:**
-```json
-{
-  "color": {
-    "primary": {
-      "$value": "#253DF4",
-      "$type": "color",
-      "$description": "Primary brand color. Use for CTAs, primary buttons, and active states.",
-      "$extensions": {
-        "com.formsflow.figmaId": "S:abc123",
-        "com.formsflow.wcagContrast": "AA"
-      }
-    }
-  }
-}
-```
-
-**Value:**
-- Tokens become self-documenting
-- Designers/developers understand intent without external docs
-- Can store tooling-specific metadata (Figma IDs, accessibility ratings)
-
-**Sources:**
-- [W3C DTCG Optional Properties](https://www.designtokens.org/TR/drafts/format/)
-
-### 4. Automated SCSS → JSON Extraction
-**Value Proposition:** Reduces manual work; keeps tokens in sync with codebase
-**Complexity:** High
-**Notes:**
-
-Build tooling to parse existing SCSS variables and automatically generate W3C DTCG JSON.
-
-**Extraction Challenges:**
-- Parsing SCSS syntax (variables, calculations, color functions)
-- Determining appropriate `$type` for each token
-- Categorizing into primitive vs semantic
-- Handling Bootstrap 5 theme maps (`$theme-colors`)
-- Converting units (px → rem)
-
-**Tools to Consider:**
-- Custom Node.js script with SCSS parser
-- `sass` package for variable extraction
-- `postcss` for CSS custom property extraction
-
-**Bootstrap 5 Specific:**
-Current codebase mixes:
-- SCSS variables: `$primary`, `$gray-darkest`
-- CSS custom properties: `--spacer-050`, `--shadow-md`
-- Computed values: `$base*1.5`
-
-Extraction script must handle all three patterns.
-
-**Sources:**
-- [SCSS to Design Token Conversion](https://smth.uk/use-design-tokens-to-customise-bootstrap/)
-
-### 5. Deprecation Strategy
-**Value Proposition:** Safe token evolution; prevents breaking changes
-**Complexity:** Medium
-**Notes:**
-
-**Using `$deprecated` Property:**
-```json
-{
-  "color": {
-    "old-primary": {
-      "$value": "#FF0000",
-      "$type": "color",
-      "$deprecated": "Use color.primary instead. Will be removed in v2.0.0"
-    },
-    "primary": {
-      "$value": "#253DF4",
-      "$type": "color"
-    }
-  }
-}
-```
-
-**Deprecation Workflow:**
-1. Mark old token as `$deprecated` with migration instructions
-2. Add replacement token
-3. Update codebase to use new token
-4. Remove deprecated token in next major version
-
-**Value:**
-- Prevents breaking changes
-- Provides migration path
-- Documents token evolution history
-
-**Sources:**
-- [Common Mistakes in Design Tokens Adoption](https://designtokens.substack.com/p/common-mistakes-in-design-tokens)
-
-### 6. Token Versioning
-**Value Proposition:** Treat tokens like APIs; enable safe updates
-**Complexity:** Medium
-**Notes:**
-
-**Versioning Approaches:**
-- File-level: `tokens-v1.0.0.json`
-- Package-level: npm package with semver
-- Property-level: Version metadata in `$extensions`
-
-**Example:**
-```json
-{
-  "$version": "1.0.0",
-  "$extensions": {
-    "com.formsflow.schemaVersion": "1.0.0"
-  },
-  "tokens": {
-    "color": { ... }
-  }
-}
-```
-
-**Best Practices:**
-- Semantic versioning (semver)
-- Major version for breaking changes
-- Minor version for additions
-- Patch version for fixes
-
-**Sources:**
-- [Design Tokens as Versioned APIs](https://designtokens.substack.com/p/common-mistakes-in-design-tokens)
+| Feature | Value Proposition | Complexity | Dependencies | Notes |
+|---------|-------------------|------------|--------------|-------|
+| **CSS property naming** (background not fill, border not stroke) | Matches developer mental model, reduces translation overhead | Low | None | v1.0 used Figma naming; v2.0 switches to CSS naming for better DX |
+| **Component-scoped CSS vars** (--ff-button-primary-background vs --ff-color-action-primary) | Clear intent, avoids semantic token misuse in wrong contexts | Medium | Naming convention design | Prevents using button.background on forms, etc. |
+| **Single token for button height** (vs separate padding-top/bottom) | Matches existing SCSS pattern ($button-min-height: 2.5rem) | Low | Spacing tokens | Simpler than Bootstrap's padding-y approach |
+| **Transition duration/timing tokens** (button.transition.duration, checkbox.transition.timing) | Animation consistency, supports prefers-reduced-motion | Low | Core duration tokens (if created) | Existing SCSS has $button-transition-duration: 0.15s |
+| **Transform tokens for active state** (button.active.transform: translateY(1px)) | Existing pattern in _button.scss worth tokenizing | Low | None | Tactile feedback on button press |
+| **Validation state prefixes** (input.error.*, input.valid.*) | Clearer than input.invalid.* for error messaging context | Low | Semantic danger/success/warning | Aligns with project terminology |
+| **Explicit button gap token** (button.gap for icon spacing) | Existing SCSS pattern: $button-gap: var(--spacer-050) | Low | Spacing tokens | For icon + label layouts |
+| **Spinner/loading state tokens** (button.spinner.size, button.spinner.border-width) | Existing SCSS pattern worth tokenizing | Low | None | For async button states |
 
 ---
 
 ## Anti-Features
 
-Features to explicitly NOT build. Common mistakes in design token extraction.
+Features to explicitly NOT build. Prevents scope creep.
 
-### 1. Component-Specific Primitive Tokens
-**Why Avoid:** Defeats purpose of tokens; creates tight coupling
-**What to Do Instead:** Use semantic layer as abstraction
-
-**Bad Example:**
-```json
-{
-  "button-blue": { "$value": "#253DF4", "$type": "color" },
-  "link-blue": { "$value": "#253DF4", "$type": "color" }
-}
-```
-
-**Good Example:**
-```json
-{
-  "primitive": {
-    "blue-500": { "$value": "#253DF4", "$type": "color" }
-  },
-  "semantic": {
-    "action-primary": { "$value": "{primitive.blue-500}", "$type": "color" }
-  }
-}
-```
-
-**Sources:**
-- [Design Token Anti-Patterns](https://designtokens.substack.com/p/common-mistakes-in-design-tokens)
-
-### 2. Over-Engineering on First Pass
-**Why Avoid:** Creates hundreds of unused tokens; causes decision paralysis
-**What to Do Instead:** Start with 5 core categories, iterate based on needs
-
-**Anti-Pattern:**
-Creating exhaustive tokens for every possible value in first sprint.
-
-**Better Approach:**
-1. Extract only the 5 prioritized categories (colors, spacing, typography, shadows, border radius)
-2. Focus on actively used values in codebase
-3. Add categories incrementally based on actual requirements
-4. Measure token adoption before expanding
-
-**Project-Specific Recommendation:**
-Bootstrap 5 codebase has ~60 SCSS variables currently. Start with these, don't generate 200+ tokens speculatively.
-
-**Sources:**
-- [Common Mistakes in Design Tokens Adoption](https://designtokens.substack.com/p/common-mistakes-in-design-tokens)
-- [Design Tokens Best Practices](https://goodpractices.design/articles/design-tokens)
-
-### 3. Pixel-Based Token Values
-**Why Avoid:** Not responsive; breaks accessibility
-**What to Do Instead:** Use rem/em units for dimension tokens
-
-**Bad Example:**
-```json
-{
-  "spacing": {
-    "sm": { "$value": "8px", "$type": "dimension" }
-  }
-}
-```
-
-**Good Example:**
-```json
-{
-  "spacing": {
-    "sm": { "$value": "0.5rem", "$type": "dimension" }
-  }
-}
-```
-
-**Bootstrap 5 Note:**
-Current codebase uses `rem` extensively (e.g., `$base: 0.5rem`). Maintain this pattern in extracted tokens.
-
-**Sources:**
-- [Design Token Dimension Units](https://www.duetds.com/tokens/)
-
-### 4. Mixing Token Formats
-**Why Avoid:** Style Dictionary v4 cannot combine W3C DTCG and legacy formats in single instance
-**What to Do Instead:** Choose one format (W3C DTCG) and stick with it
-
-**Anti-Pattern:**
-```json
-{
-  "token1": {
-    "value": "#FF0000",
-    "type": "color"
-  },
-  "token2": {
-    "$value": "#00FF00",
-    "$type": "color"
-  }
-}
-```
-
-**Recommendation:**
-Use W3C DTCG format exclusively (`$value`, `$type`, `$description`).
-
-**Sources:**
-- [Style Dictionary Format Requirements](https://styledictionary.com/info/dtcg/)
-
-### 5. Direct Primitive Token Usage in Components
-**Why Avoid:** Makes theming/rebranding difficult; violates semantic abstraction
-**What to Do Instead:** Always reference semantic tokens from component code
-
-**Bad Example (React Component):**
-```jsx
-<Button style={{ color: tokens.primitive.blue500 }} />
-```
-
-**Good Example:**
-```jsx
-<Button style={{ color: tokens.semantic.actionPrimary }} />
-```
-
-**Enforcement Strategy:**
-- Hide primitive tokens from team library (Figma)
-- Document that primitives are internal-only
-- Code review to catch direct primitive references
-
-**Sources:**
-- [Semantic vs Primitive Token Usage](https://www.contentful.com/blog/design-token-system/)
-
-### 6. Ignoring Naming Restrictions
-**Why Avoid:** Breaks W3C DTCG parsers; causes import failures
-**What to Do Instead:** Follow naming rules strictly
-
-**Forbidden Characters in Token Names:**
-- `$` (reserved for spec properties)
-- `{` and `}` (reserved for references)
-- `.` (reserved for group separator)
-
-**Bad Example:**
-```json
-{
-  "$primary-color": { ... },  // ❌ starts with $
-  "button.primary": { ... },  // ❌ contains .
-  "color-{brand}": { ... }    // ❌ contains { }
-}
-```
-
-**Good Example:**
-```json
-{
-  "primary-color": { ... },
-  "button-primary": { ... },
-  "color-brand": { ... }
-}
-```
-
-**Sources:**
-- [W3C DTCG Naming Restrictions](https://www.designtokens.org/TR/drafts/format/)
-
-### 7. Lack of Team Documentation
-**Why Avoid:** Tokens fail when only one team uses them; no adoption
-**What to Do Instead:** Document usage guidelines, examples, and governance
-
-**Anti-Pattern:**
-Creating tokens without:
-- Usage guidelines
-- Visual examples
-- Governance process (who can add/change tokens)
-- Onboarding for designers/developers
-
-**Better Approach:**
-- `$description` field on every token
-- Separate design token documentation
-- Team training on token usage
-- Clear process for proposing new tokens
-
-**Sources:**
-- [Design Token Adoption Pitfalls](https://designtokens.substack.com/p/common-mistakes-in-design-tokens)
+| Anti-Feature | Why Avoid | What to Do Instead |
+|--------------|-----------|-------------------|
+| **Figma-centric naming** (fill, stroke, effects) | v1.0 lesson learned: poor DX for developers | Use CSS property names (background, border, shadow) |
+| **Comprehensive component coverage** (accordions, modals, badges, etc.) | v2.0 scope is buttons + forms only | Document as future milestone, stay focused |
+| **Platform-specific outputs** (iOS, Android, React Native) | Web-only project | CSS custom properties only |
+| **Per-variant padding tokens** (button.primary.padding vs button.secondary.padding) | All button variants share same padding | Single button.padding token, reference spacing.md |
+| **Dark mode / theming variants** | No requirement in project context | Single light theme, document as future enhancement |
+| **Granular border tokens** (border-top-color separate from border-color) | Over-engineering, no use case identified | Single border-color token per component state |
+| **Icon color tokens separate from text color** | Icons inherit button text color in existing SCSS | Use button.*.color for both text and icons |
+| **Hover state for disabled buttons** | Disabled = pointer-events: none, no hover | Only default state for disabled |
+| **Component tokens for units** (px, rem, em decisions) | Core token concern, not component-specific | Reference existing core tokens which already have units |
 
 ---
 
 ## Feature Dependencies
 
-Understanding how features build on each other.
+Component tokens build on v1.0 foundation:
 
 ```
-Foundation Layer (Must Have First):
-├── W3C DTCG Format Compliance
-├── Core Token Categories (5 types)
-├── Required Token Properties ($value, $type)
-└── Hierarchical Token Organization (Groups)
-    │
-    ├── Enables: Token Aliasing/Referencing
-    │   │
-    │   └── Enables: Semantic Token Layer
-    │       │
-    │       └── Enables: Component Token Layer (optional)
-    │
-    └── Requires: Style Dictionary Integration
-        │
-        ├── Depends on: @tokens-studio/sd-transforms
-        └── Enables: Platform Output (CSS, SCSS, JS)
-
-Enhancement Layer (Add After Foundation):
-├── Multi-File Organization
-├── Token Metadata & Documentation
-├── Deprecation Strategy
-├── Token Versioning
-└── Automated Extraction Tooling
+Core Tokens (v1.0)
+├─ color.* (yellow-100, blue-100, indigo-100, etc.)
+├─ spacing.* (025, 050, 100, 150, 200, etc.)
+├─ font-size.* (sm, m, l, xl, etc.)
+├─ font-weight.* (regular, medium, semibold, xl)
+├─ radius.* (sm, md, lg)
+├─ shadow.* (if exists, else create)
+└─ opacity.* (if exists, else create for disabled states)
+    ↓
+Semantic Tokens (v1.0)
+├─ color.action.primary → {ff.color.indigo-100}
+├─ color.danger → {ff.color.red-100}
+├─ color.success → {ff.color.success}
+├─ color.warning → {ff.color.yellow-100}
+├─ spacing.xs → {ff.spacing.025}
+└─ spacing.md → {ff.spacing.100}
+    ↓
+Component Tokens (v2.0 - NEW)
+├─ button.primary.background → {color.action.primary}
+├─ button.primary.color → {color.text.primary}
+├─ button.primary.hover.background → (darken action.primary)
+├─ input.border → {semantic.border.default}
+├─ input.focus.outline → {color.action.primary}
+├─ input.error.border → {color.danger}
+└─ checkbox.checked.background → {color.action.primary}
 ```
 
-**Dependency Notes:**
-
-1. **Must complete first:** W3C DTCG format compliance is prerequisite for everything
-2. **Sequential:** Primitive tokens → Semantic tokens → Component tokens (can't skip levels)
-3. **Parallel:** After foundation, metadata/versioning/multi-file can be added independently
-4. **Critical path:** Foundation layer → Style Dictionary → Platform outputs
+**Critical dependencies for v2.0:**
+- Must have: color.action.primary, color.danger, color.success, spacing tokens
+- May need to create: shadow tokens (if not in v1.0), opacity tokens (0.6 for disabled)
+- Migration path: Replace SCSS variables ($color-primary) with component tokens (var(--ff-button-primary-background))
 
 ---
 
-## MVP Recommendation
+## CSS Properties Requiring Tokenization
 
-For MVP (Minimum Viable Product) design token extraction, prioritize:
+### Buttons (All Variants: Primary, Secondary, Outlined, Ghost)
 
-### Phase 1: Foundation (2-3 weeks)
-1. **W3C DTCG Format Compliance**
-   - Set up JSON file structure
-   - Implement required properties (`$value`, `$type`)
-   - Enforce naming restrictions
+Per variant, per state (default, hover, active, focus, disabled):
 
-2. **Core 5 Token Categories**
-   - Colors (primitive layer only)
-   - Spacing (primitive layer only)
-   - Typography (primitive layer only)
-   - Border Radius (primitive layer only)
-   - Shadows (primitive layer only)
+| CSS Property | Token Pattern | Example | States Needed |
+|--------------|---------------|---------|---------------|
+| `background-color` | `button.{variant}.{state}.background` | `button.primary.hover.background` | 5 states × 4 variants = 20 tokens |
+| `border-color` | `button.{variant}.{state}.border` | `button.outlined.default.border` | 5 states × 4 variants = 20 tokens |
+| `color` (text) | `button.{variant}.{state}.color` | `button.ghost.disabled.color` | 5 states × 4 variants = 20 tokens |
+| `box-shadow` | `button.{variant}.{state}.shadow` | `button.primary.focus.shadow` | 2-3 states (focus, maybe hover) × 4 variants = ~10 tokens |
+| `padding` | `button.padding` (shared) | `button.padding` | 1 token (all variants share) |
+| `height` | `button.height` (shared) | `button.height` | 1 token (or min-height) |
+| `border-radius` | `button.border-radius` (shared) | `button.border-radius` | 1 token |
+| `font-size` | `button.font-size` (shared) | `button.font-size` | 1 token |
+| `font-weight` | `button.font-weight` (shared) | `button.font-weight` | 1 token |
+| `border-width` | `button.border-width` (shared) | `button.border-width` | 1 token |
+| `gap` | `button.gap` (for icon spacing) | `button.gap` | 1 token |
+| `transform` | `button.active.transform` (shared) | `button.active.transform` | 1 token (translateY) |
+| `transition-duration` | `button.transition.duration` | `button.transition.duration` | 1 token |
+| `transition-timing-function` | `button.transition.timing` | `button.transition.timing` | 1 token |
+| `outline-width` (focus) | `button.focus.outline-width` | `button.focus.outline-width` | 1 token |
+| `outline-offset` (focus) | `button.focus.outline-offset` | `button.focus.outline-offset` | 1 token |
 
-3. **Style Dictionary Pipeline**
-   - Install `@tokens-studio/sd-transforms`
-   - Install `style-dictionary` v4.0+
-   - Configure basic transformation
-   - Output to CSS custom properties
+**Estimated total button tokens:** ~70-80 (60 state-specific + 12 shared properties)
 
-**Success Criteria:**
-- Tokens import cleanly into Token Studio
-- Style Dictionary generates valid CSS output
-- 5 core categories fully extracted from current SCSS
+### Text Inputs (text, email, number, textarea, select)
 
-### Phase 2: Semantic Layer (1-2 weeks)
-4. **Token Aliasing & Semantic Organization**
-   - Create semantic token layer
-   - Reference primitive tokens
-   - Add `$description` to all semantic tokens
+| CSS Property | Token Pattern | Example | States Needed |
+|--------------|---------------|---------|---------------|
+| `border-color` | `input.{state}.border` | `input.focus.border`, `input.error.border` | 4-5 states (default, focus, error, valid, disabled) |
+| `background-color` | `input.{state}.background` | `input.disabled.background` | 3 states (default, disabled, maybe focus) |
+| `color` (text) | `input.{state}.color` | `input.default.color`, `input.disabled.color` | 2-3 states |
+| `outline` (focus) | `input.focus.outline` | `input.focus.outline` (or split to outline-color, outline-width) | 1-2 tokens |
+| `box-shadow` (focus, error) | `input.{state}.shadow` | `input.focus.shadow`, `input.error.shadow` | 2-3 tokens |
+| `border-radius` | `input.border-radius` | `input.border-radius` | 1 token |
+| `height` | `input.height` | `input.height` | 1 token |
+| `padding` | `input.padding` | `input.padding` | 1 token |
+| `font-size` | `input.font-size` | `input.font-size` | 1 token |
+| `border-width` | `input.border-width` | `input.border-width` | 1 token |
 
-5. **Documentation**
-   - Usage guidelines for each category
-   - Examples for designers/developers
+**Estimated total input tokens:** ~20-25
 
-**Success Criteria:**
-- Semantic tokens properly reference primitives
-- Team understands semantic vs primitive distinction
-- Token Studio shows correct hierarchy
+### Checkboxes & Radio Buttons
 
-### Defer to Post-MVP:
+| CSS Property | Token Pattern | Example | States Needed |
+|--------------|---------------|---------|---------------|
+| `border-color` | `checkbox.{state}.border` | `checkbox.checked.border`, `checkbox.indeterminate.border` | 6 states (unchecked, checked, indeterminate, hover, focus, disabled) |
+| `background-color` | `checkbox.{state}.background` | `checkbox.disabled.background` | 3-4 states |
+| `width`, `height` (box size) | `checkbox.size` | `checkbox.size` | 1 token (+ size variant) |
+| Checkmark `border-color` | `checkbox.checkmark.{state}.color` | `checkbox.checkmark.checked.color` | 2-3 states |
+| Checkmark `width`, `height` | `checkbox.checkmark.width`, `checkbox.checkmark.height` | Dimensions | 2 tokens |
+| Checkmark `border-width` | `checkbox.checkmark.border-width` | Line thickness | 1 token |
+| `border-width` (box) | `checkbox.border-width` | Box outline | 1 token |
+| `border-radius` | `checkbox.border-radius` | Rounded corners | 1 token |
+| `opacity` (disabled) | `checkbox.disabled.opacity` | 0.6 typical | 1 token |
 
-**Component Token Layer**
-- **Reason:** Complex; requires component inventory first
-- **When:** After semantic tokens proven stable for 1-2 months
-
-**Multi-File Organization**
-- **Reason:** Single file sufficient for 5 categories initially
-- **When:** When token count exceeds ~100 or team collaboration becomes bottleneck
-
-**Automated Extraction**
-- **Reason:** Manual extraction acceptable for initial 60 variables
-- **When:** When tokens need frequent updates from SCSS source
-
-**Token Versioning**
-- **Reason:** Not critical until tokens are consumed by multiple teams/projects
-- **When:** After tokens published as shared package
+**Estimated total checkbox tokens:** ~20-25
+**Radio button tokens:** Similar structure (~20-25)
 
 ---
 
-## Project-Specific Observations
+## State Coverage Requirements
 
-Based on codebase analysis (`forms-flow-theme/scss/_theme.scss` and `_variables.scss`):
+### Button States (Each Variant)
 
-### Current State
-- **~60 SCSS variables** across colors, spacing, typography, shadows, border radius
-- **Mix of SCSS vars and CSS custom properties**
-  - SCSS: `$primary`, `$gray-darkest`, `$base`
-  - CSS: `--spacer-050`, `--shadow-md`, `--radius-lg`
-- **Bootstrap 5 foundation** with custom theme
-- **Computed values:** `$borderRadiusHeightSM: $base*1.094`
+| State | CSS Selector | Visual Changes | Token Properties Needed |
+|-------|--------------|----------------|-------------------------|
+| **Default** | `button` | Base appearance | background, border, color, shadow (optional) |
+| **Hover** | `button:hover` | Subtle highlight | background (lighter/darker), border (optional), shadow (optional) |
+| **Active** | `button:active` | Pressed feedback | background (darker), transform (translateY), shadow (inset or removed) |
+| **Focus** | `button:focus` or `button:focus-visible` | Accessibility outline | outline-color, outline-width, outline-offset, shadow (focus ring) |
+| **Disabled** | `button:disabled` or `.is-disabled` | Muted appearance, no hover | background (gray), border (gray), color (gray), opacity (0.6), cursor (not-allowed) |
+| **Loading** (optional) | `.is-loading` | Spinner replaces content | spinner.size, spinner.border-width, spinner.color |
 
-### Extraction Strategy
-1. **Colors:** 14 color values (`$primary`, `$white`, `$gray-*`, etc.)
-2. **Spacing:** 13 spacer values (`--spacer-025` through `--spacer-300`)
-3. **Typography:** 11 values (font sizes, weights, line heights)
-4. **Shadows:** 7 shadow values (`--shadow-sm` through `--shadow-nav`)
-5. **Border Radius:** 5 radius values (`--radius-sm` through `--radius-modal`)
+**Critical:** Focus state must meet WCAG 2.1 contrast requirements (3:1 minimum).
 
-**Total Initial Tokens:** ~50 primitive tokens + ~30 semantic references = ~80 tokens for MVP
+### Form Input States
 
-### Recommended Token Structure
-```json
-{
-  "color": {
-    "$type": "color",
-    "primitive": {
-      "blue-500": { "$value": "#253DF4" },
-      "gray-900": { "$value": "#303436" },
-      ...
-    },
-    "semantic": {
-      "primary": { "$value": "{color.primitive.blue-500}" },
-      "surface-default": { "$value": "{color.primitive.gray-100}" }
-    }
-  },
-  "spacing": {
-    "$type": "dimension",
-    "primitive": {
-      "050": { "$value": "0.5rem" },
-      "100": { "$value": "1rem" },
-      ...
-    },
-    "semantic": {
-      "container-padding": { "$value": "{spacing.primitive.050}" }
-    }
-  },
-  ...
-}
-```
+| State | CSS Selector | Visual Changes | Token Properties Needed |
+|-------|--------------|----------------|-------------------------|
+| **Default** | `input` | Base appearance | border, background, color |
+| **Focus** | `input:focus` | Active editing indicator | border (or outline), shadow (focus ring) |
+| **Error/Invalid** | `input:invalid`, `input.is-invalid`, `input:user-invalid` | Validation failure | border (red), shadow (red glow), background (light red tint optional) |
+| **Valid** | `input:valid`, `input:user-valid` | Validation success | border (green), shadow (green glow optional) |
+| **Disabled** | `input:disabled` | Read-only state | background (gray), border (gray), color (gray), cursor (not-allowed) |
+| **Placeholder** | `input::placeholder` | Helper text | color (muted gray) |
+
+**Note:** Prefer `:user-invalid` / `:user-valid` over `:invalid` / `:valid` to avoid showing errors before user interaction.
+
+### Checkbox/Radio States
+
+| State | CSS Selector | Visual Changes | Token Properties Needed |
+|-------|--------------|----------------|-------------------------|
+| **Unchecked** | `input[type="checkbox"]` | Empty box | border, background |
+| **Checked** | `input[type="checkbox"]:checked` | Checkmark visible | background (or checkmark color), border |
+| **Indeterminate** | `input[type="checkbox"]:indeterminate` | Horizontal line (JS-only state) | background (or line color), border |
+| **Hover** | `input[type="checkbox"]:hover` | Interactive feedback | border (darker) |
+| **Focus** | `input[type="checkbox"]:focus-visible` | Keyboard navigation indicator | border, shadow (focus ring) |
+| **Disabled** | `input[type="checkbox"]:disabled` | Non-interactive | background (gray), border (gray), opacity (0.6), checkmark color (muted) |
+
+**Critical:** Indeterminate state requires JavaScript to set (`checkbox.indeterminate = true`). Visual-only state.
+
+---
+
+## Button Variant Characteristics
+
+Based on research across Material Design, Carbon, Atlassian, Salesforce Lightning:
+
+### Primary Buttons
+- **Purpose:** Main call-to-action (submit, save, confirm)
+- **Visual:** Solid background (brand color), high contrast text (usually white)
+- **Tokens:** background (brand color), color (white/high contrast), border (optional, same as background or none)
+- **States:** All 5 states required
+
+### Secondary Buttons
+- **Purpose:** Alternative actions (cancel, back, secondary CTA)
+- **Visual:** Less prominent than primary (lighter background or outlined)
+- **Tokens:** background (lighter tint or transparent), color (brand color or gray), border (visible, medium gray or brand)
+- **States:** All 5 states required
+
+### Outlined (Ghost) Buttons
+- **Purpose:** Tertiary actions, minimal emphasis
+- **Visual:** Transparent background, visible border, text color matches border
+- **Tokens:** background (transparent), border (brand or gray), color (brand or gray)
+- **Hover:** Add subtle background tint
+- **States:** All 5 states required
+
+### Ghost Buttons
+- **Purpose:** Least emphasis, blends with UI (modals, cards, toolbars)
+- **Visual:** No border, transparent background, text-only
+- **Tokens:** background (transparent, tint on hover), border (none), color (brand or gray)
+- **States:** All 5 states required
 
 ---
 
 ## Complexity Assessment
 
-| Feature | Complexity | Effort | Risk | Priority |
-|---------|-----------|--------|------|----------|
-| W3C DTCG Format | Medium | 1 week | Low | P0 |
-| Core 5 Categories | Medium | 1 week | Low | P0 |
-| Required Properties | Low | 2 days | Low | P0 |
-| Token Aliasing | Medium | 3 days | Medium | P0 |
-| Hierarchical Organization | Medium | 3 days | Low | P0 |
-| Style Dictionary Setup | High | 1 week | High | P0 |
-| Multi-File Organization | Medium | 2 days | Low | P1 |
-| Component Tokens | High | 2 weeks | High | P2 |
-| Token Metadata | Low | 1 day | Low | P1 |
-| Automated Extraction | High | 1-2 weeks | High | P2 |
-| Deprecation Strategy | Medium | 2 days | Low | P2 |
-| Token Versioning | Medium | 3 days | Low | P2 |
+| Feature Category | Complexity | Reason |
+|------------------|------------|--------|
+| Button variant tokens | **Medium** | 4 variants × 5 states × 3-4 CSS properties = ~60-80 tokens, but pattern is repetitive |
+| Button state coverage | **High** | Must coordinate background, border, color, shadow across states; hover + active + focus interactions tricky |
+| Form input states | **High** | Validation pseudo-classes (:invalid, :user-invalid) require careful styling; error + focus state combination |
+| Checkbox states | **High** | Indeterminate state adds complexity; checkmark styling (::after pseudo-element) requires geometric tokens |
+| CSS property naming | **Low** | Straightforward mapping (background → background-color) |
+| Token aliasing (semantic → component) | **Low** | Reference syntax: `{color.action.primary}` |
+| Size variants | **Low** | Multiplier pattern or separate token sets |
+| Focus indicators | **Medium** | Must meet WCAG contrast requirements, test across backgrounds |
 
-**Risk Factors:**
-- **Style Dictionary setup:** Highest risk; transformation pipeline can be tricky
-- **Component tokens:** High complexity; requires extensive component mapping
-- **Automated extraction:** High risk; SCSS parsing can be fragile
+---
+
+## MVP Recommendation
+
+**Prioritize:** (for initial v2.0 milestone)
+
+1. **Button primary variant** (5 states: default, hover, active, focus, disabled)
+   - CSS properties: background, border, color, shadow (focus only), shared properties (padding, height, radius, font-size)
+   - ~15-20 tokens
+   - **Rationale:** Highest usage, proves token architecture
+
+2. **Text input states** (5 states: default, focus, error, valid, disabled)
+   - CSS properties: border, background, color, outline (focus), shadow (focus, error)
+   - ~15-20 tokens
+   - **Rationale:** Forms are project focus, validation critical
+
+3. **Checkbox states** (6 states: unchecked, checked, indeterminate, hover, focus, disabled)
+   - CSS properties: border, background, checkmark color, sizes
+   - ~20-25 tokens
+   - **Rationale:** Complex enough to stress-test token system, common in forms
+
+4. **Shared button properties** (padding, height, radius, font-size, border-width, gap, transitions)
+   - ~10 tokens
+   - **Rationale:** Foundation for all button variants
+
+**Total MVP tokens:** ~60-75 tokens
+
+---
+
+**Defer to Phase 2:**
+
+- **Button secondary, outlined, ghost variants** (~45 tokens) — Prove architecture with primary first
+- **Radio buttons** (~20 tokens) — Similar to checkboxes, lower priority
+- **Select dropdowns** (~15 tokens) — More complex, needs icon tokens
+- **Textarea** (~5 tokens) — Shares input tokens, minor differences
+- **Size variants** (small, large) — Adds ~30-40% more tokens, test standard size first
+- **Loading/spinner states** (~5 tokens) — Nice-to-have, not critical for v2.0
+- **Validation message styling** (color, font-size) — Could use semantic tokens directly
+
+---
+
+**Defer indefinitely (anti-features):**
+
+- Dark mode variants
+- Platform-specific outputs (iOS, Android)
+- Non-button/form components (accordions, modals, cards)
+
+---
+
+## Existing SCSS Audit Findings
+
+**Current patterns worth tokenizing:**
+
+From `scss/v8-scss/_button.scss`:
+- `$button-border-radius: 1.5625rem` → `button.border-radius`
+- `$button-min-height: 2.5rem` → `button.height`
+- `$button-padding: 0.6875rem 1.375rem` → `button.padding`
+- `$button-gap: var(--spacer-050)` → `button.gap`
+- `$button-transition-duration: 0.15s` → `button.transition.duration`
+- `$button-active-transform: 1px` → `button.active.transform`
+- `$button-shadow-primary: 0 0.125rem 0.5rem rgba(...)` → `button.primary.shadow`
+
+From `scss/v8-scss/_checkbox.scss`:
+- `$checkbox-size: 33px` → `checkbox.size`
+- `$checkbox-border-width: 2px` → `checkbox.border-width`
+- `$checkbox-border-radius: 0.25rem` → `checkbox.border-radius`
+- `$checkmark-width: 9px` → `checkbox.checkmark.width`
+- `$checkmark-height: 16px` → `checkbox.checkmark.height`
+- Indeterminate state pattern exists
+
+From `scss/inputBox.scss`:
+- `$form-input-border-radius: var(--radius-lg)` → `input.border-radius`
+- `$form-input-focus-outline: 2px solid var(--ff-primary)` → `input.focus.outline`
+- `$input-error-box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25)` → `input.error.shadow`
+
+**Migration strategy:** Replace SCSS variables with component tokens incrementally, validate visual regression.
+
+---
+
+## Open Questions for Phase-Specific Research
+
+1. **Shadow tokens:** Does v1.0 have shadow tokens (elevation system)? If not, create them first or hardcode shadows in component tokens?
+2. **Opacity tokens:** Does v1.0 have opacity tokens (e.g., 0.6 for disabled)? Or bake opacity into color values (rgba)?
+3. **Color generation:** Should hover/active states reference new core tokens (e.g., indigo-200 for lighter) or use opacity overlays?
+4. **Focus ring pattern:** Outline vs box-shadow for focus indicators? Existing SCSS uses box-shadow for inputs, outline for buttons.
+5. **Checkbox checkmark:** Token for checkmark as separate shape, or reference checkbox.checked.color for the checkmark border?
+6. **Size variants:** Separate token files (button-small.json, button-large.json) or single file with size namespace (button.small.*, button.large.*)?
+7. **Validation states:** Map to existing Bootstrap semantic tokens (color.danger, color.success) or create input-specific (input.error.color)?
 
 ---
 
 ## Sources
 
-### High Confidence (Official Documentation)
-- [W3C DTCG Format Specification](https://www.designtokens.org/TR/drafts/format/)
-- [W3C Design Tokens Community Group](https://www.w3.org/community/design-tokens/)
-- [Design Tokens Stable Version Announcement (2025)](https://www.w3.org/community/design-tokens/2025/10/28/design-tokens-specification-reaches-first-stable-version/)
-- [Token Studio for Figma Documentation](https://docs.tokens.studio)
-- [Token Studio Token Types](https://docs.tokens.studio/manage-tokens/token-types)
-- [Token Studio Format Guide](https://docs.tokens.studio/manage-settings/token-format)
-- [Style Dictionary DTCG Documentation](https://styledictionary.com/info/dtcg/)
-- [Style Dictionary v4 Tokens](https://styledictionary.com/info/tokens/)
+**Design System Research:**
+- [Material Design Theming](https://material-web.dev/theming/material-theming/)
+- [Material Design Tokens](https://m3.material.io/foundations/design-tokens)
+- [Atlassian Design Tokens](https://atlassian.design/components/tokens/)
+- [Carbon Design System Color Tokens](https://carbondesignsystem.com/elements/color/tokens/)
+- [Salesforce SLDS Design Tokens](https://developer.salesforce.com/docs/platform/lwc/guide/create-components-css-design-tokens.html)
 
-### Medium Confidence (Industry Resources)
-- [Design Tokens Beyond Colors, Typography, and Spacing](https://medium.com/bumble-tech/design-tokens-beyond-colors-typography-and-spacing-ad7c98f4f228)
-- [What Are Design Tokens? - Penpot Complete Guide](https://penpot.app/blog/what-are-design-tokens-a-complete-guide/)
-- [Design Tokens Explained - Contentful](https://www.contentful.com/blog/design-token-system/)
-- [Design Tokens Good Practices](https://goodpractices.design/articles/design-tokens)
-- [Design Tokens 2.0 Ultimate Guide](https://medium.com/design-bootcamp/design-tokens-2-0-the-ultimate-guide-32b4a047503)
-- [Naming Tokens in Design Systems](https://medium.com/eightshapes-llc/naming-tokens-in-design-systems-9e86c7444676)
-- [Common Mistakes in Design Tokens Adoption](https://designtokens.substack.com/p/common-mistakes-in-design-tokens)
-- [Bootstrap Design Token Integration](https://smth.uk/use-design-tokens-to-customise-bootstrap/)
-- [Design Tokens with Style Dictionary](https://didoo.medium.com/how-to-manage-your-design-tokens-with-style-dictionary-98c795b938aa)
-- [What's New in Design Tokens Spec](https://zeroheight.com/blog/whats-new-in-the-design-tokens-spec/)
+**Button States & Variants:**
+- [Button States Explained (DesignRush)](https://www.designrush.com/best-designs/websites/trends/button-states)
+- [Button States - Nielsen Norman Group](https://www.nngroup.com/articles/button-states-communicate-interaction/)
+- [Designing Button States (LogRocket)](https://blog.logrocket.com/ux-design/designing-button-states/)
+- [Carbon Button Component](https://v10.carbondesignsystem.com/components/button/usage/)
+- [Ghost Buttons in UX Design](https://uxplanet.org/ghost-buttons-in-ux-design-4cf3717334f8)
 
----
+**Form Validation States:**
+- [Styling Form Input Validity (DigitalOcean)](https://www.digitalocean.com/community/tutorials/css-styling-form-input-validity)
+- [Bootstrap Form Validation](https://getbootstrap.com/docs/5.0/forms/validation/)
+- [Form Validation Styling (CSS-Tricks)](https://css-tricks.com/snippets/css/form-validation-styling-on-input-focus/)
+- [:invalid CSS Pseudo-Class (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid)
+- [Styling Valid and Invalid Forms with CSS](https://blog.openreplay.com/styling-valid-invalid-form-css/)
 
-## Quality Gate Assessment
+**Checkbox/Radio States:**
+- [Definitive Guide to Indeterminate Checkbox State](https://www.sitelint.com/blog/definitive-guide-to-indeterminate-state-of-a-checkbox)
+- [:indeterminate CSS Pseudo-Class (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/:indeterminate)
+- [Bootstrap Checks and Radios](https://getbootstrap.com/docs/5.0/forms/checks-radios/)
+- [Material UI Checkbox](https://mui.com/material-ui/react-checkbox/)
 
-- [x] **Categories are clear** - Table stakes, differentiators, and anti-features explicitly categorized
-- [x] **Complexity noted** - Each feature includes complexity rating (Low/Medium/High) and effort estimate
-- [x] **Dependencies identified** - Feature dependency tree and sequential requirements documented
-- [x] **Project-specific** - Analyzed actual codebase (Bootstrap 5 SCSS) and sized to ~80 tokens for MVP
-- [x] **Sources cited** - All findings reference W3C spec, Token Studio docs, or verified industry sources
-- [x] **Confidence levels** - HIGH confidence on technical requirements; MEDIUM on best practices
-- [x] **Actionable** - MVP recommendation provides clear phase structure and success criteria
+**Design Token Architecture:**
+- [Design Tokens Explained (Contentful)](https://www.contentful.com/blog/design-token-system/)
+- [Design Tokens Overview (GitLab Pajamas)](https://design.gitlab.com/product-foundations/design-tokens/)
+- [Component Tokens First (Medium)](https://medium.com/@hereinthehive/component-tokens-first-hear-me-out-6258f54935a9)
+- [Design Token-Based UI Architecture (Martin Fowler)](https://martinfowler.com/articles/design-token-based-ui-architecture.html)
+- [The Design System Guide - Design Tokens](https://thedesignsystem.guide/design-tokens)
 
----
-
-## Ready for Requirements Definition
-
-This feature landscape provides:
-1. **Table stakes features** - What Token Studio import requires (W3C DTCG compliance, core types, aliasing)
-2. **Differentiators** - What improves usability (multi-file, metadata, versioning)
-3. **Anti-features** - What to avoid (component-specific primitives, over-engineering, pixel units)
-4. **Dependencies** - What must be built in what order (foundation → semantic → component)
-5. **MVP scope** - 5 core categories, ~80 tokens, Style Dictionary pipeline
-
-**Next step:** Use this research to define precise requirements for design token extraction tooling and process.
+**Best Practices:**
+- [Tailwind CSS Best Practices (FrontendTools)](https://www.frontendtools.tech/blog/tailwind-css-best-practices-design-system-patterns)
+- [Developer's Guide to Design Tokens and CSS Variables (Penpot)](https://penpot.app/blog/the-developers-guide-to-design-tokens-and-css-variables/)
+- [Naming Best Practices (Smashing Magazine)](https://www.smashingmagazine.com/2024/05/naming-best-practices/)
+- [Naming Tokens in Design Systems (Nathan Curtis)](https://medium.com/eightshapes-llc/naming-tokens-in-design-systems-9e86c7444676)

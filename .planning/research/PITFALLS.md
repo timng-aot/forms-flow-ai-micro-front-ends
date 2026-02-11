@@ -1,680 +1,1111 @@
-# Design Token Extraction Pitfalls
+# Component-Level Design Token Pitfalls
 
-**Domain:** Design Token Extraction from SCSS
-**Researched:** 2026-02-03
-**Confidence:** HIGH (verified with official documentation and multiple authoritative sources)
+**Domain:** Adding component-level tokens (buttons & forms) to existing 2-tier design token system
+**Researched:** 2026-02-10
+**Confidence:** HIGH (verified with official documentation, current best practices, and v1.0 project learnings)
 
 ## Executive Summary
 
-Design token extraction projects commonly fail due to five critical areas: SCSS parsing edge cases, W3C DTCG format compliance errors, Token Studio import incompatibilities, naming problems that break toolchains, and extraction granularity issues. This document catalogs specific pitfalls with detection strategies and prevention approaches mapped to project phases.
+Adding component-level tokens to an existing core/semantic token system commonly fails in five critical areas: token explosion (replicating v1.0's 192-token problem), CSS property naming mismatches with Figma components, reference chain overcomplexity, incomplete implementation (design tools without code sync), and integration failures between component tokens and existing tiers. This document catalogs specific pitfalls for narrowing from comprehensive extraction to component-scoped tokens, with prevention strategies mapped to implementation phases.
+
+**Context:** v1.0 extracted 192 tokens but they were overwhelming in Figma, poorly named for component mapping, and missing component-level structure. v2.0 narrows to buttons & forms with CSS property naming conventions, requiring careful integration with existing core/semantic tokens while avoiding v1.0's mistakes.
 
 ---
 
 ## Critical Pitfalls
 
-Mistakes that cause rewrites, major tool failures, or complete project blockage.
+Mistakes that cause rewrites, component adoption failures, or complete project blockage.
 
-### Pitfall 1: CSS Custom Property Interpolation Missing
+### Pitfall 1: Component Token Explosion (500+ tokens)
 
-**What goes wrong:** SCSS variables assigned to CSS custom properties without interpolation syntax appear as literal text (`--color: $primary-blue`) instead of resolved values (`--color: #0066cc`).
-
-**Why it happens:** Sass requires SassScript expressions in custom properties to use `#{...}` interpolation to maintain compatibility with plain CSS. The CSS spec allows almost any string in custom properties, so Sass doesn't parse them as SassScript by default.
-
-**Consequences:**
-- Generated CSS contains SCSS variable names instead of values
-- Runtime failures when JavaScript tries to read CSS custom properties
-- Tokenized values are strings like `"$primary-blue"` instead of actual color codes
-- Downstream tools (Token Studio, validators) reject invalid color/dimension values
-
-**Prevention:**
-```scss
-// WRONG - Variable appears as literal text
---accent-color: $accent-color;
-
-// CORRECT - Variable is interpolated
---accent-color: #{$accent-color};
-```
-
-**Detection:**
-- Search extracted CSS for `--*: $` patterns
-- Validate CSS custom property values against expected types (hex colors, px units)
-- Run CSS through a linter that validates custom property syntax
-- Test a sample import into Token Studio with a known SCSS variable
-
-**Phase mapping:** Address in Phase 1 (SCSS Analysis). Document all SCSS→CSS variable conversions and ensure extraction script adds interpolation.
-
-**Source confidence:** HIGH - [Official Sass documentation](https://sass-lang.com/documentation/breaking-changes/css-vars/)
-
----
-
-### Pitfall 2: Missing or Incorrect `$type` in W3C DTCG Format
-
-**What goes wrong:** Design token JSON missing `$type` properties or using legacy type names causes validation failures and tool incompatibility.
+**What goes wrong:** Creating tokens for every component property × variant × state × size results in unmanageable token counts.
 
 **Why it happens:**
-- Style Dictionary v3 (legacy) format used `"type"` without dollar sign
-- DTCG spec requires `"$type"` with dollar prefix
-- Type values changed: `"size"` → `"dimension"`, requiring manual updates
-- Automated converters don't refactor type values, only property names
+- Systematic approach without editorial judgment
+- Formula: Component with 3 variants × 3 sizes × 4 states × 12 properties = 432 tokens *per component*
+- Fear of missing edge cases leads to "tokenize everything" approach
+- No distinction between "tokens designers need" vs "tokens that exist"
+- Bootstrap 5 has 600+ variables; extracting all creates unusable system
+
+**Real-world example:**
+```
+Button component breakdown:
+- Variants: primary, secondary, tertiary (3)
+- Sizes: small, medium, large (3)
+- States: default, hover, focus, active, disabled (5)
+- Properties: background, border, text-color, padding-x, padding-y, font-size,
+             font-weight, border-radius, box-shadow, min-height, icon-spacing, gap (12)
+
+Total: 3 × 3 × 5 × 12 = 540 tokens for buttons alone
+```
 
 **Consequences:**
-- Token validators reject files: "Contents Don't Pass Schema Validation"
-- Token Studio import fails or imports tokens with wrong type
-- Type inference breaks, treating dimensions as strings
-- Cross-tool compatibility fails (Figma Variables expects DTCG types)
+- Token Studio performance degradation (500+ tokens = slow, difficult to search)
+- Designers overwhelmed: "Which token do I use?"
+- Maintenance nightmare: updating 1 design decision requires 50 token changes
+- Long token names engineers can't parse: `button-m-warning-quiet-overbackground-textonly-focus-ring-animation-duration`
+- Documentation becomes unmanageable
+- Contradicts v2.0 goal of narrowing from 192 tokens
 
-**Prevention:**
+**How to avoid:**
+- **Inheritance over duplication:** Don't create separate tokens for properties that inherit from semantic layer
+- **State modifiers, not separate tokens:** Use single `button-primary-background` with separate `button-state-hover-opacity` modifier
+- **Size through existing spacing:** Reference existing spacing tokens, don't create button-specific padding tokens
+- **Component-specific only when necessary:** Only create component token if value differs from semantic token
+- **80/20 rule:** Focus on tokens designers actually change (background, border, text-color), not immutable properties
+
+**Prevention structure:**
 ```json
-// WRONG - Legacy Style Dictionary v3 format
 {
-  "spacing": {
-    "small": {
-      "type": "size",
-      "value": "8px"
-    }
-  }
-}
-
-// CORRECT - W3C DTCG format
-{
-  "spacing": {
-    "small": {
-      "$type": "dimension",
-      "$value": "8px"
-    }
-  }
-}
-```
-
-**Detection:**
-- Validate JSON against W3C DTCG schema before Token Studio import
-- Use official validators: [Design Token Validator](https://designtoken-validator.sotec-solutions.com/)
-- Check for presence of `$` prefix on all spec-defined properties
-- Verify type values match DTCG spec (not legacy Style Dictionary types)
-- Warning signs: TypeScript errors from `@nclsndr/w3c-design-tokens-parser`
-
-**Phase mapping:**
-- Phase 1: Choose DTCG format from start (don't use legacy)
-- Phase 2: Validate all generated JSON against DTCG schema
-- Phase 3: Automated tests that fail if `$type` is missing from any token
-
-**Source confidence:** HIGH - [W3C DTCG Specification (stable v1, Oct 2025)](https://www.w3.org/community/design-tokens/2025/10/28/design-tokens-specification-reaches-first-stable-version/), [Style Dictionary DTCG docs](https://styledictionary.com/info/dtcg/)
-
----
-
-### Pitfall 3: Token Names Using Reserved Characters
-
-**What goes wrong:** Token names with special characters cause parsing failures, reference breakage, and import errors in Token Studio.
-
-**Why it happens:** Different tools have conflicting constraints:
-- Figma uses `/` for grouping
-- DTCG spec forbids `$` prefix on token names
-- Reference syntax uses `{ }` braces
-- Programming languages restrict `( ) [ ]` brackets
-- Periods `.` convert to slashes `/` creating unintended folder structures
-
-**Consequences:**
-- Token Studio import completely fails with syntax errors
-- Token references break: `{color.primary.500}` becomes unresolvable
-- Generated code has syntax errors from invalid identifiers
-- Naming collisions: `spacing.1.5` and `spacing.1-5` both flatten to `spacing15`
-- Case sensitivity issues: `tokenName` vs `TokenName` create duplicates
-
-**Forbidden characters:**
-- `/` - Creates groups in Figma
-- `$` - Reserved for spec properties (`$type`, `$value`)
-- `{ }` - Reference syntax, "totally breaks the code"
-- `[ ] ( )` - Cause "undesirable results" in code transformation
-- Spaces, emojis, special symbols - Require custom transformations
-
-**Forbidden names (anatomical terms):**
-- `name`, `type`, `value`, `description` - Functionally reserved by spec
-
-**Prevention:**
-```
-// WRONG - Multiple problems
-{
-  "$primary-color": { ... },           // Starts with $
-  "spacing/large": { ... },            // Contains /
-  "color{accent}": { ... },            // Contains { }
-  "font-size[mobile]": { ... },        // Contains [ ]
-  "spacing.1.5": { ... },              // Ambiguous flattening
-  "Primary Color": { ... }             // Contains space
-}
-
-// CORRECT - Clean, safe names
-{
-  "color-primary": { ... },
-  "spacing-large": { ... },
-  "color-accent": { ... },
-  "font-size-mobile": { ... },
-  "spacing-xs": { ... },               // Or spacing-150
-  "primary-color": { ... }
-}
-```
-
-**Detection:**
-- Regex validation: `/[$/\{\}\[\]\(\)\s]|^(name|type|value|description)$/`
-- Check for numeric patterns that flatten to same identifier
-- Test case sensitivity collisions
-- Lint SCSS variable names before extraction
-- Validate against Token Studio technical specs before import
-
-**Phase mapping:**
-- Phase 1: Define naming convention that forbids all reserved characters
-- Phase 2: Automated validation in extraction script
-- Phase 3: Pre-commit hook rejecting forbidden characters
-
-**Source confidence:** HIGH - [Token Studio Technical Specs](https://docs.tokens.studio/manage-tokens/token-names/technical-specs)
-
----
-
-### Pitfall 4: Broken Token References After Filtering
-
-**What goes wrong:** Using `outputReferences: true` with filters creates broken references when referenced tokens are filtered out.
-
-**Why it happens:** Style Dictionary outputs token references (`{color.primary}`) instead of values, but if `color.primary` is filtered from the output, the reference points to nothing.
-
-**Consequences:**
-- Generated CSS/JSON contains unresolved references: `var(--color-primary)` where `--color-primary` doesn't exist
-- Runtime errors in consuming applications
-- Token Studio can't import files with dangling references
-- Build succeeds but output is broken
-
-**Prevention:**
-```javascript
-// WRONG - References break when target is filtered
-{
-  platforms: {
-    css: {
-      transformGroup: 'css',
-      files: [{
-        destination: 'variables.css',
-        format: 'css/variables',
-        options: {
-          outputReferences: true // Dangerous with filters!
+  "// WRONG - 540 tokens for buttons": "",
+  "button": {
+    "primary": {
+      "small": {
+        "default": {
+          "background": { "$value": "{color.brand.primary}" },
+          "border": { "$value": "{color.brand.primary}" },
+          "text-color": { "$value": "{color.text.on-brand}" },
+          "padding-x": { "$value": "12px" },
+          "padding-y": { "$value": "6px" },
+          "font-size": { "$value": "14px" }
         },
-        filter: (token) => token.attributes.category === 'color'
-      }]
+        "hover": { "...": "..." },
+        "focus": { "...": "..." }
+      },
+      "medium": { "...": "..." },
+      "large": { "...": "..." }
     }
-  }
-}
+  },
 
-// CORRECT - Use outputReferencesFilter utility
-import { outputReferencesFilter } from 'style-dictionary/utils';
-
-{
-  files: [{
-    destination: 'variables.css',
-    format: 'css/variables',
-    filter: outputReferencesFilter, // Only outputs refs when target exists
-    options: {
-      outputReferences: true
+  "// CORRECT - ~20 tokens for buttons": "",
+  "button": {
+    "primary": {
+      "background": { "$value": "{color.action.primary}" },
+      "background-hover": { "$value": "{color.action.primary-hover}" },
+      "border-color": { "$value": "{color.action.primary}" },
+      "text-color": { "$value": "{color.text.inverse}" }
+    },
+    "secondary": {
+      "background": { "$value": "{color.surface.secondary}" },
+      "border-color": { "$value": "{color.border.default}" },
+      "text-color": { "$value": "{color.text.primary}" }
     }
-  }]
+  },
+  "// Size handled by existing spacing tokens, states by opacity modifiers": ""
 }
 ```
 
+**Warning signs:**
+- Token count >100 for single component
+- Many tokens with identical values but different state/size names
+- Designer feedback: "Too many options, can't find what I need"
+- Token names exceed 60 characters
+- Multiple tokens for properties that could use calculation (padding-x vs padding-y)
+
+**Phase to address:**
+- **Phase 1 (Research):** Define component token scope criteria — what deserves a token?
+- **Phase 2 (Architecture):** Document inheritance model — component → semantic → core
+- **Phase 3 (Implementation):** Editorial review of every proposed token — justify existence
+
+**Recovery cost if occurs:** HIGH - Requires complete restructuring, token deprecation strategy, migration of existing Figma files
+
+**Sources:**
+- [Component-level Design Tokens: are they worth it?](https://medium.com/@NateBaldwin/component-level-design-tokens-are-they-worth-it-d1ae4c6b19d4) - Real-world 500+ token example
+- [The context dilemma: design tokens and components](https://frontside.com/blog/2021-01-15-design-tokens-and-components/) - Token explosion analysis
+- v1.0 project learnings: 192 tokens proved too many for practical Figma use
+
+---
+
+### Pitfall 2: CSS Property Naming Without Figma Component Property Mapping
+
+**What goes wrong:** Token names follow CSS property conventions but don't match Figma component property names, breaking designer adoption.
+
+**Why it happens:**
+- Developer-first naming: `button-primary-background-color` matches CSS `background-color`
+- Figma Auto Layout uses different terms: "Fill" not "background", "Padding" not "padding-x/padding-y"
+- Token Studio can't auto-map CSS property names to Figma properties
+- No bridge between developer CSS thinking and designer Figma thinking
+- v1.0 learned this: tokens existed but designers didn't know which token mapped to which Figma property
+
+**Real-world disconnect:**
+```
+CSS Property          Figma Property         Token Name Problem
+-----------------------------------------------------------------
+background-color   →  Fill                  button-background vs button-fill?
+border             →  Stroke                button-border vs button-stroke?
+padding-left       →  Padding (left)        Figma shows "Padding" not "padding-x"
+font-weight        →  Weight (in typography) font-weight vs typography-weight?
+box-shadow         →  Effects               button-shadow vs button-effect?
+opacity            →  Layer opacity         state-opacity or layer-opacity?
+```
+
+**Consequences:**
+- Designers can't find correct token when looking at Figma component properties
+- Token Studio requires manual application instead of auto-mapping
+- Documentation must explain "use button-background for Figma's Fill property"
+- Low adoption: designers give up and use hard-coded values
+- v2.0 goal of component-property mapping fails
+
+**How to avoid:**
+- **Dual naming consideration:** Token names should work for both CSS developers AND Figma designers
+- **Property-first naming:** `button-primary-fill` (Figma term) with CSS variable `--button-primary-background-color` (developer term)
+- **Documentation layer:** Explicit mapping table in docs: "button-fill → background-color in CSS"
+- **Figma-first for designer-facing tokens:** Component tokens are designer-first, build process handles CSS translation
+- **Metadata for mapping:** Use `$description` to document CSS property mapping
+
+**Prevention structure:**
+```json
+{
+  "button": {
+    "primary": {
+      "fill": {
+        "$type": "color",
+        "$value": "{color.action.primary}",
+        "$description": "Button background fill. Maps to CSS background-color property."
+      },
+      "stroke": {
+        "$type": "color",
+        "$value": "{color.action.primary}",
+        "$description": "Button border stroke. Maps to CSS border-color property."
+      },
+      "padding": {
+        "$type": "dimension",
+        "$value": "{spacing.md}",
+        "$description": "Button internal padding. Maps to CSS padding property."
+      }
+    }
+  }
+}
+```
+
+**Style Dictionary transform for CSS output:**
+```javascript
+// Transform Figma-style names to CSS properties
+{
+  name: 'name/figma-to-css',
+  type: 'name',
+  transformer: (token) => {
+    return token.path
+      .join('-')
+      .replace('-fill', '-background-color')
+      .replace('-stroke', '-border-color');
+  }
+}
+```
+
+**Warning signs:**
+- Designers asking "Which token controls the button background?"
+- Token Studio applications require manual searching
+- Disconnect between design handoff and developer implementation
+- Designers reverting to hard-coded hex values instead of tokens
+- Documentation has extensive "token translation" sections
+
+**Phase to address:**
+- **Phase 1 (Research):** Document Figma component property names vs CSS properties
+- **Phase 2 (Architecture):** Define naming convention that bridges both worlds
+- **Phase 3 (Implementation):** Build Style Dictionary transform for CSS output renaming
+- **Phase 4 (Documentation):** Create explicit mapping table in designer documentation
+
+**Recovery cost if occurs:** MEDIUM - Token renaming strategy, Figma file updates, developer CSS updates
+
+**Sources:**
+- [Design Tokens in Practice: From Figma Variables to Production Code](https://www.designsystemscollective.com/design-tokens-in-practice-from-figma-variables-to-production-code-fd40aeccd6f5)
+- [Figma Variable Settings for Design-to-Code Workflows](https://medium.com/design-bootcamp/figma-variable-settings-for-design-to-code-workflows-186e97efbac9)
+- v1.0 learnings: Token names didn't match Figma component properties, blocking adoption
+
+---
+
+### Pitfall 3: Reference Chain Overcomplexity (4+ levels deep)
+
+**What goes wrong:** Component tokens reference semantic tokens which reference other semantic tokens which reference core tokens, creating unresolvable chains and circular references.
+
+**Why it happens:**
+- Three-tier architecture (core → semantic → component) encourages multi-level aliasing
+- No limit in DTCG spec: "no limit to how far a series of token references can go"
+- Each tier adds references: `{button.primary.fill}` → `{color.action.primary}` → `{color.interactive.base}` → `{color.blue.500}` → `#0066cc`
+- Token Studio free tier merged file resolution can't handle deep chains
+- Style Dictionary `outputReferences: true` breaks when intermediate tokens filtered
+
+**Real-world problem chain:**
+```json
+{
+  "// Level 0 - Core (primitives)": "",
+  "color": {
+    "blue": {
+      "500": { "$value": "#0066cc" }
+    }
+  },
+
+  "// Level 1 - Semantic (functional)": "",
+  "color": {
+    "interactive": {
+      "base": { "$value": "{color.blue.500}" }
+    }
+  },
+
+  "// Level 2 - Semantic (context)": "",
+  "color": {
+    "action": {
+      "primary": { "$value": "{color.interactive.base}" }
+    }
+  },
+
+  "// Level 3 - Component": "",
+  "button": {
+    "primary": {
+      "fill": { "$value": "{color.action.primary}" }
+    }
+  },
+
+  "// RESULT: 4-level chain": "",
+  "// {button.primary.fill} → {color.action.primary} → {color.interactive.base} → {color.blue.500} → #0066cc": "",
+
+  "// PROBLEM: If Token Studio free tier can't resolve cross-file refs, merged file must flatten ALL": ""
+}
+```
+
+**Consequences:**
+- Token Studio import failures on merged file with deep references
+- Circular reference errors when component tokens accidentally reference each other
+- Style Dictionary warnings: "broken reference" when intermediate token filtered
+- Debugging becomes impossible: "What's the actual value of this token?"
+- Performance degradation in Figma with deep resolution chains
+- v1.0 merge script requirement compounds this: merged file must flatten references
+
+**How to avoid:**
+- **Maximum 2-level references:** Component → Semantic → Core. No semantic → semantic chains
+- **Direct core references acceptable:** Skip semantic layer for unique component values
+- **Flatten at build time:** Use Style Dictionary to resolve references before Figma export
+- **Validation:** Automated tests detect reference depth >2 levels
+- **Token Studio constraint:** Merged file (free tier) should have pre-resolved values, not references
+
+**Prevention structure:**
+```json
+{
+  "// WRONG - 4 levels deep": "",
+  "{button.primary.fill} → {color.action.primary} → {color.interactive.base} → {color.blue.500}": "",
+
+  "// CORRECT - Maximum 2 levels": "",
+  "button": {
+    "primary": {
+      "fill": { "$value": "{color.action.primary}" }
+    }
+  },
+  "color": {
+    "action": {
+      "primary": { "$value": "{color.blue.500}" }
+    }
+  },
+  "color": {
+    "blue": {
+      "500": { "$value": "#0066cc" }
+    }
+  },
+
+  "// OR - Direct reference when appropriate": "",
+  "button": {
+    "primary": {
+      "fill": { "$value": "{color.blue.500}" }
+    }
+  }
+}
+```
+
+**Detection strategy:**
+```javascript
+// Automated reference depth checker
+function checkReferenceDepth(tokens, maxDepth = 2) {
+  const resolveDepth = (tokenValue, depth = 0) => {
+    if (depth > maxDepth) {
+      throw new Error(`Reference chain exceeds ${maxDepth} levels`);
+    }
+
+    const refMatch = tokenValue.match(/\{([^}]+)\}/);
+    if (!refMatch) return depth; // No reference, base case
+
+    const referencedToken = getTokenByPath(tokens, refMatch[1]);
+    return resolveDepth(referencedToken.$value, depth + 1);
+  };
+
+  // Check all tokens
+  Object.values(tokens).forEach(token => {
+    if (token.$value?.startsWith('{')) {
+      resolveDepth(token.$value);
+    }
+  });
+}
+```
+
+**Warning signs:**
+- Style Dictionary build warnings about broken references
+- Token Studio slow performance or import failures
+- Circular reference errors during build
+- Merged Figma file has `{color.action.primary}` instead of resolved values
+- Debugging requires tracing through 4+ token definitions
+
+**Phase to address:**
+- **Phase 1 (Research):** Define reference depth policy (recommend max 2 levels)
+- **Phase 2 (Architecture):** Document valid reference patterns in token structure
+- **Phase 3 (Implementation):** Build validation script rejecting deep chains
+- **Phase 4 (Build):** Style Dictionary config resolves references for Figma output
+
+**Recovery cost if occurs:** MEDIUM - Refactor semantic layer to flatten chains, update all component tokens
+
+**Sources:**
+- [Design Tokens Format Module 2025.10](https://www.designtokens.org/tr/drafts/format/) - No reference depth limit in spec
+- [The Essential Principles of a Scalable Token Architecture](https://www.supernova.io/blog/scalable-token-architecture-principles)
+- v1.0 learnings: Token Studio free tier merged file required, cross-file resolution failed
+
+---
+
+### Pitfall 4: Incomplete Implementation (Figma Variables Without Code Sync)
+
+**What goes wrong:** Team creates Figma variables and Token Studio tokens but never establishes automated sync to production code, leaving design and development diverged.
+
+**Why it happens:**
+- "Figma variables don't automatically sync to code" - requires build pipeline
+- v1.0 achieved Token Studio → JSON → Style Dictionary → CSS pipeline, but it's manual
+- No automated trigger: designer changes in Figma don't trigger builds
+- Missing reverse sync: developer CSS changes don't update Figma
+- "Most teams implement tokens halfway—they set up Figma variables, export some JSON, and wonder why their design system still feels disconnected"
+
+**Consequences:**
+- Design files show one token value, production code uses different value
+- Designers change tokens in Figma, developers never get updates
+- Developers update CSS variables, designers unaware of changes
+- "Design-code drift" undermines token system value proposition
+- Manual export/import process fragile, depends on individual remembering to sync
+- v2.0 can't achieve component-level adoption without reliable sync
+
+**How to avoid:**
+- **Automated pipeline:** GitHub Actions workflow triggered on token file changes
+- **Single source of truth decision:** Either Figma Variables (designer-led) OR Token JSON (developer-led), not both
+- **Build-time validation:** CI fails if Figma export doesn't match production tokens
+- **Documentation of sync process:** Explicit instructions for "How to update tokens"
+- **Versioning:** Token changes trigger version bump, changelog entry
+
+**Prevention architecture:**
+```yaml
+# .github/workflows/tokens-sync.yml
+name: Sync Design Tokens
+
+on:
+  push:
+    paths:
+      - 'tokens/**/*.json'
+  workflow_dispatch:
+
+jobs:
+  build-tokens:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate token JSON
+        run: npm run validate:tokens
+
+      - name: Build Style Dictionary
+        run: npm run build:tokens
+
+      - name: Generate Figma merged file
+        run: npm run build:tokens-figma
+
+      - name: Run token tests
+        run: npm run test:tokens
+
+      - name: Commit generated files
+        run: |
+          git config user.name "Token Bot"
+          git add tokens/dist/
+          git commit -m "chore: rebuild tokens"
+          git push
+```
+
+**Single source of truth options:**
+```
+Option A: Figma-first (designer-led)
+- Designers update Figma Variables
+- Token Studio exports to JSON (manual step)
+- Developer commits JSON, triggers build
+- Downside: Manual export step, depends on designer remembering
+
+Option B: Code-first (developer-led) [RECOMMENDED for v2.0]
+- Developers update tokens/*.json directly
+- Style Dictionary builds CSS variables
+- Separate script builds tokens-figma.json (merged file)
+- Designers import merged file to Token Studio
+- Figma Variables updated from Token Studio
+- Upside: Git versioning, automated builds, CI validation
+
+Option C: Bidirectional sync (complex)
+- Requires custom tooling
+- High maintenance cost
+- Risk of conflicts
+- Not recommended unless large team with dedicated tooling engineer
+```
+
+**Warning signs:**
+- Designer asks "Why doesn't production match my Figma file?"
+- Developer updates CSS variables without updating token JSON
+- Token export/import happens <1x per month (indicates broken workflow)
+- Production CSS variables diverge from tokens/*.json
+- No automated tests for token consistency
+
+**Phase to address:**
+- **Phase 1 (Research):** Decide single source of truth (Figma vs code)
+- **Phase 2 (Architecture):** Design automated sync pipeline
+- **Phase 3 (Implementation):** Build GitHub Actions workflow
+- **Phase 4 (Documentation):** Document token update process for team
+
+**Recovery cost if occurs:** HIGH - Requires manual audit of design vs code, reconciliation, then building automation
+
+**Sources:**
+- [Design Tokens in Practice: From Figma Variables to Production Code](https://www.designsystemscollective.com/design-tokens-in-practice-from-figma-variables-to-production-code-fd40aeccd6f5) - "Most teams implement tokens halfway"
+- [Understanding the Differences Between Figma Variables and Design Tokens](https://www.supernova.io/blog/understanding-the-differences-between-figma-variables-and-design-tokens)
+- v1.0 learnings: Manual build process works but requires discipline
+
+---
+
+### Pitfall 5: Integration Failures Between Component Tokens and Existing Core/Semantic Tiers
+
+**What goes wrong:** Component tokens added to existing system don't properly reference semantic layer, creating isolated token silos and duplicating values.
+
+**Why it happens:**
+- Component tokens developed in isolation from existing v1.0 core/semantic tokens
+- Developers create new semantic tokens for components instead of reusing existing
+- No validation that component tokens reference existing tiers
+- Token Studio free tier merged file obscures reference relationships
+- Bootstrap 5 integration adds third token source (Bootstrap vars, v1.0 tokens, v2.0 component tokens)
+
+**Real-world integration failure:**
+```json
+{
+  "// EXISTING v1.0 semantic tokens": "",
+  "color": {
+    "action": {
+      "primary": { "$value": "{color.blue.500}" }
+    },
+    "text": {
+      "on-brand": { "$value": "{color.white}" }
+    }
+  },
+
+  "// WRONG - v2.0 component tokens bypass existing semantic layer": "",
+  "button": {
+    "primary": {
+      "background": { "$value": "#0066cc" },  // Hard-coded, not referencing existing semantic
+      "text-color": { "$value": "#ffffff" }   // Duplicates color.text.on-brand
+    }
+  },
+
+  "// CORRECT - v2.0 integrates with existing semantic tokens": "",
+  "button": {
+    "primary": {
+      "background": { "$value": "{color.action.primary}" },  // References existing
+      "text-color": { "$value": "{color.text.on-brand}" }    // Reuses existing
+    }
+  }
+}
+```
+
+**Consequences:**
+- Value duplication: same color `#0066cc` defined in 3 places (core, semantic, component)
+- Rebrand requires updating component tokens separately from semantic tokens
+- Component tokens don't inherit theming changes to semantic layer
+- Token count increases unnecessarily (v1.0 had 192, v2.0 adds 150 more instead of 20)
+- No single source of truth for brand colors
+- Bootstrap variables disconnected from token system
+
+**Bootstrap-specific integration challenge:**
+```scss
+// Bootstrap 5 existing variables
+$primary: #0066cc;
+$btn-padding-y: 0.375rem;
+$btn-border-radius: 0.25rem;
+
+// v1.0 extracted as core tokens
+color.blue.500: #0066cc
+spacing.xs: 0.375rem
+border-radius.sm: 0.25rem
+
+// v2.0 component tokens must bridge both:
+button.primary.background → {color.action.primary} → {color.blue.500} → matches $primary ✓
+button.padding-y → {spacing.xs} → matches $btn-padding-y ✓
+
+// WRONG - bypassing existing tokens:
+button.primary.background: #0066cc  // Duplicates Bootstrap $primary and color.blue.500
+```
+
+**How to avoid:**
+- **Audit existing tokens first:** Inventory all v1.0 core and semantic tokens before creating component tokens
+- **Reuse-first policy:** Component tokens MUST reference existing semantic tokens unless unique value required
+- **Integration validation:** Automated test ensures component tokens don't duplicate core/semantic values
+- **Bootstrap mapping:** Document which Bootstrap variables map to which tokens
+- **Three-tier enforcement:** Component → Semantic → Core. No skipping layers (except for truly unique values)
+
+**Prevention workflow:**
+```
+Before creating new component token:
+
+1. Check: Does semantic layer have this concept?
+   → YES: Reference semantic token
+   → NO: Proceed to step 2
+
+2. Check: Does core layer have this value?
+   → YES: Create new semantic token referencing core, then reference semantic from component
+   → NO: Proceed to step 3
+
+3. Check: Does Bootstrap have this variable?
+   → YES: Extract to core, create semantic, reference from component
+   → NO: Create as truly unique component token (rare)
+
+Example:
+Need: button.primary.background
+
+1. Semantic layer has color.action.primary? YES → Use it
+   button.primary.background: {color.action.primary}
+
+2. If NO semantic exists:
+   Core has color.blue.500? YES → Create semantic first
+   color.action.primary: {color.blue.500}
+   button.primary.background: {color.action.primary}
+
+3. If neither exist:
+   Bootstrap has $primary? YES → Extract to core, build up
+   color.blue.500: #0066cc (from $primary)
+   color.action.primary: {color.blue.500}
+   button.primary.background: {color.action.primary}
+```
+
 **Detection:**
-- Style Dictionary warnings: "broken reference" in build output
-- Search generated files for undefined variable references
-- Validate that every `{reference}` has a corresponding token definition
-- Test import into Token Studio (fails on unresolved references)
+- Duplicate values: Same hex color/dimension in multiple tokens
+- Component tokens with hard-coded values instead of references
+- Grep for `"$value": "#"` in component tokens (indicates hard-coded color)
+- Reference graph analysis: orphaned component tokens not connected to semantic layer
+- Style Dictionary build output shows no references for component tokens
 
-**Phase mapping:**
-- Phase 2: Use `outputReferencesFilter` utility from start
-- Phase 3: Automated tests validating all references resolve
-- Phase 4: CI/CD validation that imports succeed
+**Warning signs:**
+- v2.0 adds >100 tokens when <30 expected
+- Component tokens can't be themed (hard-coded values)
+- Changing semantic token doesn't affect component tokens
+- Documentation doesn't show token hierarchy
+- Bootstrap updates require updating tokens separately
 
-**Source confidence:** HIGH - [Style Dictionary References docs](https://styledictionary.com/reference/utils/references/)
+**Phase to address:**
+- **Phase 1 (Research):** Audit all v1.0 tokens, categorize as core/semantic
+- **Phase 2 (Architecture):** Design integration strategy - how component tokens reference existing tiers
+- **Phase 3 (Implementation):** Build validation ensuring component tokens reference existing tokens
+- **Phase 4 (Migration):** Refactor any duplicated values to use references
+
+**Recovery cost if occurs:** HIGH - Requires refactoring all component tokens to add proper references, potentially restructuring semantic layer
+
+**Sources:**
+- [Component-tokens first? Hear me out...](https://medium.com/@hereinthehive/component-tokens-first-hear-me-out-6258f54935a9)
+- [The context dilemma: design tokens and components](https://frontside.com/blog/2021-01-15-design-tokens-and-components/)
+- v1.0 learnings: 192 tokens extracted without clear tier separation, needed refactoring
 
 ---
 
 ## Moderate Pitfalls
 
-Mistakes that cause delays, technical debt, or require significant refactoring.
+Mistakes that cause delays, technical debt, or require significant refactoring but don't block project.
 
-### Pitfall 5: Extracting SCSS Functions and Mixins as Tokens
+### Pitfall 6: Form Component Token Overspecificity
 
-**What goes wrong:** Attempting to extract computed values from SCSS `@function` or `@mixin` calls fails because they require runtime evaluation.
-
-**Why it happens:** Design tokens must be static values. SCSS functions/mixins are code that computes values dynamically, which can't be represented in JSON without executing the Sass compiler.
-
-**Consequences:**
-- Extraction scripts skip function calls, losing design decisions
-- Manually computed values diverge from SCSS source of truth
-- No way to represent logic in token format: `spacing(2)` can't become JSON
-- Missing semantic relationships (e.g., "spacing-medium is 2× spacing-base")
-
-**Examples of unextractable patterns:**
-```scss
-// Functions - require evaluation
-$spacing-large: spacing-scale(3); // What's the output without running Sass?
-
-// Mixins - generate multiple properties
-@mixin button-primary {
-  background: $color-primary;
-  padding: spacing(2);
-}
-
-// Calculations
-$header-height: $base-unit * 8 + $border-width;
-
-// Interpolation in selectors
-.theme-#{$brand-color} { ... }
-```
-
-**Prevention:**
-- **Audit strategy:** Identify computed values before extraction
-- **Compile-first approach:** Run `sass` to generate CSS, then extract from CSS (loses semantic structure)
-- **Manual decomposition:** Replace function calls with static values in a tokens-only SCSS file
-- **Accept limitations:** Document that dynamic patterns won't be tokenized
-
-**Detection:**
-- Grep for `@function`, `@mixin`, `@include` in SCSS files
-- Search for arithmetic operators: `* / + -` in value positions
-- Identify interpolation: `#{...}` in values
-- Count how many "design decisions" are in functions vs variables
-
-**Phase mapping:**
-- Phase 1: Audit all SCSS for computed patterns (categorize as extractable/not)
-- Phase 2: Create static token file from computed values (compile to get values)
-- Phase 3: Document unextractable patterns for manual maintenance
-
-**Source confidence:** MEDIUM - Verified through [Sass documentation](https://sass-lang.com/documentation/at-rules/mixin/) and community articles
-
----
-
-### Pitfall 6: Over-Extraction (Token Explosion)
-
-**What goes wrong:** Extracting every SCSS variable creates hundreds of tokens that are too granular for practical use.
+**What goes wrong:** Creating separate token sets for every form element (text input, select, checkbox, radio, textarea, date picker) instead of shared form tokens.
 
 **Why it happens:**
-- Programmatic extraction captures everything without editorial judgment
-- Bootstrap 5 has 600+ variables, many internal/computed
-- No distinction between "API tokens" (public) and "internal variables" (private)
-- Fear of missing something leads to "extract everything" approach
+- HTML form elements are semantically different (`<input>`, `<select>`, `<textarea>`)
+- Bootstrap has element-specific variables (`$input-padding-y`, `$select-padding-y`)
+- Component-first thinking: "Each component needs its own tokens"
+- Missing abstraction: "Form control" as shared concept
 
 **Consequences:**
-- Token Studio performance degradation with 500+ tokens
-- Designers overwhelmed by choice, can't find the right token
-- Maintenance burden: updating 1 design decision requires changing 20 tokens
-- Documentation becomes unmanageable
-- "Excessive design choice can slow down design work and make communication unnecessarily granular" ([The Design System Guide](https://thedesignsystem.guide/design-tokens))
+- Token explosion: 20 properties × 6 form elements = 120 tokens
+- Inconsistent forms: text input padding differs from select padding (unintentional)
+- Maintenance burden: updating form styling requires 6 token changes
+- Missed opportunity for form consistency
 
-**Prevention:**
-- **Tiered extraction:** Extract only primitive/global tokens first
-  - Primitives: `color-blue-500`, `spacing-base`
-  - Skip component tokens: `button-padding-x` (let components reference primitives)
-- **Editorial review:** Not every variable is a token
-- **80/20 rule:** 20% of tokens drive 80% of usage
-- **Bootstrap-specific:** Extract `$theme-colors`, `$spacers`, `$font-sizes` but skip internal calculation variables
+**How to avoid:**
+- **Shared form tokens:** `form.control.padding` applies to all form elements
+- **Override pattern:** `form.select.padding` only when select needs different value
+- **Default + exception:** Most form elements share tokens, exceptions documented
 
-**Detection:**
-- Token count >200 for initial extraction (warning sign)
-- Many tokens with zero usage in designs
-- Tokens that are just mathematical variations of others
-- Naming conflicts indicating over-granularity
-
-**Phase mapping:**
-- Phase 1: Define extraction criteria (what makes a variable a token?)
-- Phase 2: Extract only tier-1 primitives (colors, spacing, typography)
-- Phase 3: Add semantic aliases based on actual usage patterns
-- Phase 4: Add component tokens only if needed
-
-**Source confidence:** MEDIUM - Synthesized from multiple sources including design token best practices articles
-
----
-
-### Pitfall 7: Under-Extraction (Missing Semantic Layer)
-
-**What goes wrong:** Extracting only primitive values without semantic aliases creates brittle designs that break when brand changes.
-
-**Why it happens:**
-- Focus on SCSS variables as-is without considering token tiers
-- Extraction treats `$primary-color: #0066cc` as complete
-- Missing intermediate layer: primitive → semantic → component
-
-**Consequences:**
-- Designs hard-code `color-blue-500` everywhere
-- Rebrand requires changing 100 components instead of 1 token
-- No semantic meaning: "What's the accent color?" requires reading code
-- Components coupled to primitives instead of semantic intent
-
-**Prevention - Three-tier structure:**
+**Prevention structure:**
 ```json
 {
-  "// TIER 1: Primitives (from SCSS extraction)": "",
-  "color": {
-    "blue": {
-      "500": { "$type": "color", "$value": "#0066cc" }
-    }
+  "// WRONG - Element-specific duplication": "",
+  "form": {
+    "input": {
+      "padding-y": { "$value": "8px" },
+      "border-color": { "$value": "{color.border.default}" },
+      "background": { "$value": "{color.surface.default}" }
+    },
+    "select": {
+      "padding-y": { "$value": "8px" },  // Duplicate
+      "border-color": { "$value": "{color.border.default}" },  // Duplicate
+      "background": { "$value": "{color.surface.default}" }  // Duplicate
+    },
+    "textarea": { "...": "..." }
   },
 
-  "// TIER 2: Semantic aliases (add during Phase 3)": "",
-  "color": {
-    "brand": {
-      "primary": { "$type": "color", "$value": "{color.blue.500}" }
+  "// CORRECT - Shared form control tokens": "",
+  "form": {
+    "control": {
+      "padding-y": { "$value": "{spacing.sm}" },
+      "padding-x": { "$value": "{spacing.md}" },
+      "border-color": { "$value": "{color.border.default}" },
+      "border-radius": { "$value": "{border-radius.sm}" },
+      "background": { "$value": "{color.surface.default}" },
+      "text-color": { "$value": "{color.text.primary}" }
+    },
+    "select": {
+      "icon-padding": { "$value": "{spacing.lg}" }  // Only unique property
     }
-  },
+  }
+}
+```
 
-  "// TIER 3: Component tokens (add in Phase 4)": "",
+**Warning signs:**
+- Multiple form element tokens with identical values
+- Form controls visually inconsistent (unintended differences)
+- Token count for forms >50
+
+**Phase to address:**
+- **Phase 2 (Architecture):** Define shared form control concept
+- **Phase 3 (Implementation):** Create shared tokens first, exceptions second
+
+---
+
+### Pitfall 7: State Token Misapplication (Hover/Focus/Active/Disabled)
+
+**What goes wrong:** Creating fully specified tokens for every state instead of using state modifiers.
+
+**Why it happens:**
+- Literal translation of CSS: `:hover`, `:focus`, `:active` are separate selectors
+- Component-focused extraction: button has 5 states, create 5 token sets
+- Missing abstraction: state as modifier, not separate token
+
+**Consequences:**
+- Token explosion: 3 variants × 5 states = 15 background color tokens for buttons
+- State inconsistency: hover opacity differs between buttons and forms (unintentional)
+- Can't change hover effect globally (must update 15 tokens)
+
+**How to avoid:**
+- **State modifiers:** `state.hover.opacity: 0.9` applied to any component
+- **Semantic state colors:** `color.interactive.hover` references core color
+- **Component base + state modifier:** `button.primary.background` + `state.hover.overlay`
+
+**Prevention structure:**
+```json
+{
+  "// WRONG - State-specific duplication": "",
   "button": {
     "primary": {
-      "background": { "$type": "color", "$value": "{color.brand.primary}" }
+      "background": { "$value": "{color.action.primary}" },
+      "background-hover": { "$value": "#0052a3" },  // Darker version
+      "background-focus": { "$value": "#0052a3" },  // Same as hover
+      "background-active": { "$value": "#003d7a" }, // Even darker
+      "background-disabled": { "$value": "#cccccc" }
+    }
+  },
+
+  "// CORRECT - Base + state modifiers": "",
+  "button": {
+    "primary": {
+      "background": { "$value": "{color.action.primary}" }
+    }
+  },
+  "state": {
+    "hover": {
+      "darken": { "$value": "10%" }  // CSS filter or mix-color
+    },
+    "active": {
+      "darken": { "$value": "20%" }
+    },
+    "disabled": {
+      "opacity": { "$value": "0.5" }
     }
   }
 }
 ```
 
-**Detection:**
-- All token references are primitives (no semantic meaning)
-- Component updates require changing multiple primitive references
-- Designers ask "Which blue should I use?" (no clear answer)
-
-**Phase mapping:**
-- Phase 1-2: Extract primitives from SCSS
-- Phase 3: Add semantic layer (brand colors, functional roles)
-- Phase 4: Add component layer based on usage patterns
-
-**Source confidence:** HIGH - [Design token naming best practices](https://www.netguru.com/blog/design-token-naming-best-practices)
-
----
-
-### Pitfall 8: Overspecific Component-Coupled Naming
-
-**What goes wrong:** Token names tied to specific components (`button-primary-background`) can't be reused elsewhere.
-
-**Why it happens:** Naming mirrors SCSS structure which is component-focused. Extraction process preserves component coupling without considering reusability.
-
-**Consequences:**
-- "Design tokens tied to particular components limit reusability and adaptability" ([Common Mistakes in Design Tokens](https://designtokens.substack.com/p/common-mistakes-in-design-tokens))
-- Can't reuse `button-primary-background` for cards/badges
-- Token proliferation: need `card-primary-background`, `badge-primary-background` for same color
-- Difficult to enforce consistency across similar components
-
-**Prevention:**
-```json
-// WRONG - Component-coupled
-{
-  "button-primary-background": { "$value": "#0066cc" },
-  "card-accent-background": { "$value": "#0066cc" },
-  "badge-highlight-background": { "$value": "#0066cc" }
+**CSS implementation with modifiers:**
+```css
+.btn-primary {
+  background-color: var(--button-primary-background);
 }
 
-// CORRECT - Semantic function
-{
-  "color-action-primary": { "$value": "#0066cc" },
-  "color-surface-emphasis": { "$value": "#0066cc" }
+.btn-primary:hover {
+  filter: brightness(calc(1 - var(--state-hover-darken)));
+}
+
+.btn-primary:disabled {
+  opacity: var(--state-disabled-opacity);
 }
 ```
 
-**Detection:**
-- Many tokens with identical values but different component names
-- Token names start with component names: `button-*`, `card-*`, `input-*`
-- Requests to add "the same color but for X component"
+**Warning signs:**
+- Many component tokens ending in `-hover`, `-focus`, `-active`
+- Same state treatment duplicated across components
+- Can't change hover effect globally
 
-**Phase mapping:**
-- Phase 1: Flag component-specific variables during SCSS audit
-- Phase 2: Extract as primitives, not component tokens
-- Phase 3: Create semantic tokens representing intent, not component
-- Phase 4: Document which components use which semantic tokens
-
-**Source confidence:** HIGH - [Common Mistakes in Design Tokens](https://designtokens.substack.com/p/common-mistakes-in-design-tokens)
+**Phase to address:**
+- **Phase 2 (Architecture):** Define state modifier strategy
+- **Phase 3 (Implementation):** Create shared state tokens
 
 ---
 
-## Minor Pitfalls
+### Pitfall 8: Token Studio Free Tier Merged File Reference Loss
 
-Mistakes that cause annoyance or require cleanup but are easily fixable.
+**What goes wrong:** Flattening tokens to merged file for Token Studio free tier loses reference relationships, breaking semantic structure.
 
-### Pitfall 9: Inconsistent Naming Conventions
-
-**What goes wrong:** Mixing naming styles (kebab-case, snake_case, camelCase) within the same token set.
-
-**Why it happens:** Different SCSS files use different conventions, extraction preserves inconsistency.
-
-**Consequences:**
-- Hard to remember which tokens use which style
-- Autocomplete less helpful (can't predict format)
-- Looks unprofessional in documentation
-- Sorting/grouping becomes arbitrary
-
-**Prevention:**
-- Choose one convention (kebab-case recommended for cross-platform compatibility)
-- Transform all extracted names to match convention
-- Document the standard in Phase 1
-
-**Detection:**
-- Regex search for multiple case styles in same file
-- Linter rules for token naming
-
-**Phase mapping:** Phase 2 (extraction script normalizes all names)
-
----
-
-### Pitfall 10: Missing Token Documentation
-
-**What goes wrong:** Tokens without `$description` leave teams guessing at proper usage.
-
-**Why it happens:** SCSS variables rarely have comments, extraction doesn't add descriptions.
+**Why it happens:**
+- v1.0 learned: Token Studio free tier can't resolve cross-file references
+- Merge script resolves all references to final values
+- Merged file shows `#0066cc` instead of `{color.action.primary}`
+- Designers lose understanding of token relationships
 
 **Consequences:**
-- "Lack of documentation confuses teams about proper token usage" ([Common Mistakes](https://designtokens.substack.com/p/common-mistakes-in-design-tokens))
-- Duplicate tokens created because existing ones aren't discoverable
-- Misuse of tokens for unintended purposes
+- Designers don't understand token hierarchy
+- Can't see what changes when rebrand updates core colors
+- Merged file becomes source of truth, bypassing semantic structure
+- Token Studio shows flat list, not organized hierarchy
 
-**Prevention:**
+**How to avoid:**
+- **Documentation:** Explain that Figma file shows resolved values, JSON has references
+- **Maintain both:** tokens/*.json (with references) + tokens-figma.json (resolved)
+- **Token Studio organization:** Use Token Sets to group related tokens
+- **Comments in merged file:** Include comments explaining reference structure
+
+**Prevention approach:**
 ```json
 {
-  "color-action-primary": {
-    "$type": "color",
-    "$value": "#0066cc",
-    "$description": "Primary interactive color for buttons, links, and CTAs. Meets WCAG AA on white backgrounds."
+  "// tokens-figma.json (merged file for Token Studio)": "",
+  "$comment": "This file contains resolved values. See tokens/core.json and tokens/semantic.json for reference structure.",
+
+  "button": {
+    "primary": {
+      "background": {
+        "$value": "#0066cc",
+        "$description": "References {color.action.primary} which references {color.blue.500}"
+      }
+    }
   }
 }
 ```
 
-**Detection:**
-- Count tokens without `$description` property
-- User research: do designers know when to use each token?
+**Warning signs:**
+- Designers unaware of token hierarchy
+- Questions like "If I change this blue, what else changes?"
+- Merged file is only file designers look at
 
-**Phase mapping:**
-- Phase 2: Extract with placeholder descriptions
-- Phase 3: Designer reviews and writes real descriptions
-- Phase 4: Documentation site generation
+**Phase to address:**
+- **Phase 3 (Implementation):** Build merge script that preserves reference info in descriptions
+- **Phase 4 (Documentation):** Explain token hierarchy to designers
 
----
-
-### Pitfall 11: Token Studio Sync Configuration Errors
-
-**What goes wrong:** Leading slashes in file paths, expired PATs, or missing permissions prevent Token Studio from syncing.
-
-**Why it happens:** Token Studio requires specific path formats and GitHub token configurations.
-
-**Consequences:**
-- "Error syncing with Provider" message
-- Buttons grayed out (read-only mode)
-- Push failures after previous successful syncs
-- Developers can't contribute because branch protection blocks main
-
-**Prevention:**
-```
-// WRONG file paths
-"/Themes"
-"/tokens/colors.json"
-
-// CORRECT file paths
-"Themes"
-"tokens/colors.json"
-
-// Required PAT scopes
-✓ repo (or public_repo for public repos)
-✓ Read & Write access
-✓ Not expired
-
-// Workflow
-✓ Feature branch strategy (not direct to main)
-✓ Pull request workflow for protected branches
-```
-
-**Detection:**
-- Sync errors in Token Studio UI
-- Grayed-out push/pull buttons
-- 403/404 errors in browser console
-
-**Phase mapping:**
-- Phase 0: Set up GitHub integration correctly before extraction
-- Phase 4: Document Token Studio setup for team members
-
-**Source confidence:** HIGH - [Token Studio Troubleshooting](https://docs.tokens.studio/token-storage/troubleshooting-common-sync-provider-errors)
+**Source:** v1.0 learnings: Token Studio free tier merge requirement
 
 ---
 
-### Pitfall 12: Schema Validation Failure (Malformed JSON)
+### Pitfall 9: Bootstrap 5 Variable Collision with Component Tokens
 
-**What goes wrong:** Syntax errors in generated JSON (missing commas, mismatched brackets) prevent import.
+**What goes wrong:** Component tokens use same names as Bootstrap 5 SCSS variables, creating namespace conflicts.
 
 **Why it happens:**
-- Manual edits introduce errors
-- Generation script has bugs
-- Tokens placed at root level instead of nested in groups
+- Bootstrap has `$btn-*` variables
+- Component tokens create `button-*` tokens
+- Both compile to CSS variables in same namespace
+- Bootstrap 5.3+ uses CSS variables with `--bs-` prefix
+- Token system uses `--ff-` prefix but references Bootstrap variables
 
 **Consequences:**
-- "Contents Don't Pass Schema Validation" error
-- Token Studio refuses to import
-- Build fails
+- Naming confusion: `--bs-btn-padding-y` vs `--ff-button-padding-y`
+- Unclear precedence: which one wins?
+- Bootstrap updates overwrite custom tokens
+- Dual maintenance: Bootstrap variables + design tokens
 
-**Prevention:**
-- Use JSON schema validation in IDE
-- Run `jq` or JSON validator before committing
-- Never manually edit generated JSON (edit source, regenerate)
-- Ensure tokens nest within group objects, not at root
+**How to avoid:**
+- **Namespace separation:** `--ff-` prefix for all design tokens
+- **Explicit override strategy:** Document which Bootstrap variables are overridden vs extended
+- **Token → Bootstrap mapping:** Show how tokens compile to Bootstrap variable overrides
 
-**Detection:**
-```bash
-# Validate JSON syntax
-jq empty tokens.json
+**Prevention approach:**
+```scss
+// Bootstrap 5 default
+$btn-padding-y: 0.375rem;
+$btn-padding-x: 0.75rem;
 
-# Validate against DTCG schema
-npx @nclsndr/w3c-design-tokens-parser tokens.json
+// Design token system
+--ff-button-padding-y: 0.5rem;  // Different value
+--ff-button-padding-x: 1rem;
+
+// Bootstrap override (if needed)
+$btn-padding-y: var(--ff-button-padding-y);  // Use token value
 ```
 
-**Phase mapping:**
-- Phase 2: Add JSON validation to extraction script
-- Phase 3: Pre-commit hook validates JSON
-- Phase 4: CI/CD fails on invalid JSON
+**Warning signs:**
+- Bootstrap updates break token styling
+- Unclear which system controls which properties
+- Developers unsure whether to use `--bs-*` or `--ff-*` variables
+
+**Phase to address:**
+- **Phase 2 (Architecture):** Define Bootstrap integration strategy
+- **Phase 3 (Implementation):** Document Bootstrap override approach
 
 ---
 
-## Phase-Specific Warnings
+## Technical Debt Patterns
 
-| Phase Topic | Likely Pitfall | Mitigation |
-|-------------|---------------|------------|
-| **Phase 1: SCSS Audit** | Missing computed values and functions | Document all `@function`, `@mixin`, calculated values. Categorize as extractable vs manual. |
-| **Phase 1: Format Selection** | Choosing legacy format by accident | Explicitly use W3C DTCG format with `$type`, `$value` from start. Don't use Style Dictionary v3 legacy format. |
-| **Phase 2: Initial Extraction** | Over-extraction (500+ tokens) | Extract only tier-1 primitives. Use inclusion list, not "extract everything". |
-| **Phase 2: SCSS→JSON Conversion** | CSS custom property interpolation missing | Ensure script adds `#{...}` around all SCSS variables assigned to `--custom-properties`. |
-| **Phase 2: Naming Transformation** | Reserved characters in names | Validate names against Token Studio constraints. Strip forbidden characters. |
-| **Phase 3: Token Studio Import** | File path with leading slash | Remove leading `/` from Token Storage Location field. Use relative paths. |
-| **Phase 3: Token Studio Import** | Expired GitHub PAT | Generate new PAT with repo scope and write access before import. |
-| **Phase 3: Semantic Layer** | Under-extraction (no aliases) | Add semantic tokens referencing primitives. Don't skip this layer. |
-| **Phase 4: Component Tokens** | Component-coupled naming | Use functional/intent-based names. Avoid `button-*` in favor of `action-*` or `interactive-*`. |
-| **Phase 4: Reference Setup** | Broken references after filtering | Use `outputReferencesFilter` utility. Test that all `{refs}` resolve. |
-| **Phase 5: Documentation** | Missing `$description` | Require descriptions for all public tokens. Block PRs without descriptions. |
-| **Phase 5: Validation** | No automated schema validation | Add validators to CI/CD. Use DTCG validator and Token Studio import test. |
+Shortcuts that seem reasonable but create long-term problems.
+
+| Shortcut | Immediate Benefit | Long-term Cost | When Acceptable |
+|----------|-------------------|----------------|-----------------|
+| Hard-code component token values instead of references | Faster initial setup, no semantic layer needed | Token system becomes brittle, can't theme, duplicated values everywhere | Never - defeats token system purpose |
+| Skip state modifiers, create separate state tokens | Matches CSS structure 1:1, easier mental model | Token explosion, inconsistent state behavior, hard to update globally | Never for v2.0 - contradicts narrowing goal |
+| Create component tokens without auditing existing v1.0 tokens | Faster development, no coordination needed | Duplicated values, integration failures, missed reuse opportunities | Never - integration is critical |
+| Merge all tokens into single flat file | Simpler file structure, fewer files to manage | Loses semantic organization, hard to maintain, no reference visibility | Only for Token Studio free tier export (keep structured source) |
+| Skip Figma property mapping research | Developer-first naming is faster | Designers can't find tokens, low adoption, manual application required | Only if designers aren't primary consumers (dev-only system) |
+| Use CSS property names for tokens | Matches developer mental model perfectly | Figma designers confused, misalignment with Figma component properties | Only if code-first and designers use dev mode exclusively |
+| Create tokens for all form elements separately | Covers all edge cases, element-specific control | 120+ tokens for forms, maintenance nightmare, inconsistency risk | Only if forms are genuinely highly differentiated (rare) |
 
 ---
 
-## Detection Strategies Summary
+## Integration Gotchas
 
-### Early Warning Signs (detect in Phase 1-2)
+Common mistakes when connecting component tokens to existing v1.0 system and external tools.
 
-1. **SCSS contains `@function` or `@mixin` with design values** → Can't extract without compilation
-2. **SCSS variables assigned to CSS custom properties without `#{}`** → Will output literal variable names
-3. **Variable names contain `/`, `$`, `{}`, `[]`, spaces** → Token Studio will reject
-4. **More than 200 variables in SCSS** → Risk of over-extraction
-5. **No semantic naming layer in SCSS** → Risk of under-extraction
-
-### Build-Time Detection (Phase 2-3)
-
-1. **JSON syntax errors** → Run `jq empty tokens.json` in extraction script
-2. **Missing `$type` or wrong types** → Validate against DTCG schema
-3. **Broken references** → Style Dictionary warnings about filtered references
-4. **Case sensitivity collisions** → Check for duplicate names after case normalization
-
-### Import-Time Detection (Phase 3-4)
-
-1. **Token Studio sync errors** → Check PAT expiration, file path format, permissions
-2. **Schema validation failures** → Validate JSON structure before import
-3. **Type mismatch errors** → Ensure `$type` values match DTCG spec, not legacy
-
-### Runtime Detection (Phase 4-5)
-
-1. **CSS custom properties undefined** → Generated CSS references non-existent variables
-2. **Component coupling** → Same color value repeated across multiple component-specific tokens
-3. **Missing documentation** → Designers ask "Which token should I use?" frequently
+| Integration | Common Mistake | Correct Approach |
+|-------------|----------------|------------------|
+| **Token Studio Free Tier** | Storing separate files expecting cross-file resolution | Use merge script to create single `tokens-figma.json` with resolved values |
+| **Style Dictionary v5.3.0** | Using `outputReferences: true` without `outputReferencesFilter` | Import and use `outputReferencesFilter` utility to prevent broken refs |
+| **Bootstrap 5** | Mixing `--bs-*` and `--ff-*` variables without override strategy | Document which Bootstrap variables are overridden by tokens vs coexist |
+| **Figma Variables** | Expecting auto-sync from Token Studio to production CSS | Build GitHub Actions workflow for automated token builds |
+| **v1.0 Core/Semantic Tokens** | Creating component tokens in isolation | Audit existing tokens first, reuse semantic layer, validate references |
+| **CSS Custom Properties** | Using CSS property names that don't match Figma properties | Use Figma-friendly names, transform to CSS names in Style Dictionary |
+| **Multi-file Token Structure** | Token Studio import fails with "Contents Don't Pass Schema Validation" | Merge script must output valid DTCG format with `$type` and `$value` |
+| **Reference Chains** | Deep aliasing (4+ levels) breaks Token Studio resolution | Enforce maximum 2-level references: Component → Semantic → Core |
 
 ---
 
-## Confidence Assessment
+## Performance Traps
 
-| Pitfall Area | Sources | Confidence |
-|--------------|---------|------------|
-| SCSS interpolation | Official Sass docs | HIGH |
-| DTCG format | W3C spec (v1 stable, Oct 2025) | HIGH |
-| Token Studio import | Official troubleshooting docs | HIGH |
-| Reserved characters | Token Studio technical specs | HIGH |
-| Broken references | Style Dictionary docs | HIGH |
-| Over/under extraction | Multiple design system articles | MEDIUM |
-| Component coupling | Design token best practices | HIGH |
-| SCSS functions/mixins | Sass docs + community | MEDIUM |
+Patterns that work at small scale but fail as token system grows.
+
+| Trap | Symptoms | Prevention | When It Breaks |
+|------|----------|------------|----------------|
+| **Token Studio 500+ tokens** | Slow search, laggy UI, hard to find tokens | Editorial review, limit to designer-facing tokens only | >300 tokens in single file |
+| **Deep reference chains** | Slow Figma variable resolution, Token Studio hangs | Max 2-level references, flatten at build | >3 levels deep |
+| **Unorganized Token Sets** | Can't find tokens, designers overwhelmed | Use Token Studio folders/sets to categorize | >100 tokens without organization |
+| **No token filtering** | Every token exposed to designers, even internal ones | Public vs private token separation | All 192 v1.0 tokens visible |
+| **Build-time reference resolution** | Style Dictionary build takes >10s | Cache builds, only rebuild changed files | >1000 tokens |
+
+---
+
+## "Looks Done But Isn't" Checklist
+
+Things that appear complete but are missing critical pieces for v2.0 component tokens.
+
+- [ ] **Component tokens created:** Often missing integration with existing v1.0 semantic layer — verify all component tokens reference existing semantic or core tokens, not hard-coded values
+- [ ] **Figma file updated:** Often missing automated sync workflow — verify GitHub Actions builds tokens on every commit, not manual export
+- [ ] **Token names defined:** Often missing Figma property mapping — verify designers can find tokens by looking at Figma component property names
+- [ ] **Button tokens complete:** Often missing form tokens — verify both buttons AND forms covered (v2.0 scope)
+- [ ] **CSS variables generated:** Often missing `--ff-` prefix consistency — verify all component tokens compile to `--ff-component-*` format
+- [ ] **Token documentation:** Often missing token hierarchy diagram — verify docs show Core → Semantic → Component reference structure
+- [ ] **Style Dictionary config:** Often missing Figma output format — verify `tokens-figma.json` merged file is built automatically
+- [ ] **Reference validation:** Often missing depth checking — verify no reference chains >2 levels deep
+- [ ] **Bootstrap integration:** Often missing override documentation — verify which Bootstrap variables are replaced vs coexist with tokens
+
+---
+
+## Recovery Strategies
+
+When pitfalls occur despite prevention, how to recover.
+
+| Pitfall | Recovery Cost | Recovery Steps |
+|---------|---------------|----------------|
+| **Token explosion (500+)** | HIGH | 1. Audit all tokens for duplicates/unnecessary variants<br>2. Consolidate states into modifiers<br>3. Remove size-specific tokens, use existing spacing<br>4. Deprecation strategy for removed tokens<br>5. Figma file updates to use consolidated tokens |
+| **CSS property naming mismatch** | MEDIUM | 1. Create mapping table (Figma property → CSS property)<br>2. Add `$description` with CSS property mapping<br>3. Style Dictionary transform for renaming<br>4. Documentation update<br>5. Designer training |
+| **Deep reference chains** | MEDIUM | 1. Analyze reference graph depth<br>2. Flatten semantic layer (remove semantic → semantic refs)<br>3. Update component tokens to reference flattened semantic<br>4. Rebuild merged Figma file<br>5. Validation script prevents future deep chains |
+| **No code sync** | HIGH | 1. Decide single source of truth (code-first recommended)<br>2. Build GitHub Actions workflow<br>3. Reconcile current Figma vs code differences<br>4. Document token update process<br>5. Test automated pipeline |
+| **Integration failure (v1.0 tokens)** | HIGH | 1. Audit v1.0 core and semantic tokens<br>2. Identify duplicated values in v2.0<br>3. Refactor component tokens to use references<br>4. Add missing semantic tokens if needed<br>5. Validation ensuring references resolve |
+| **Form token overspecificity** | LOW | 1. Create shared `form.control` tokens<br>2. Migrate element-specific to shared<br>3. Keep only truly unique element tokens<br>4. Update Figma components<br>5. Documentation of shared tokens |
+| **State duplication** | MEDIUM | 1. Create shared `state.*` modifier tokens<br>2. Refactor component tokens to base values only<br>3. Update CSS to apply modifiers<br>4. Test all state interactions<br>5. Remove state-specific tokens |
+| **Bootstrap namespace collision** | LOW | 1. Document `--bs-*` vs `--ff-*` usage<br>2. Explicit Bootstrap override strategy<br>3. Update imports order (tokens before Bootstrap)<br>4. Test precedence<br>5. Team training |
+
+---
+
+## Pitfall-to-Phase Mapping
+
+How v2.0 roadmap phases should address these pitfalls.
+
+| Pitfall | Prevention Phase | Verification |
+|---------|------------------|--------------|
+| **Token explosion (500+)** | Phase 1 (Research): Define scope criteria<br>Phase 2 (Architecture): Document inheritance model | Token count <50 for buttons+forms combined |
+| **CSS property naming mismatch** | Phase 1 (Research): Audit Figma component properties<br>Phase 2 (Architecture): Define naming convention | Designers can find tokens without documentation |
+| **Reference chain overcomplexity** | Phase 2 (Architecture): Define max depth policy<br>Phase 3 (Implementation): Build validation | Automated test: no chains >2 levels |
+| **Incomplete implementation (no sync)** | Phase 1 (Research): Decide source of truth<br>Phase 3 (Implementation): Build GitHub Actions | GitHub commit triggers automated build |
+| **Integration failure (v1.0 tokens)** | Phase 1 (Research): Audit existing v1.0 tokens<br>Phase 3 (Implementation): Reference validation | All component tokens reference semantic/core |
+| **Form token overspecificity** | Phase 2 (Architecture): Define shared form tokens<br>Phase 3 (Implementation): Create shared first | <30 form tokens total |
+| **State token misapplication** | Phase 2 (Architecture): Define state modifier strategy<br>Phase 3 (Implementation): Shared state tokens | No `-hover`/`-focus` suffixes in component tokens |
+| **Token Studio merged file reference loss** | Phase 3 (Implementation): Merge script with reference info<br>Phase 4 (Documentation): Explain hierarchy | Designers understand token relationships |
+| **Bootstrap collision** | Phase 2 (Architecture): Define Bootstrap integration<br>Phase 3 (Implementation): Override documentation | Clear precedence rules documented |
+
+---
+
+## Narrowing-Specific Pitfalls
+
+Unique challenges when narrowing from comprehensive extraction (v1.0: 192 tokens) to component-scoped (v2.0: buttons & forms).
+
+### Pitfall 10: Scope Creep During Narrowing
+
+**What goes wrong:** Starting with "buttons and forms only" but gradually expanding to "let's also do badges, alerts, cards..."
+
+**Why it happens:**
+- Component boundaries blur (badge is like a small button?)
+- Designer requests: "While you're at it, can we also..."
+- Fear of missing related components
+- Momentum: "We're on a roll, let's keep going"
+
+**Consequences:**
+- v2.0 never ships (always "just one more component")
+- Defeats purpose of narrowing from v1.0's 192 tokens
+- Dilutes focus, quality suffers
+- Team burnout
+
+**How to avoid:**
+- **Explicit scope document:** List included/excluded components
+- **v2.0 scope:** Buttons (primary, secondary, tertiary) + Forms (input, select, checkbox, radio, textarea) ONLY
+- **Parking lot:** Track "future components" for v3.0
+- **Completion criteria:** v2.0 ships when buttons+forms done, not when all components done
+
+**Warning signs:**
+- Roadmap phases keep getting added
+- Token count exceeds estimate
+- "Just one more component" discussions
+- Timeline slipping
+
+**Phase to address:**
+- **Phase 0 (Planning):** Explicit scope document with exclusions
+- **All phases:** Scope enforcement — reject out-of-scope additions
+
+---
+
+### Pitfall 11: Premature Generalization
+
+**What goes wrong:** Trying to design a "perfect" component token structure that works for all future components, not just buttons/forms.
+
+**Why it happens:**
+- "We'll need to add more components later, so let's design for that now"
+- Over-engineering: anticipating needs that may never materialize
+- Fear of refactoring later
+
+**Consequences:**
+- Analysis paralysis: can't start because structure isn't "perfect"
+- Overly complex token structure for simple buttons/forms
+- YAGNI violation: "You Aren't Gonna Need It"
+- v2.0 delayed
+
+**How to avoid:**
+- **Design for v2.0 scope only:** Buttons + forms, not all future components
+- **Refactor later:** Accept that v3.0 may require structure changes
+- **Iterate:** Ship v2.0, learn, improve in v3.0
+- **Good enough:** Structure that works for buttons/forms is sufficient
+
+**Warning signs:**
+- Token structure has 5+ levels for 2 components
+- Lengthy debates about "what if we add..."
+- Architecture phase exceeds implementation phase
+- No tokens created yet, still designing structure
+
+**Phase to address:**
+- **Phase 2 (Architecture):** Design for current scope, not future scope
+- **Phase 3 (Implementation):** Ship buttons+forms, defer generalization
 
 ---
 
 ## Sources
 
 ### Official Documentation (HIGH confidence)
-- [Sass: CSS Variable Syntax Breaking Change](https://sass-lang.com/documentation/breaking-changes/css-vars/)
-- [W3C Design Tokens Specification v1 (October 2025)](https://www.w3.org/community/design-tokens/2025/10/28/design-tokens-specification-reaches-first-stable-version/)
-- [Token Studio: Troubleshooting Common Sync Provider Errors](https://docs.tokens.studio/token-storage/troubleshooting-common-sync-provider-errors)
-- [Token Studio: Token Name Technical Specs](https://docs.tokens.studio/manage-tokens/token-names/technical-specs)
-- [Style Dictionary: DTCG Format](https://styledictionary.com/info/dtcg/)
-- [Style Dictionary: References](https://styledictionary.com/reference/utils/references/)
-- [Design Token Validator](https://designtoken-validator.sotec-solutions.com/)
+- [W3C Design Tokens Format Module 2025.10](https://www.designtokens.org/tr/drafts/format/) - Reference depth, DTCG spec
+- [Style Dictionary: Configuration](https://styledictionary.com/reference/config/) - Build configuration, output references
+- [Token Studio: Token Sets](https://docs.tokens.studio/manage-tokens/token-sets) - Token organization
+- [Token Studio: Composition (legacy)](https://docs.tokens.studio/manage-tokens/token-types/composition) - Composition token issues
+- [Token Studio: Variables and Tokens Studio](https://docs.tokens.studio/figma/variables-overview) - Figma Variables integration
+- [Figma: Guide to Variables](https://help.figma.com/hc/en-us/articles/15339657135383-Guide-to-variables-in-Figma) - Figma Variables documentation
+- v1.0 project audit findings: 192 tokens too many, poor naming for Figma adoption
 
-### Best Practices & Community (MEDIUM-HIGH confidence)
-- [Common Mistakes in Design Tokens Adoption](https://designtokens.substack.com/p/common-mistakes-in-design-tokens)
-- [Best Practices For Naming Design Tokens - Smashing Magazine (2024)](https://www.smashingmagazine.com/2024/05/naming-best-practices/)
-- [Design Token Naming Best Practices - Netguru (November 2025)](https://www.netguru.com/blog/design-token-naming-best-practices)
-- [Naming Tokens in Design Systems - Nathan Curtis](https://medium.com/eightshapes-llc/naming-tokens-in-design-systems-9e86c7444676)
-- [The Design System Guide - Design Tokens](https://thedesignsystem.guide/design-tokens)
-- [Design Tokens with Confidence - UX Collective (January 2026)](https://uxdesign.cc/design-tokens-with-confidence-862119eb819b)
+### Design Token Best Practices (HIGH confidence)
+- [Component-level Design Tokens: are they worth it?](https://medium.com/@NateBaldwin/component-level-design-tokens-are-they-worth-it-d1ae4c6b19d4) - Token explosion example (500+ tokens)
+- [99% of the Design Tokens share this mistake!](https://medium.com/design-bootcamp/99-of-the-design-tokens-in-the-world-of-design-systems-share-this-mistake-8f84c1bdf54d) - Naming inconsistencies
+- [Common Mistakes in Design Tokens Adoption](https://designtokens.substack.com/p/common-mistakes-in-design-tokens) - Component coupling, documentation
+- [The context dilemma: design tokens and components](https://frontside.com/blog/2021-01-15-design-tokens-and-components/) - Component token integration
+- [Component-tokens first? Hear me out...](https://medium.com/@hereinthehive/component-tokens-first-hear-me-out-6258f54935a9) - Component-first approach
 
-### Technical References (MEDIUM confidence)
-- [GitHub: w3c-design-tokens-standard-schema](https://github.com/universse/w3c-design-tokens-standard-schema)
-- [NPM: @nclsndr/w3c-design-tokens-parser](https://www.npmjs.com/package/@nclsndr/w3c-design-tokens-parser)
-- [Sass: Interpolation](https://sass-lang.com/documentation/interpolation/)
-- [Sass: @function](https://sass-lang.com/documentation/at-rules/function/)
-- [Sass: @mixin](https://sass-lang.com/documentation/at-rules/mixin/)
+### Figma Variables & Integration (MEDIUM-HIGH confidence)
+- [Design System Mastery with Figma Variables: 2025/2026 Best-Practice Playbook](https://www.designsystemscollective.com/design-system-mastery-with-figma-variables-the-2025-2026-best-practice-playbook-da0500ca0e66)
+- [Design Tokens in Practice: From Figma Variables to Production Code](https://www.designsystemscollective.com/design-tokens-in-practice-from-figma-variables-to-production-code-fd40aeccd6f5) - "Halfway implementation"
+- [Understanding the Differences Between Figma Variables and Design Tokens](https://www.supernova.io/blog/understanding-the-differences-between-figma-variables-and-design-tokens)
+- [Figma Variable Settings for Design-to-Code Workflows](https://medium.com/design-bootcamp/figma-variable-settings-for-design-to-code-workflows-186e97efbac9)
+
+### Naming & Architecture (MEDIUM-HIGH confidence)
+- [Best Practices For Naming Design Tokens - Smashing Magazine](https://www.smashingmagazine.com/2024/05/naming-best-practices/)
+- [A Semantic Approach to Buttons (& More) Using Design Tokens](https://medium.com/design-bootcamp/a-semantic-approach-to-buttons-more-a218aee69f47)
+- [The Essential Principles of a Scalable Token Architecture](https://www.supernova.io/blog/scalable-token-architecture-principles)
+- [The Pyramid Design Token Structure](https://stefaniefluin.medium.com/the-pyramid-design-token-structure-the-best-way-to-format-organize-and-name-your-design-tokens-ca81b9d8836d)
+
+### Style Dictionary & Tooling (HIGH confidence)
+- [How to manage your Design Tokens with Style Dictionary](https://didoo.medium.com/how-to-manage-your-design-tokens-with-style-dictionary-98c795b938aa)
+- [Dark Mode with Style Dictionary](https://dbanks.design/blog/dark-mode-with-style-dictionary/) - Complex configurations
+- [Style Dictionary: Support Composite Tokens Issue](https://github.com/amzn/style-dictionary/issues/848) - Composite token handling
+
+### Bootstrap Integration (MEDIUM confidence)
+- [Use design tokens to customise Bootstrap](https://smth.uk/use-design-tokens-to-customise-bootstrap/)
+- [Bootstrap UI Components With Design Tokens](https://www.michaelmang.dev/blog/bootstrap-ui-components-with-design-tokens-and-headless-ui/)
+- [Bootstrap: Use custom properties (CSS variables) Issue](https://github.com/twbs/bootstrap/issues/26596) - Bootstrap CSS variable limitations
+
+### Migration & Refactoring (MEDIUM confidence)
+- [Refactoring Token Names for Seamless Design System Maintenance](https://medium.com/sas-software-design/refactoring-token-names-for-seamless-design-system-maintenance-79f222cd57f3)
+- [The problem(s) with design tokens](https://andretorgal.com/posts/2025-01/the-problem-with-design-tokens) - Token system challenges
 
 ---
 
-## Usage Notes for Roadmap Planning
+## Confidence Assessment
+
+| Area | Sources | Confidence |
+|------|---------|------------|
+| Token explosion (500+) | Real-world examples, multiple articles | HIGH |
+| CSS property naming mismatch | Figma documentation, design-to-code articles | HIGH |
+| Reference chain depth | W3C spec, Token Studio limitations, v1.0 learnings | HIGH |
+| Incomplete implementation (no sync) | Design Systems Collective articles, industry patterns | MEDIUM-HIGH |
+| Integration with v1.0 tokens | Component token best practices, v1.0 audit | HIGH |
+| Form token specificity | Bootstrap structure, component token patterns | MEDIUM |
+| State token patterns | Design token naming conventions, CSS patterns | MEDIUM-HIGH |
+| Token Studio free tier | v1.0 project learnings, Token Studio docs | HIGH |
+| Bootstrap collision | Bootstrap documentation, integration articles | MEDIUM |
+| Scope creep during narrowing | Project management best practices, v1.0 learnings | MEDIUM |
+
+---
+
+## Usage Notes for v2.0 Roadmap Planning
 
 **This document should inform:**
-1. **Phase structure** - Each phase should address specific pitfalls
-2. **Validation gates** - Don't proceed to next phase until pitfalls are mitigated
-3. **Tooling decisions** - Choose tools that prevent common pitfalls
-4. **Team training** - Focus training on critical pitfalls
+1. **Phase structure:** Each phase must prevent specific pitfalls identified here
+2. **Scope enforcement:** v2.0 is buttons+forms ONLY, defer other components to v3.0
+3. **Integration validation:** Component tokens MUST reference existing v1.0 semantic/core tokens
+4. **Naming convention:** Bridge Figma property names and CSS property names
+5. **Token count target:** <50 tokens total for buttons+forms (not 500+)
 
 **Red flags requiring deeper research:**
-- If SCSS contains extensive computed values (functions/mixins), Phase 1 research must evaluate compile-first vs manual decomposition approaches
-- If token count exceeds 300, Phase 2 needs editorial review strategy
-- If existing SCSS uses non-standard naming, Phase 2 needs name transformation specification
+- If component token count exceeds 100, Phase 1 needs stricter scope criteria
+- If reference chains exceed 2 levels, Phase 2 architecture needs flattening
+- If Figma-to-code sync not automated, Phase 3 requires GitHub Actions workflow
+- If component tokens bypass v1.0 semantic layer, Phase 3 needs integration validation
 
 **Safe to proceed if:**
-- SCSS is primarily static variables (few functions/mixins)
-- Naming follows kebab-case or snake_case consistently
-- Bootstrap version is 5.x (well-documented variable structure)
-- Team commits to three-tier token architecture from start
+- Token scope limited to buttons (3 variants) + forms (5 elements)
+- Naming convention defined bridging Figma and CSS terminology
+- Integration strategy with v1.0 core/semantic tokens documented
+- Automated sync workflow planned (GitHub Actions)
+- Maximum 2-level reference depth enforced
+- Token count estimate <50 total
