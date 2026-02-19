@@ -1,31 +1,31 @@
 {
   "color": {
     "$type": "color",
-    "primary": {
+    "bootstrap-primary": {
       "$value": "{ff.color.indigo-100}",
       "$description": "Bootstrap semantic: primary"
     },
-    "success": {
-      "$value": "{ff.color.success}",
-      "$description": "Bootstrap semantic: success"
+    "bootstrap-success": {
+      "$value": "{ff.color.green-dark}",
+      "$description": "Bootstrap semantic: success — _theme.scss:21"
     },
-    "danger": {
+    "bootstrap-danger": {
       "$value": "{ff.color.red-100}",
       "$description": "Bootstrap semantic: danger"
     },
-    "warning": {
+    "bootstrap-warning": {
       "$value": "{ff.color.yellow-100}",
       "$description": "Bootstrap semantic: warning"
     },
-    "info": {
+    "bootstrap-info": {
       "$value": "{ff.color.cyan-100}",
       "$description": "Bootstrap semantic: info"
     },
-    "light": {
+    "bootstrap-light": {
       "$value": "{ff.color.white-100}",
       "$description": "Bootstrap semantic: light"
     },
-    "dark": {
+    "bootstrap-dark": {
       "$value": "{ff.color.black}",
       "$description": "Bootstrap semantic: dark"
     },
@@ -45,6 +45,209 @@
       "primary": {
         "$value": "{ff.color.black}",
         "$description": "Primary text color"
+      }
+    },
+    "color-divider": {
+      "$value": "{ff.color.gray-medium}",
+      "$description": "Source: scss/_theme.scss:89 | Original: $gray-medium"
+    },
+    "color-divider-dark": {
+      "$value": "{ff.color.gray-medium-dark}",
+      "$description": "Source: scss/_theme.scss:90 | Original: $gray-medium-dark"
+    },
+    "color-main": {
+      "$value": "{ff.color.gray-darkest}",
+      "$description": "Source: scss/historyModal.scss:10 | Original: $gray-darkest"
+    },
+    "color-secondary": {
+      "$value": "{ff.color.gray-medium}",
+      "$description": "Source: scss/historyModal.scss:11 | Original: $gray-medium"
+    },
+    "color-border-light": {
+      "$value": "{ff.color.secondary}",
+      "$description": "Source: scss/v8-scss/_dateRangePicker.scss:34"
+    },
+    "color-text-primary": {
+      "$value": "#212529",
+      "$description": "Source: scss/v8-scss/_dateRangePicker.scss:35"
+    },
+    "color-text-secondary": {
+      "$value": "#222",
+      "$description": "Source: scss/v8-scss/_dateRangePicker.scss:36"
+    },
+    "color-text-muted": {
+      "$value": "#999",
+      "$description": "Source: scss/v8-scss/_dateRangePicker.scss:37"
+    },
+    "color-text-placeholder": {
+      "$value": "{ff.color.gray-medium-dark}",
+      "$description": "Source: scss/v8-scss/_dateRangePicker.scss:38 | Original: $gray-medium-dark"
+    },
+    "color-text-light": {
+      "$value": "{ff.color.gray-medium-dark}",
+      "$description": "Source: scss/v8-scss/_dateRangePicker.scss:39 | Original: $gray-medium-dark"
+    },
+    "gray-darker": {
+      "$value": "#424243",
+      "$description": "Source: scss/v8-scss/_breadCrumbs.scss:7"
+    },
+    "app": {
+      "progress-bar-bg-color": {
+        "$value": "{ff.color.primary-dark}",
+        "$description": "Source: scss/_theme.scss:174"
+      },
+      "main-bg": {
+        "$value": "{ff.color.white-300}",
+        "$description": "Source: scss/_theme.scss:175"
+      },
+      "pill-bg-color": {
+        "$value": "{ff.color.gray-x-light}",
+        "$description": "Source: scss/_theme.scss:176"
+      }
+    },
+    "navbar": {
+      "bg-color": {
+        "$value": "{ff.color.white-100}",
+        "$description": "Source: scss/_theme.scss:99"
+      },
+      "menu-font-color": {
+        "$value": "{ff.color.secondary-dark}",
+        "$description": "Source: scss/_theme.scss:100"
+      },
+      "submenu-font-color": {
+        "$value": "{ff.color.gray-dark}",
+        "$description": "Source: scss/_theme.scss:101"
+      },
+      "menu-font-color-active": {
+        "$value": "{ff.color.vivid-100}",
+        "$description": "Source: scss/_theme.scss:102"
+      }
+    },
+    "button": {
+      "btn-color": {
+        "$value": "{ff.color.black}",
+        "$description": "Source: scss/_theme.scss:22 | Original: $black"
+      }
+    },
+    "sidebar": {
+      "chevron-bg": {
+        "$value": "#5e61f2",
+        "$description": "Source: scss/collapsibleSidebar.scss:6"
+      }
+    },
+    "no-code": {
+      "success": {
+        "$value": "#1B9C85",
+        "$description": "Source: scss/_theme.scss:24"
+      },
+      "secondary": {
+        "$value": "#EA9389",
+        "$description": "Source: scss/_theme.scss:25"
+      },
+      "warning": {
+        "$value": "#faad14",
+        "$description": "Source: scss/_theme.scss:26"
+      }
+    },
+    "table": {
+      "border-color": {
+        "$value": "{ff.color.gray-xx-light}",
+        "$description": "Source: scss/v8-scss/_table.scss:6"
+      },
+      "shadow": {
+        "$value": "{ff.color.black}",
+        "$description": "Source: scss/v8-scss/_table.scss:9",
+        "$extensions": {
+          "studio.tokens": {
+            "modify": { "type": "alpha", "value": "0.25", "space": "srgb" }
+          }
+        }
+      }
+    },
+    "form-builder": {
+      "text": {
+        "$value": "#535353",
+        "$description": "Source: scss/v8-scss/_formbuilder.scss:13"
+      },
+      "bg-transparent": {
+        "$value": "{ff.color.transparent}",
+        "$description": "Source: scss/v8-scss/_formbuilder.scss:14"
+      },
+      "bg-black": {
+        "$value": "{ff.color.black}",
+        "$description": "Source: scss/v8-scss/_formbuilder.scss:15"
+      },
+      "shadow-color": {
+        "$value": "rgba(182, 182, 182, 0.2)",
+        "$description": "Source: scss/v8-scss/_formbuilder.scss:16"
+      }
+    },
+    "multiselect": {
+      "primary-border": {
+        "$value": "{ff.color.primary-dark}",
+        "$description": "Source: scss/v8-scss/_dropdownMultiselect.scss:22",
+        "$extensions": {
+          "studio.tokens": {
+            "modify": { "type": "alpha", "value": "0.5", "space": "srgb" }
+          }
+        }
+      },
+      "primary-border-disabled": {
+        "$value": "{ff.color.primary-dark}",
+        "$description": "Source: scss/v8-scss/_dropdownMultiselect.scss:24",
+        "$extensions": {
+          "studio.tokens": {
+            "modify": { "type": "alpha", "value": "0.25", "space": "srgb" }
+          }
+        }
+      },
+      "secondary-hover-border": {
+        "$value": "rgba(107, 114, 128, 0.3)",
+        "$description": "Source: scss/v8-scss/_dropdownMultiselect.scss:28"
+      }
+    },
+    "dropdown": {
+      "primary-border": {
+        "$value": "{ff.color.primary-dark}",
+        "$description": "Source: scss/v8-scss/_selectDropdown.scss:43",
+        "$extensions": {
+          "studio.tokens": {
+            "modify": { "type": "alpha", "value": "0.5", "space": "srgb" }
+          }
+        }
+      },
+      "primary-disabled-border": {
+        "$value": "{ff.color.primary-dark}",
+        "$description": "Source: scss/v8-scss/_selectDropdown.scss:46",
+        "$extensions": {
+          "studio.tokens": {
+            "modify": { "type": "alpha", "value": "0.25", "space": "srgb" }
+          }
+        }
+      },
+      "secondary-hover-border": {
+        "$value": "rgba(107, 114, 128, 0.3)",
+        "$description": "Source: scss/v8-scss/_selectDropdown.scss:52"
+      }
+    },
+    "url-input": {
+      "copy-button-bg": {
+        "$value": "{ff.color.transparent}",
+        "$description": "Source: scss/v8-scss/_urlInput.scss:34"
+      },
+      "copy-button-hover-bg": {
+        "$value": "{ff.color.transparent}",
+        "$description": "Source: scss/v8-scss/_urlInput.scss:36"
+      }
+    },
+    "select-custom-value": {
+      "border-color": {
+        "$value": "{ff.color.gray-x-light}",
+        "$description": "Source: scss/v8-scss/_selectWithCustomValue.scss:6"
+      },
+      "placeholder-color": {
+        "$value": "#999",
+        "$description": "Source: scss/v8-scss/_selectWithCustomValue.scss:7"
       }
     }
   },
@@ -69,6 +272,10 @@
     "xl": {
       "$value": "{ff.spacing.200}",
       "$description": "Semantic spacing: xl"
+    },
+    "navbar-width": {
+      "$value": "{ff.spacing.300}",
+      "$description": "Source: scss/_theme.scss:226"
     }
   },
   "font-family": {
@@ -80,6 +287,65 @@
     "heading": {
       "$value": "{ff.font-family.font-family-base}",
       "$description": "Heading font family"
+    }
+  },
+  "font-size": {
+    "$type": "dimension",
+    "font-smallest": {
+      "$value": "0.4375rem",
+      "$description": "Source: scss/_theme.scss:76 — 0.5rem * 0.875"
+    },
+    "font-modal-title": {
+      "$value": "{ff.font-size.font-size-s}",
+      "$description": "Source: scss/_theme.scss:79 — 0.5rem * 1.5"
+    },
+    "font-section-head": {
+      "$value": "0.5625rem",
+      "$description": "Source: scss/_theme.scss:77 — 0.5rem * 1.125"
+    },
+    "font-choice-head": {
+      "$value": "{ff.font-size.font-size-xs}",
+      "$description": "Source: scss/_theme.scss:78 — 0.5rem * 1.25"
+    },
+    "font-size-15": {
+      "$value": "{ff.font-size.font-size-m}",
+      "$description": "Alias for phantom --font-size-15 → canonical --font-size-m (15px)"
+    },
+    "font-size-12": {
+      "$value": "{ff.font-size.font-size-s}",
+      "$description": "Alias for phantom --font-size-12 → canonical --font-size-s (12px)"
+    },
+    "drp": {
+      "default": {
+        "$value": "{ff.font-size.font-size-m}",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:16"
+      },
+      "small": {
+        "$value": "0.875rem",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:17"
+      }
+    },
+    "breadcrumb": {
+      "default": {
+        "$value": "1.5rem",
+        "$description": "Source: scss/v8-scss/_breadCrumbs.scss:24"
+      },
+      "minimized": {
+        "$value": "{ff.font-size.font-size-s}",
+        "$description": "Source: scss/v8-scss/_breadCrumbs.scss:25"
+      }
+    },
+    "filterable-dropdown": {
+      "default": {
+        "$value": "14px",
+        "$description": "Source: scss/v8-scss/_filterableDropdown.scss:4"
+      }
+    },
+    "url-input": {
+      "default": {
+        "$value": "{ff.font-size.font-size-m}",
+        "$description": "Source: scss/v8-scss/_urlInput.scss:9"
+      }
     }
   },
   "font-weight": {
@@ -99,6 +365,31 @@
     "bold": {
       "$value": "{ff.font-weight.font-weight-xl}",
       "$description": "Bold font weight"
+    },
+    "drp-font-weight": {
+      "$value": "{ff.font-weight.font-weight-regular}",
+      "$description": "Source: scss/v8-scss/_dateRangePicker.scss:18"
+    },
+    "drp-font-weight-medium": {
+      "$value": "{ff.font-weight.font-weight-medium}",
+      "$description": "Source: scss/v8-scss/_dateRangePicker.scss:19"
+    },
+    "url-input-font-weight": {
+      "$value": "{ff.font-weight.font-weight-medium}",
+      "$description": "Source: scss/v8-scss/_urlInput.scss:10"
+    }
+  },
+  "line-height": {
+    "$type": "number",
+    "text-line-height": {
+      "$value": "120%",
+      "$type": "dimension",
+      "$description": "Source: scss/fileUpload.scss:35"
+    },
+    "drp-line-height": {
+      "$value": 1.5,
+      "$type": "number",
+      "$description": "Source: scss/v8-scss/_dateRangePicker.scss:20"
     }
   },
   "radius": {
@@ -118,6 +409,100 @@
     "modal": {
       "$value": "1.5rem",
       "$description": "Semantic radius from CSS custom property --radius-modal"
+    },
+    "button": {
+      "default": {
+        "$value": "{ff.radius.pill}",
+        "$description": "Source: scss/v8-scss/_button.scss:5"
+      },
+      "round": {
+        "$value": "{ff.radius.full}",
+        "$description": "Source: scss/_button.scss:11"
+      }
+    },
+    "checkbox": {
+      "default": {
+        "$value": "{ff.radius.sm}",
+        "$description": "Source: scss/v8-scss/_checkbox.scss:6"
+      },
+      "small": {
+        "$value": "{ff.radius.xs}",
+        "$description": "Source: scss/v8-scss/_checkbox.scss:7"
+      }
+    },
+    "form-builder": {
+      "default": {
+        "$value": "{ff.radius.sm}",
+        "$description": "Source: scss/v8-scss/_formbuilder.scss:5 — 4px ≈ 0.25rem"
+      },
+      "round": {
+        "$value": "{ff.radius.full}",
+        "$description": "Source: scss/v8-scss/_formbuilder.scss:6"
+      }
+    },
+    "multiselect": {
+      "default": {
+        "$value": "{ff.radius.md}",
+        "$description": "Source: scss/v8-scss/_dropdownMultiselect.scss:6 — 5px ≈ 0.3125rem"
+      },
+      "chip": {
+        "$value": "{ff.radius.pill}",
+        "$description": "Source: scss/v8-scss/_dropdownMultiselect.scss:7 — 25px ≈ 1.5625rem"
+      }
+    },
+    "dropdown": {
+      "default": {
+        "$value": "{ff.radius.md}",
+        "$description": "Source: scss/v8-scss/_selectDropdown.scss:7"
+      },
+      "menu": {
+        "$value": "{ff.radius.md}",
+        "$description": "Source: scss/v8-scss/_dropdownButton.scss:6"
+      },
+      "item": {
+        "$value": "{ff.radius.md}",
+        "$description": "Source: scss/v8-scss/_dropdownButton.scss:7 — 0.313rem ≈ 0.3125rem"
+      }
+    },
+    "drp": {
+      "container": {
+        "$value": "{ff.radius.md}",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:8"
+      },
+      "calendar": {
+        "$value": "{ff.radius.lg}",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:13"
+      }
+    },
+    "alert": {
+      "default": {
+        "$value": "{ff.radius.md}",
+        "$description": "Source: scss/v8-scss/_alert.scss:5 — 0.313rem ≈ 0.3125rem"
+      }
+    },
+    "search-input": {
+      "default": {
+        "$value": "{ff.radius.md}",
+        "$description": "Source: scss/v8-scss/_search.scss:6"
+      }
+    },
+    "url-input": {
+      "default": {
+        "$value": "{ff.radius.md}",
+        "$description": "Source: scss/v8-scss/_urlInput.scss:5"
+      }
+    },
+    "switch": {
+      "default": {
+        "$value": "{ff.radius.xl}",
+        "$description": "Source: scss/v8-scss/_switch.scss:7"
+      }
+    },
+    "status": {
+      "default": {
+        "$value": "{ff.radius.full}",
+        "$description": "Source: scss/_table.scss:6"
+      }
     }
   },
   "shadow": {
@@ -191,9 +576,297 @@
         "spread": "-2px"
       },
       "$description": "Semantic shadow from CSS custom property --shadow-nav"
+    },
+    "input": {
+      "error": {
+        "$value": {
+          "color": "rgba(255, 0, 0, 0.25)",
+          "offsetX": "0px",
+          "offsetY": "0px",
+          "blur": "0px",
+          "spread": "0.2rem"
+        },
+        "$description": "Source: scss/inputBox.scss:5"
+      }
+    },
+    "button": {
+      "primary": {
+        "$value": {
+          "color": "rgba(137, 105, 242, 0.15)",
+          "offsetX": "0px",
+          "offsetY": "0.125rem",
+          "blur": "0.5rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_button.scss:28"
+      },
+      "secondary": {
+        "$value": {
+          "color": "rgba(0, 0, 0, 0.1)",
+          "offsetX": "0px",
+          "offsetY": "0.125rem",
+          "blur": "0.25rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_button.scss:29"
+      },
+      "error": {
+        "$value": {
+          "color": "rgba(255, 87, 34, 0.1)",
+          "offsetX": "0px",
+          "offsetY": "0.125rem",
+          "blur": "0.5rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_button.scss:30"
+      },
+      "warning": {
+        "$value": {
+          "color": "rgba(255, 152, 0, 0.1)",
+          "offsetX": "0px",
+          "offsetY": "0.125rem",
+          "blur": "0.5rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_button.scss:31"
+      }
+    },
+    "multiselect": {
+      "default": {
+        "$value": {
+          "color": "rgba(0, 0, 0, 0.25)",
+          "offsetX": "0px",
+          "offsetY": "4px",
+          "blur": "4px",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_dropdownMultiselect.scss:18"
+      }
+    },
+    "dropdown": {
+      "default": {
+        "$value": {
+          "color": "rgba(0, 0, 0, 0.25)",
+          "offsetX": "0px",
+          "offsetY": "0.25rem",
+          "blur": "0.25rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_selectDropdown.scss:24"
+      },
+      "box-shadow": {
+        "$value": {
+          "color": "rgba(0, 0, 0, 0.15)",
+          "offsetX": "0px",
+          "offsetY": "10px",
+          "blur": "25px",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_mixins.scss:125"
+      }
+    },
+    "drp": {
+      "container": {
+        "$value": {
+          "color": "rgba(0, 0, 0, 0.03)",
+          "offsetX": "0px",
+          "offsetY": "0.0625rem",
+          "blur": "0.125rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:46"
+      },
+      "calendar": {
+        "$value": {
+          "color": "rgba(0, 0, 0, 0.15)",
+          "offsetX": "0px",
+          "offsetY": "0.5rem",
+          "blur": "1rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:47"
+      }
+    },
+    "alert": {
+      "focus": {
+        "$value": {
+          "color": "rgba(137, 105, 242, 0.1)",
+          "offsetX": "0px",
+          "offsetY": "0.125rem",
+          "blur": "0.5rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_alert.scss:24"
+      },
+      "error": {
+        "$value": {
+          "color": "rgba(255, 87, 34, 0.1)",
+          "offsetX": "0px",
+          "offsetY": "0.125rem",
+          "blur": "0.5rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_alert.scss:25"
+      },
+      "warning": {
+        "$value": {
+          "color": "rgba(255, 152, 0, 0.1)",
+          "offsetX": "0px",
+          "offsetY": "0.125rem",
+          "blur": "0.5rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_alert.scss:26"
+      }
+    },
+    "switch": {
+      "default": {
+        "$value": {
+          "color": "rgba(0, 0, 0, 0.2)",
+          "offsetX": "0px",
+          "offsetY": "0.0625rem",
+          "blur": "0.1875rem",
+          "spread": "0px"
+        },
+        "$description": "Source: scss/v8-scss/_switch.scss:20"
+      }
     }
   },
   "duration": {
-    "$type": "duration"
+    "$type": "duration",
+    "drag-and-drop": {
+      "anim-speed": {
+        "$value": "{ff.duration.slow}",
+        "$description": "Source: scss/v8-scss/_dragandrop.scss:4"
+      }
+    },
+    "checkbox": {
+      "duration": {
+        "$value": "{ff.duration.fast}",
+        "$description": "Source: scss/v8-scss/_checkbox.scss:21"
+      },
+      "timing": {
+        "$value": "{ff.duration.timing-ease-in-out}",
+        "$description": "Source: scss/v8-scss/_checkbox.scss:22"
+      }
+    },
+    "radio": {
+      "duration": {
+        "$value": "{ff.duration.fast}",
+        "$description": "Source: scss/v8-scss/_radio.scss:11"
+      },
+      "timing": {
+        "$value": "{ff.duration.timing-ease-in-out}",
+        "$description": "Source: scss/v8-scss/_radio.scss:12"
+      }
+    },
+    "button": {
+      "duration": {
+        "$value": "{ff.duration.fast}",
+        "$description": "Source: scss/v8-scss/_button.scss:14"
+      },
+      "timing": {
+        "$value": "{ff.duration.timing-ease-in-out}",
+        "$description": "Source: scss/v8-scss/_button.scss:15"
+      }
+    },
+    "dropdown-button": {
+      "transition": {
+        "$value": "{ff.duration.normal}",
+        "$description": "Source: scss/v8-scss/_dropdownButton.scss:10 — 0.2s ease"
+      },
+      "timing": {
+        "$value": "{ff.duration.timing-ease}",
+        "$description": "Source: scss/v8-scss/_dropdownButton.scss:10"
+      }
+    },
+    "drp": {
+      "duration": {
+        "$value": "{ff.duration.normal}",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:23"
+      },
+      "timing": {
+        "$value": "{ff.duration.timing-ease}",
+        "$description": "Source: scss/v8-scss/_dateRangePicker.scss:24"
+      }
+    },
+    "breadcrumb": {
+      "duration": {
+        "$value": "{ff.duration.fast}",
+        "$description": "Source: scss/v8-scss/_breadCrumbs.scss:13"
+      },
+      "timing": {
+        "$value": "{ff.duration.timing-ease-in-out}",
+        "$description": "Source: scss/v8-scss/_breadCrumbs.scss:14"
+      }
+    },
+    "dropdown": {
+      "duration": {
+        "$value": "{ff.duration.fast}",
+        "$description": "Source: scss/v8-scss/_selectDropdown.scss:20"
+      },
+      "timing": {
+        "$value": "{ff.duration.timing-ease-in-out}",
+        "$description": "Source: scss/v8-scss/_selectDropdown.scss:21"
+      }
+    },
+    "alert": {
+      "duration": {
+        "$value": "{ff.duration.slow}",
+        "$description": "Source: scss/v8-scss/_alert.scss:12"
+      },
+      "timing": {
+        "$value": "{ff.duration.timing-ease-in-out}",
+        "$description": "Source: scss/v8-scss/_alert.scss:13"
+      },
+      "enter-duration": {
+        "$value": "{ff.duration.slow}",
+        "$description": "Source: scss/v8-scss/_alert.scss:19"
+      },
+      "exit-duration": {
+        "$value": "{ff.duration.normal}",
+        "$description": "Source: scss/v8-scss/_alert.scss:20"
+      }
+    },
+    "search": {
+      "duration": {
+        "$value": "{ff.duration.normal}",
+        "$description": "Source: scss/v8-scss/_search.scss:12"
+      },
+      "timing": {
+        "$value": "{ff.duration.timing-ease}",
+        "$description": "Source: scss/v8-scss/_search.scss:13"
+      }
+    },
+    "filterable-dropdown": {
+      "duration": {
+        "$value": "{ff.duration.fast}",
+        "$description": "Source: scss/v8-scss/_filterableDropdown.scss:9"
+      },
+      "timing": {
+        "$value": "{ff.duration.timing-ease-in-out}",
+        "$description": "Source: scss/v8-scss/_filterableDropdown.scss:9"
+      }
+    },
+    "url-input": {
+      "duration": {
+        "$value": "{ff.duration.fast}",
+        "$description": "Source: scss/v8-scss/_urlInput.scss:11"
+      },
+      "timing": {
+        "$value": "{ff.duration.timing-ease-in-out}",
+        "$description": "Source: scss/v8-scss/_urlInput.scss:12"
+      }
+    },
+    "switch": {
+      "duration": {
+        "$value": "{ff.duration.normal}",
+        "$description": "Source: scss/v8-scss/_switch.scss:13"
+      },
+      "timing": {
+        "$value": "{ff.duration.timing-ease-in-out}",
+        "$description": "Source: scss/v8-scss/_switch.scss:14"
+      }
+    }
   }
 }
