@@ -7,96 +7,96 @@
         "$description": "v8 yellow palette shade 100"
       },
       "yellow-200": {
-        "$value": "#f7e082",
-        "$description": "v8 yellow palette shade 200"
+        "$value": "rgba(239, 192, 5, 0.5)",
+        "$description": "v8 yellow palette shade 200 — base at 50% opacity"
       },
       "yellow-300": {
-        "$value": "#fbefc1",
-        "$description": "v8 yellow palette shade 300"
+        "$value": "rgba(239, 192, 5, 0.25)",
+        "$description": "v8 yellow palette shade 300 — base at 25% opacity"
       },
       "green-100": {
         "$value": "#00c49a",
         "$description": "v8 green palette shade 100"
       },
       "green-200": {
-        "$value": "#80e2cd",
-        "$description": "v8 green palette shade 200"
+        "$value": "rgba(0, 196, 154, 0.5)",
+        "$description": "v8 green palette shade 200 — base at 50% opacity"
       },
       "green-300": {
-        "$value": "#bff0e6",
-        "$description": "v8 green palette shade 300"
+        "$value": "rgba(0, 196, 154, 0.25)",
+        "$description": "v8 green palette shade 300 — base at 25% opacity"
       },
       "cyan-100": {
         "$value": "#00bcd4",
         "$description": "v8 cyan palette shade 100"
       },
       "cyan-200": {
-        "$value": "#80deea",
-        "$description": "v8 cyan palette shade 200"
+        "$value": "rgba(0, 188, 212, 0.5)",
+        "$description": "v8 cyan palette shade 200 — base at 50% opacity"
       },
       "cyan-300": {
-        "$value": "#bfeef4",
-        "$description": "v8 cyan palette shade 300"
+        "$value": "rgba(0, 188, 212, 0.25)",
+        "$description": "v8 cyan palette shade 300 — base at 25% opacity"
       },
       "blue-100": {
         "$value": "#0087d9",
         "$description": "v8 blue palette shade 100"
       },
       "blue-200": {
-        "$value": "#80c3ec",
-        "$description": "v8 blue palette shade 200"
+        "$value": "rgba(0, 135, 217, 0.5)",
+        "$description": "v8 blue palette shade 200 — base at 50% opacity"
       },
       "blue-300": {
-        "$value": "#bfe1f6",
-        "$description": "v8 blue palette shade 300"
+        "$value": "rgba(0, 135, 217, 0.25)",
+        "$description": "v8 blue palette shade 300 — base at 25% opacity"
       },
       "orange-100": {
         "$value": "#ff9100",
         "$description": "v8 orange palette shade 100"
       },
       "orange-200": {
-        "$value": "#ffc880",
-        "$description": "v8 orange palette shade 200"
+        "$value": "rgba(255, 145, 0, 0.5)",
+        "$description": "v8 orange palette shade 200 — base at 50% opacity"
       },
       "orange-300": {
-        "$value": "#ffe4bf",
-        "$description": "v8 orange palette shade 300"
+        "$value": "rgba(255, 145, 0, 0.25)",
+        "$description": "v8 orange palette shade 300 — base at 25% opacity"
       },
       "vivid-100": {
         "$value": "#7c80fe",
         "$description": "v8 vivid palette shade 100"
       },
       "vivid-200": {
-        "$value": "#bec0ff",
-        "$description": "v8 vivid palette shade 200"
+        "$value": "rgba(124, 128, 254, 0.5)",
+        "$description": "v8 vivid palette shade 200 — base at 50% opacity"
       },
       "vivid-300": {
-        "$value": "#dedfff",
-        "$description": "v8 vivid palette shade 300"
+        "$value": "rgba(124, 128, 254, 0.25)",
+        "$description": "v8 vivid palette shade 300 — base at 25% opacity"
       },
       "red-100": {
         "$value": "#e57373",
         "$description": "v8 red palette shade 100"
       },
       "red-200": {
-        "$value": "#f2b9b9",
-        "$description": "v8 red palette shade 200"
+        "$value": "rgba(229, 115, 115, 0.5)",
+        "$description": "v8 red palette shade 200 — base at 50% opacity"
       },
       "red-300": {
-        "$value": "#f9dcdc",
-        "$description": "v8 red palette shade 300"
+        "$value": "rgba(229, 115, 115, 0.25)",
+        "$description": "v8 red palette shade 300 — base at 25% opacity"
       },
       "indigo-100": {
         "$value": "#3248f4",
         "$description": "v8 indigo palette shade 100"
       },
       "indigo-200": {
-        "$value": "#99a4fa",
-        "$description": "v8 indigo palette shade 200"
+        "$value": "rgba(50, 72, 244, 0.5)",
+        "$description": "v8 indigo palette shade 200 — base at 50% opacity"
       },
       "indigo-300": {
-        "$value": "#ccd1fc",
-        "$description": "v8 indigo palette shade 300"
+        "$value": "rgba(50, 72, 244, 0.25)",
+        "$description": "v8 indigo palette shade 300 — base at 25% opacity"
       },
       "white-100": {
         "$value": "#F6F6F6",
@@ -191,7 +191,7 @@
         "$description": "Source: scss/v8-scss/_formbuilder.scss:15"
       },
       "form-builder-shadow-color": {
-        "$value": "rgb(182 182 182 / 20%)",
+        "$value": "rgba(182, 182, 182, 0.2)",
         "$description": "Source: scss/v8-scss/_formbuilder.scss:16"
       },
       "multiselect-primary-border": {
