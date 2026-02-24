@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-02-10)
 ## Current Position
 
 Phase: 5 of 9 (Architecture & Integration Planning)
-Plan: 1 of ? in current phase
+Plan: 2 of ? in current phase
 Status: In progress
-Last activity: 2026-02-23 - Completed 05-01: component token reference map + unused tokens audit
+Last activity: 2026-02-23 - Completed 05-02: naming convention spec + validated components.json stub
 
 Progress: [████░░░░░░] 44% (4 of 9 phases complete)
 
@@ -38,6 +38,7 @@ Progress: [████░░░░░░] 44% (4 of 9 phases complete)
 
 *Updated after v1.0 milestone completion*
 | Phase 05-architecture-integration-planning P01 | 4 | 2 tasks | 2 files |
+| Phase 05-architecture-integration-planning P02 | 5 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -50,6 +51,8 @@ Recent decisions affecting current work:
 - **Naming convention**: CSS property model (background, border, color, shadow) over Figma property naming (fill, stroke, effect) because code is source of truth
 - **Token reduction**: Reduce core tokens to only primitives that buttons & forms reference (192 tokens overwhelming in practice)
 - [Phase 05-architecture-integration-planning]: v2.0 form scope: text input + checkbox only; color.action.danger -> ff.color.orange-100; 8 new semantic tokens needed; actual core.json has 85 tokens (not 160 estimated)
+- [Phase 05-02]: DTCG $description fields must not contain curly-brace notation -- Style Dictionary resolves them as token paths; use plain text for placeholder references
+- [Phase 05-02]: components.json uses per-leaf $type declarations (never group-level) for mixed-type component token groups (color, dimension, shadow coexist)
 
 ### Pending Todos
 
@@ -62,9 +65,9 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-23
-Stopped at: Completed 05-01-PLAN.md
-Resume file: .planning/phases/05-architecture-integration-planning/05-01-SUMMARY.md
+Stopped at: Completed 05-02-PLAN.md
+Resume file: .planning/phases/05-architecture-integration-planning/05-02-SUMMARY.md
 
 ---
 *State initialized: 2026-02-03*
-*Last updated: 2026-02-23 (Phase 5, Plan 01 complete — component token reference map + unused tokens audit)*
+*Last updated: 2026-02-23 (Phase 5, Plan 02 complete -- naming convention spec + validated components.json stub)*

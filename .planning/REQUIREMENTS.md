@@ -10,9 +10,9 @@ Requirements for v2.0 milestone. Each maps to roadmap phases.
 ### Architecture
 
 - [x] **ARCH-01**: Audit v1.0 tokens to identify which core/semantic tokens buttons and forms actually reference
-- [ ] **ARCH-02**: Define CSS property naming convention for component tokens (e.g. `button.primary.background.default`)
+- [x] **ARCH-02**: Define CSS property naming convention for component tokens (e.g. `button.primary.background.default`)
 - [x] **ARCH-03**: Establish max 2-level reference depth policy (component → semantic → core)
-- [ ] **ARCH-04**: Define component token file structure (`tokens/component/button.json`, `tokens/component/forms.json`)
+- [x] **ARCH-04**: Define component token file structure (`tokens/component/button.json`, `tokens/component/forms.json`)
 
 ### Button Tokens
 
@@ -78,9 +78,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | ARCH-01 | Phase 5 | Complete |
-| ARCH-02 | Phase 5 | Pending |
+| ARCH-02 | Phase 5 | Complete |
 | ARCH-03 | Phase 5 | Complete |
-| ARCH-04 | Phase 5 | Pending |
+| ARCH-04 | Phase 5 | Complete |
 | BTN-01 | Phase 6 | Pending |
 | BTN-02 | Phase 6 | Pending |
 | BTN-03 | Phase 6 | Pending |
