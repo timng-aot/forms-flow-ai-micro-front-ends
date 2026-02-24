@@ -33,10 +33,11 @@ Full details: milestones/v1.0-ROADMAP.md
   3. Component token file structure is defined and validated
   4. Reference depth policy prevents overcomplexity in token chains
   5. Integration strategy prevents duplication of existing v1.0 tokens
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 05-01: TBD
+- [ ] 05-01-PLAN.md — Token audit reference map and depth policy (ARCH-01, ARCH-03)
+- [ ] 05-02-PLAN.md — Naming convention spec and components.json stub (ARCH-02, ARCH-04)
 
 #### Phase 6: Button Component Tokens
 **Goal**: Create component-level tokens for all button variants with complete state coverage
@@ -104,7 +105,7 @@ Phases execute in numeric order: 5 → 6 → 7 → 8 → 9
 | 2. Token Extraction | v1.0 | 3/3 | Complete | 2026-02-05 |
 | 3. Build Pipeline | v1.0 | 2/2 | Complete | 2026-02-09 |
 | 4. Documentation & Validation | v1.0 | 2/2 | Complete | 2026-02-09 |
-| 5. Architecture & Integration | v2.0 | 0/? | Not started | - |
+| 5. Architecture & Integration | v2.0 | 0/2 | Planning | - |
 | 6. Button Tokens | v2.0 | 0/? | Not started | - |
 | 7. Form Tokens | v2.0 | 0/? | Not started | - |
 | 8. Build & Sync | v2.0 | 0/? | Not started | - |
@@ -112,4 +113,4 @@ Phases execute in numeric order: 5 → 6 → 7 → 8 → 9
 
 ---
 *Roadmap created: 2026-02-03*
-*Last updated: 2026-02-10 (v2.0 milestone added)*
+*Last updated: 2026-02-23 (Phase 5 plans created)*
