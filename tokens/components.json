@@ -1,0 +1,62 @@
+{
+  "button": {
+    "primary": {
+      "background": {
+        "$type": "color",
+        "$value": "{color.action.primary}",
+        "$description": "Primary button default background — indigo brand color"
+      },
+      "border-color": {
+        "$type": "color",
+        "$value": "{color.action.primary}",
+        "$description": "Primary button default border — placeholder using color.action.primary; will reference color.action.primary-border after semantic.json is extended"
+      },
+      "color": {
+        "$type": "color",
+        "$value": "{color.background.default}",
+        "$description": "Primary button default text color — white on indigo"
+      },
+      "border-radius": {
+        "$type": "dimension",
+        "$value": "{radius.button.default}",
+        "$description": "Primary button border radius — shared across all states (no state segment)"
+      },
+      "hover": {
+        "background": {
+          "$type": "color",
+          "$value": "{color.action.primary}",
+          "$description": "Primary button hover background — placeholder using color.action.primary; will reference color.action.primary-hover after semantic.json is extended"
+        },
+        "border-color": {
+          "$type": "color",
+          "$value": "{color.action.primary}",
+          "$description": "Primary button hover border — placeholder using color.action.primary; will reference color.action.primary-hover-border after semantic.json is extended"
+        },
+        "shadow": {
+          "$type": "shadow",
+          "$value": "{shadow.button.primary}",
+          "$description": "Primary button hover shadow — purple glow defined in semantic.json"
+        }
+      }
+    }
+  },
+  "input": {
+    "text": {
+      "background": {
+        "$type": "color",
+        "$value": "{color.background.default}",
+        "$description": "Text input default background — white"
+      },
+      "border-color": {
+        "$type": "color",
+        "$value": "{color.color-divider}",
+        "$description": "Text input default border — gray-medium divider color"
+      },
+      "color": {
+        "$type": "color",
+        "$value": "{color.text.primary}",
+        "$description": "Text input default text color — primary text (black)"
+      }
+    }
+  }
+}
