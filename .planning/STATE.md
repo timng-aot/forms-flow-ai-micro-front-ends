@@ -1,3 +1,19 @@
+---
+gsd_state_version: 1.0
+milestone: v2.0
+milestone_name: Component Token System (Buttons & Forms)
+status: executing
+stopped_at: Completed quick-1-PLAN.md
+last_updated: "2026-03-10T17:16:46.680Z"
+last_activity: "2026-02-23 - Completed 05-02: naming convention spec + validated components.json stub"
+progress:
+  total_phases: 5
+  completed_phases: 1
+  total_plans: 2
+  completed_plans: 2
+  percent: 44
+---
+
 # Project State
 
 ## Project Reference
@@ -53,6 +69,7 @@ Recent decisions affecting current work:
 - [Phase 05-architecture-integration-planning]: v2.0 form scope: text input + checkbox only; color.action.danger -> ff.color.orange-100; 8 new semantic tokens needed; actual core.json has 85 tokens (not 160 estimated)
 - [Phase 05-02]: DTCG $description fields must not contain curly-brace notation -- Style Dictionary resolves them as token paths; use plain text for placeholder references
 - [Phase 05-02]: components.json uses per-leaf $type declarations (never group-level) for mixed-type component token groups (color, dimension, shadow coexist)
+- [Phase quick]: Global scrollbar hide in _layout.scss is root cause; custom-scroll mixin is canonical fix pattern; 6 gaps + 2 partials identified
 
 ### Pending Todos
 
@@ -64,9 +81,9 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-23
-Stopped at: Completed 05-02-PLAN.md
-Resume file: .planning/phases/05-architecture-integration-planning/05-02-SUMMARY.md
+Last session: 2026-03-10T17:16:46.652Z
+Stopped at: Completed quick-1-PLAN.md
+Resume file: None
 
 ---
 *State initialized: 2026-02-03*
