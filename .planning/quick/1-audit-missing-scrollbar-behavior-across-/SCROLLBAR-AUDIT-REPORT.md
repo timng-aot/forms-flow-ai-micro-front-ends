@@ -20,7 +20,7 @@ A global CSS rule in `forms-flow-theme/scss/_layout.scss` (lines 8-12) hides all
 
 This means every scrollable container renders with **hidden scrollbars by default**. Components must explicitly opt-in to visible, styled scrollbars using the `.custom-scroll` class or the `@include custom-scroll()` mixin defined in `forms-flow-theme/scss/v8-scss/_mixins.scss`.
 
-This audit identifies **6 components with completely missing scrollbar styling** and **2 components with partial/inconsistent implementations**.
+This audit identifies **5 components with completely missing scrollbar styling** and **2 components with partial/inconsistent implementations**. (The filter dropdown menu was initially flagged but confirmed to have scrollbar styling applied at the component level via the `dropdown-custom-scroll` class.)
 
 ---
 
@@ -70,89 +70,49 @@ This mixin overrides the global `display: none` with `display: block`, sets a na
 
 ## 3. Gaps -- Missing Scrollbar Behavior
 
-### 3.1 Filter Dropdown Menu
+### ~~3.1 Filter Dropdown Menu~~ — NOT A GAP
 
 - **Component:** Task/field filter dropdown menu -- used for selecting filter values in task lists and form lists.
-- **File:** `forms-flow-theme/scss/v8-scss/_filterDropdown.scss`, lines 91-106
+- **File (SCSS):** `forms-flow-theme/scss/v8-scss/_filterDropdown.scss`, lines 91-106
+- **File (Component):** `forms-flow-components/src/components/CustomComponents/FilterDropDown.tsx`, line 504
 - **Selector:** `.filter-dropdown-menu`
-- **Current CSS (lines 91-106):**
-  ```scss
-  .filter-dropdown-menu {
-    width: 18.75rem;
-    max-height: 23.9375rem;
-    flex-shrink: 0;
-    overflow-y: auto;
-    padding: 0;
-    margin-top: 0.5625rem;
-    border-radius: 0.3125rem;
-    border: 0.0625rem solid $gray-x-light;
-    background: $white-200;
-    box-shadow: 0 0.25rem 0.25rem 0 rgba(0, 0, 0, 0.25);
-  }
-  ```
-- **Issue:** Has `overflow-y: auto` but NO `custom-scroll` class, mixin include, or inline scrollbar styling. The global rule hides the scrollbar entirely.
-- **UI Navigation:** Open any task list page > click a filter dropdown (e.g., Status, Created By) that contains enough items to exceed 383px height.
-- **Expected:** A styled scrollbar (narrow, rounded gray thumb) appears when list overflows.
-- **Actual:** Scrollbar is hidden. User can scroll via trackpad/mouse wheel but has no visual indicator of scrollable content.
+- **Status:** Scrollbar IS present. The `FilterDropDown` component applies the `dropdown-custom-scroll` class at the JSX level (line 504), which uses `@include custom-scroll($width: 1px, $thumb-height: 13px)` (defined in `_theme.scss:419-421`). This was not visible in the SCSS-only audit because the class is applied in the component code, not the stylesheet.
+- **UX note:** The scrollbar is intentionally very narrow (1px width, 13px thumb) and may be difficult to discover. Whether this width is sufficient for usability is a UX decision, not a code gap.
 
-### 3.2 History Modal
+### 3.2 History Tables
 
-- **Component:** Submission history modal -- displays version history timeline for form submissions.
-- **File:** `forms-flow-theme/scss/historyModal.scss`, lines 5-138
+There are **two separate history views** in the application:
+
+**A. Submission History Tab (Submissions page)**
+- **Component:** `AnalyzeSubmissionView.tsx` renders a `ReusableTable` (MUI DataGrid) inside the "History" tab at `forms-flow-submissions/src/components/AnalyzeSubmissionView.tsx`, lines 393-416.
+- **Rendering:** This is a tab within the submission detail page (Form / History / Export PDF), NOT a modal. The DataGrid is constrained to `height: 500` with `hideFooter` and `disableColumnResize`.
+- **Scrollbar behavior:** Falls under the MUI DataGrid pattern — `.MuiDataGrid-main` has `overflow-x: scroll` (`_table.scss:392-394`) but no visible scrollbar styling due to the global hide rule. Vertical scrolling is handled by MUI's virtual scroller.
+- **UI Navigation:** Open a form submission > click the "History" tab > ensure enough history entries to overflow the 500px container.
+
+**B. Task History Modal (Task Details page)**
+- **Component:** `TaskHistory.tsx` renders a modal with `.history-modal-body` class at `forms-flow-review/src/components/TaskHistory.tsx`, line 110.
+- **File (SCSS):** `forms-flow-theme/scss/historyModal.scss`, lines 5-138
 - **Selector:** `.history-modal-body`
-- **Current CSS (lines 5-18):**
-  ```scss
-  .history-modal-body {
-    @include paddingLvl2();
-    position: relative;
-    container: history-modal-body / inline-size;
-  }
-  ```
-- **Issue:** The `.history-modal-body` has no `overflow-y` property set directly, and no scrollbar styling. The parent `.modal-body` does have `@extend .custom-scroll` (from `_modal.scss` line 152), so the modal body itself scrolls correctly. However, the `.analyse-submision-history-modal` (line 141-143) sets `min-height: 80vh` without scroll management. If the history content exceeds the modal body height, scrolling works via the parent but the history body itself has no independent scroll behavior.
-- **UI Navigation:** Open any form submission > click "History" or "Submission History" button > ensure there are enough versions to overflow the modal body.
-- **Expected:** Styled scrollbar visible on the modal body when history entries overflow.
-- **Actual:** The parent modal-body scrollbar applies (via `.custom-scroll`), but if `.history-modal-body` or `.analyse-submision-history-modal` is used as a standalone scrollable container, no scrollbar appears.
+- **Scrollbar behavior:** The `.history-modal-body` has no `overflow-y` or scrollbar styling. The parent `.modal-body` does have `@extend .custom-scroll` (from `_modal.scss` line 152), so the modal itself scrolls — but the history body has no independent scroll control.
+- **UI Navigation:** Open a task from the task list > click "History" button > ensure enough history entries to overflow the modal body.
 
-### 3.3 Form History Modal
+### 3.3 Form History Tab — CORRECTED
 
-- **Component:** Form version history modal -- shows form definition version history with timeline.
-- **File:** `forms-flow-theme/scss/formHistoryModal.scss`, lines 5-16
-- **Selector:** `.form-submission-history-modal .form-history-modal-body`
-- **Current CSS (lines 7-15):**
-  ```scss
-  .form-history-modal-body {
-    padding: var(--spacer-200) var(--spacer-250) !important;
-    margin-top: var(--spacer-200);
-    position: relative;
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-xl);
-  }
-  ```
-- **Issue:** No `overflow-y` property and no scrollbar styling. Relies entirely on parent modal body for scrolling. If the form history entries are numerous, the container has no independent scroll control.
-- **UI Navigation:** Open a form in the designer > click "History" or "Version History" > ensure enough versions exist to overflow the modal.
-- **Expected:** Styled scrollbar visible when form history entries overflow.
-- **Actual:** No scrollbar on `.form-history-modal-body` itself; relies on parent modal-body scroll.
+- **Component:** `HistoryPage` component at `forms-flow-components/src/components/CustomComponents/HistoryPage.tsx`, rendered as a tab (Builder / Settings / History) within the form editor page.
+- **Rendering:** Uses `ReusableTable` (MUI DataGrid) with `sx={{ height: "auto" }}` and `hideFooter`. Although the component passes `height: "auto"`, the form editor's layout constrains the tab content area to a fixed viewport height, so the DataGrid does scroll internally.
+- **SCSS file `formHistoryModal.scss`:** This stylesheet is NOT used by the history listing. It styles `FormSubmissionHistoryModal.tsx` and `SubmissionHistoryWithViewButton.tsx`, which render a modal for viewing a specific submission's diff (triggered by the "View" button on a history row).
+- **Scrollbar assessment:** The DataGrid's `.MuiDataGrid-main` has `overflow-x: scroll !important` (`_table.scss:392-394`) and MUI's virtual scroller manages vertical overflow — both with hidden scrollbars due to the global `::-webkit-scrollbar { display: none }` rule. This is the same MUI DataGrid scrollbar gap as 3.2A.
+- **UI Navigation:** Open a form > Form tab > Builder / Settings / History sub-tabs > click "History" with enough versions to overflow the constrained height.
 
-### 3.4 Expression Builder -- Operator List
+### 3.4 Expression Builder -- Operand Dropdown — CORRECTED
 
-- **Component:** The operator picker panel inside the expression builder modal -- lists available operators (equals, not equals, contains, etc.).
-- **File:** `forms-flow-theme/scss/_modal.scss`, lines 1014-1021
-- **Selector:** `.expression-builder .pick-operator`
-- **Current CSS (lines 1014-1021):**
-  ```scss
-  .pick-operator {
-    display: flex;
-    flex-direction: column;
-    padding: var(--spacer-200);
-    gap: var(--spacer-050);
-    max-height: calc(100vh - 26.375rem);
-    overflow-y: scroll;
-  }
-  ```
-- **Issue:** Has `overflow-y: scroll` but NO `custom-scroll` mixin, class, or inline scrollbar styles. The global rule hides the scrollbar.
-- **UI Navigation:** Open the Expression Builder modal (available in workflow/form configuration) > navigate to the operator selection panel on the right side.
-- **Expected:** A styled scrollbar appears when the operator list exceeds the available height.
-- **Actual:** Scrollbar is hidden. Content scrolls via trackpad/wheel but no visual scrollbar indicator.
+- **Original audit:** Flagged `.pick-operator` as missing scrollbar. **User testing found the operator dropdown ("Choose an operator") DOES have a scrollbar.** The actual gap is on the **operand dropdown** ("Choose a variable or value").
+- **Component:** `SelectWithCustomValue` at `forms-flow-components/src/components/CustomComponents/SelectWithCustomValue.tsx`
+- **Selector:** `.custom-dropdown-options` (rendered with class `custom-dropdown-options--{variant}`)
+- **Root cause:** The dropdown is correctly constrained to `max-height: 14.75rem` (`_selectWithCustomValue.scss:5,14`) and overflow is triggered. The base scrollbar pseudo-element styling exists in `_selectDropdown.scss:244-265`, but the global `::-webkit-scrollbar { display: none }` rule overrides it and hides the scrollbar. Users can scroll via trackpad or mousewheel, but there is no visual scrollbar indicator.
+- **UI Navigation:** Open Expression Builder > click the "Choose a variable or value" operand dropdown with enough items to exceed the `14.75rem` max-height.
+- **Expected:** Dropdown constrained to `14.75rem` max-height with styled scrollbar.
+- **Actual:** Dropdown is correctly constrained, but scrollbar is hidden by the global rule. No visual scroll indicator.
 
 ### 3.5 Task Filter Reorder Modal Body
 
@@ -191,6 +151,31 @@ This mixin overrides the global `display: none` with `display: block`, sets a na
 - **UI Navigation:** Click "Create Form" > select "Use a template" > the left panel shows the template list. Ensure enough templates exist to require scrolling.
 - **Expected:** Styled scrollbar appears on the template list.
 - **Actual:** Scrollbar is completely hidden (both WebKit via global rule, and MS via explicit `-ms-overflow-style: none`).
+
+### 3.7 MUI DataGrid Horizontal Scrollbar
+
+- **Component:** The `ReusableTable` component wraps a MUI `DataGrid` and is used across multiple pages for tabular data with resizable columns.
+- **Component File:** `forms-flow-components/src/components/CustomComponents/ReusableTable.tsx`
+- **SCSS File:** `forms-flow-theme/scss/v8-scss/_table.scss`, line 392-394
+- **Selector:** `.MuiDataGrid-main`
+- **Current CSS (line 392-394):**
+  ```scss
+  .MuiDataGrid-main {
+    overflow-x: scroll!important;
+  }
+  ```
+- **What IS present:** `overflow-x: scroll` forces the horizontal scroll container to always be scrollable.
+- **What is MISSING:** No `custom-scroll` mixin or WebKit scrollbar pseudo-element styling. The global `::-webkit-scrollbar { display: none }` rule hides the horizontal scrollbar entirely.
+- **Affected consumers:**
+  - `forms-flow-submissions/src/Routes/SubmissionListing.tsx` — Submissions listing page
+  - `forms-flow-submissions/src/components/AnalyzeSubmissionView.tsx` — Submission detail view
+  - `forms-flow-review/src/components/TaskList/TasklistTable.tsx` — Task list table
+  - `forms-flow-review/src/components/TaskList/TaskDetailsModal.tsx` — Task details modal
+  - `forms-flow-components/src/components/CustomComponents/HistoryPage.tsx` — History tables
+- **Note:** The `custom-scroll` mixin only styles the vertical scrollbar (sets `width` but not `height` on `::-webkit-scrollbar`). A horizontal scrollbar requires setting `height` on the pseudo-element as well. This may require extending the mixin or adding dedicated horizontal scrollbar styles for `.MuiDataGrid-main`.
+- **UI Navigation:** Open any page using `ReusableTable` (e.g., Submissions list, Task list) with enough columns or wide enough content to exceed the viewport width.
+- **Expected:** Styled horizontal scrollbar appears below the table when content overflows horizontally.
+- **Actual:** Horizontal scrollbar is hidden by the global rule.
 
 ---
 
@@ -274,7 +259,7 @@ This mixin overrides the global `display: none` with `display: block`, sets a na
 
 Use this checklist to systematically verify each scrollbar gap in a running instance of the application. For each item, navigate to the specified location, trigger the scrollable area, and verify the scrollbar behavior.
 
-- [ ] **Filter Dropdown:** Open any task list or form list > click a filter dropdown (Status, Created By, etc.) with enough items to scroll. **Verify:** A styled scrollbar (narrow, gray, rounded thumb) appears in the dropdown menu.
+- [x] **Filter Dropdown:** ~~Open any task list or form list > click a filter dropdown with enough items to scroll.~~ **Not a gap.** Scrollbar is present via `dropdown-custom-scroll` class (1px width, 13px thumb). Narrow by design — UX review may be warranted for discoverability.
 
 - [ ] **History Modal (Submissions):** Open a form submission > click "History" or "Submission History" with enough versions to overflow. **Verify:** Styled scrollbar appears on the modal body when scrolling through version entries.
 
