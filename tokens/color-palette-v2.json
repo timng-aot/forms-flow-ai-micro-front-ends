@@ -337,76 +337,34 @@
         }
       },
       "ai": {
-        "$description": "AI Gradient palette (brand-to-purple linear gradient) — V2 Colour Theory. Each stop pair represents a left-to-right linear gradient.",
+        "$description": "AI Gradient palette (brand-to-purple linear gradient) — V2 Colour Theory",
         "900": {
-          "start": {
-            "$value": "#2738be",
-            "$description": "AI Gradient 900 start (left)"
-          },
-          "end": {
-            "$value": "#8342c1",
-            "$description": "AI Gradient 900 end (right)"
-          }
+          "$value": "linear-gradient(90deg, #2738be 0%, #8342c1 100%)",
+          "$description": "AI Gradient 900 — darkest"
         },
         "700": {
-          "start": {
-            "$value": "#3248f4",
-            "$description": "AI Gradient 700 start (left) — base"
-          },
-          "end": {
-            "$value": "#a855f7",
-            "$description": "AI Gradient 700 end (right) — base"
-          }
+          "$value": "linear-gradient(90deg, #3248f4 0%, #a855f7 100%)",
+          "$description": "AI Gradient 700 — base"
         },
         "500": {
-          "start": {
-            "$value": "#6576f7",
-            "$description": "AI Gradient 500 start (left)"
-          },
-          "end": {
-            "$value": "#be80f9",
-            "$description": "AI Gradient 500 end (right)"
-          }
+          "$value": "linear-gradient(90deg, #6576f7 0%, #be80f9 100%)",
+          "$description": "AI Gradient 500"
         },
         "300": {
-          "start": {
-            "$value": "#98a4fa",
-            "$description": "AI Gradient 300 start (left)"
-          },
-          "end": {
-            "$value": "#d4aafb",
-            "$description": "AI Gradient 300 end (right)"
-          }
+          "$value": "linear-gradient(90deg, #98a4fa 0%, #d4aafb 100%)",
+          "$description": "AI Gradient 300"
         },
         "200": {
-          "start": {
-            "$value": "#ccd1fc",
-            "$description": "AI Gradient 200 start (left)"
-          },
-          "end": {
-            "$value": "#e9d4fd",
-            "$description": "AI Gradient 200 end (right)"
-          }
+          "$value": "linear-gradient(90deg, #ccd1fc 0%, #e9d4fd 100%)",
+          "$description": "AI Gradient 200"
         },
         "100": {
-          "start": {
-            "$value": "#eaedfe",
-            "$description": "AI Gradient 100 start (left) — surface use"
-          },
-          "end": {
-            "$value": "#f6eefe",
-            "$description": "AI Gradient 100 end (right) — surface use"
-          }
+          "$value": "linear-gradient(90deg, #eaedfe 0%, #f6eefe 100%)",
+          "$description": "AI Gradient 100 — surface use"
         },
         "50": {
-          "start": {
-            "$value": "#f4f5ff",
-            "$description": "AI Gradient 50 start (left) — surface use"
-          },
-          "end": {
-            "$value": "#fbf6ff",
-            "$description": "AI Gradient 50 end (right) — surface use"
-          }
+          "$value": "linear-gradient(90deg, #f4f5ff 0%, #fbf6ff 100%)",
+          "$description": "AI Gradient 50 — surface use"
         }
       }
     }
