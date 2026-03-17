@@ -1,0 +1,414 @@
+{
+  "ff": {
+    "color": {
+      "$type": "color",
+      "gray": {
+        "$description": "Grayscale palette — V2 Colour Theory",
+        "950": {
+          "$value": "#1c1c1e",
+          "$description": "Grayscale 950 — near-black"
+        },
+        "900": {
+          "$value": "#2e2e30",
+          "$description": "Grayscale 900"
+        },
+        "800": {
+          "$value": "#4a4a4a",
+          "$description": "Grayscale 800"
+        },
+        "700": {
+          "$value": "#636365",
+          "$description": "Grayscale 700"
+        },
+        "600": {
+          "$value": "#7c7d7f",
+          "$description": "Grayscale 600"
+        },
+        "500": {
+          "$value": "#979899",
+          "$description": "Grayscale 500"
+        },
+        "400": {
+          "$value": "#b7b7b8",
+          "$description": "Grayscale 400"
+        },
+        "300": {
+          "$value": "#d1d2d3",
+          "$description": "Grayscale 300"
+        },
+        "200": {
+          "$value": "#e5e5e5",
+          "$description": "Grayscale 200"
+        },
+        "100": {
+          "$value": "#f0f0f0",
+          "$description": "Grayscale 100 — surface use"
+        },
+        "75": {
+          "$value": "#f6f6f6",
+          "$description": "Grayscale 75 — surface use"
+        },
+        "50": {
+          "$value": "#fcfcfc",
+          "$description": "Grayscale 50 — surface use"
+        },
+        "0": {
+          "$value": "#ffffff",
+          "$description": "Grayscale 0 — white, surface use"
+        }
+      },
+      "yellow": {
+        "$description": "Yellow palette (Tips) — V2 Colour Theory",
+        "900": {
+          "$value": "#ba9604",
+          "$description": "Yellow 900 — darkest"
+        },
+        "700": {
+          "$value": "#e3bb30",
+          "$description": "Yellow 700 — base"
+        },
+        "500": {
+          "$value": "#f3d044",
+          "$description": "Yellow 500"
+        },
+        "300": {
+          "$value": "#f7e082",
+          "$description": "Yellow 300"
+        },
+        "200": {
+          "$value": "#fbefc0",
+          "$description": "Yellow 200"
+        },
+        "100": {
+          "$value": "#fdf9e6",
+          "$description": "Yellow 100 — surface use"
+        },
+        "50": {
+          "$value": "#fefcf2",
+          "$description": "Yellow 50 — surface use"
+        }
+      },
+      "orange": {
+        "$description": "Orange palette (Error) — V2 Colour Theory",
+        "900": {
+          "$value": "#c77100",
+          "$description": "Orange 900 — darkest"
+        },
+        "700": {
+          "$value": "#ff9100",
+          "$description": "Orange 700 — base"
+        },
+        "500": {
+          "$value": "#ffac40",
+          "$description": "Orange 500"
+        },
+        "300": {
+          "$value": "#ffc880",
+          "$description": "Orange 300"
+        },
+        "200": {
+          "$value": "#ffe4bf",
+          "$description": "Orange 200"
+        },
+        "100": {
+          "$value": "#fff4e6",
+          "$description": "Orange 100 — surface use"
+        },
+        "50": {
+          "$value": "#fffaf2",
+          "$description": "Orange 50 — surface use"
+        }
+      },
+      "red": {
+        "$description": "Red palette (Warning) — V2 Colour Theory",
+        "900": {
+          "$value": "#9a1f1f",
+          "$description": "Red 900 — darkest"
+        },
+        "700": {
+          "$value": "#c62828",
+          "$description": "Red 700 — base"
+        },
+        "500": {
+          "$value": "#d45e5e",
+          "$description": "Red 500"
+        },
+        "300": {
+          "$value": "#e29494",
+          "$description": "Red 300"
+        },
+        "200": {
+          "$value": "#f1c9c9",
+          "$description": "Red 200"
+        },
+        "100": {
+          "$value": "#f9eaea",
+          "$description": "Red 100 — surface use"
+        },
+        "50": {
+          "$value": "#fcf4f4",
+          "$description": "Red 50 — surface use"
+        }
+      },
+      "teal": {
+        "$description": "Teal palette (Success) — V2 Colour Theory",
+        "900": {
+          "$value": "#009978",
+          "$description": "Teal 900 — darkest"
+        },
+        "700": {
+          "$value": "#00c49a",
+          "$description": "Teal 700 — base"
+        },
+        "500": {
+          "$value": "#40d3b3",
+          "$description": "Teal 500"
+        },
+        "300": {
+          "$value": "#80e2cc",
+          "$description": "Teal 300"
+        },
+        "200": {
+          "$value": "#bff0e6",
+          "$description": "Teal 200"
+        },
+        "100": {
+          "$value": "#e6f9f5",
+          "$description": "Teal 100 — surface use"
+        },
+        "50": {
+          "$value": "#f2fcfa",
+          "$description": "Teal 50 — surface use"
+        }
+      },
+      "blue": {
+        "$description": "Blue palette — V2 Colour Theory",
+        "900": {
+          "$value": "#0070b8",
+          "$description": "Blue 900 — darkest"
+        },
+        "700": {
+          "$value": "#0070b8",
+          "$description": "Blue 700 — base"
+        },
+        "500": {
+          "$value": "#4094ca",
+          "$description": "Blue 500"
+        },
+        "300": {
+          "$value": "#80c3ec",
+          "$description": "Blue 300"
+        },
+        "200": {
+          "$value": "#bfe1f6",
+          "$description": "Blue 200"
+        },
+        "100": {
+          "$value": "#e6f3fb",
+          "$description": "Blue 100 — surface use"
+        },
+        "50": {
+          "$value": "#f2f8fb",
+          "$description": "Blue 50 — surface use"
+        }
+      },
+      "brand": {
+        "$description": "Brand palette (Indigo) — V2 Colour Theory",
+        "900": {
+          "$value": "#1529c4",
+          "$description": "Brand 900 — darkest"
+        },
+        "700": {
+          "$value": "#1b34fb",
+          "$description": "Brand 700 — base"
+        },
+        "500": {
+          "$value": "#5467fc",
+          "$description": "Brand 500"
+        },
+        "300": {
+          "$value": "#8d9afd",
+          "$description": "Brand 300"
+        },
+        "200": {
+          "$value": "#c6ccfe",
+          "$description": "Brand 200"
+        },
+        "100": {
+          "$value": "#e8ebff",
+          "$description": "Brand 100 — surface use"
+        },
+        "50": {
+          "$value": "#f4f5ff",
+          "$description": "Brand 50 — surface use"
+        }
+      },
+      "purple": {
+        "$description": "Purple palette — V2 Colour Theory",
+        "900": {
+          "$value": "#8342c1",
+          "$description": "Purple 900 — darkest"
+        },
+        "700": {
+          "$value": "#a855f7",
+          "$description": "Purple 700 — base"
+        },
+        "500": {
+          "$value": "#be80f9",
+          "$description": "Purple 500"
+        },
+        "300": {
+          "$value": "#d4aafb",
+          "$description": "Purple 300"
+        },
+        "200": {
+          "$value": "#e9d4fd",
+          "$description": "Purple 200"
+        },
+        "100": {
+          "$value": "#f6eefe",
+          "$description": "Purple 100 — surface use"
+        },
+        "50": {
+          "$value": "#fbf6ff",
+          "$description": "Purple 50 — surface use"
+        }
+      },
+      "green": {
+        "$description": "Green palette — V2 Colour Theory",
+        "900": {
+          "$value": "#1b9a49",
+          "$description": "Green 900 — darkest"
+        },
+        "700": {
+          "$value": "#22c55e",
+          "$description": "Green 700 — base"
+        },
+        "500": {
+          "$value": "#59d486",
+          "$description": "Green 500"
+        },
+        "300": {
+          "$value": "#90e2ae",
+          "$description": "Green 300"
+        },
+        "200": {
+          "$value": "#c8f0d7",
+          "$description": "Green 200"
+        },
+        "100": {
+          "$value": "#e9f9ef",
+          "$description": "Green 100 — surface use"
+        },
+        "50": {
+          "$value": "#f4fcf7",
+          "$description": "Green 50 — surface use"
+        }
+      },
+      "pink": {
+        "$description": "Pink palette — V2 Colour Theory",
+        "900": {
+          "$value": "#ab1e5d",
+          "$description": "Pink 900 — darkest"
+        },
+        "700": {
+          "$value": "#db2777",
+          "$description": "Pink 700 — base"
+        },
+        "500": {
+          "$value": "#e45d99",
+          "$description": "Pink 500"
+        },
+        "300": {
+          "$value": "#ed93bb",
+          "$description": "Pink 300"
+        },
+        "200": {
+          "$value": "#f6c9dd",
+          "$description": "Pink 200"
+        },
+        "100": {
+          "$value": "#fbe9f1",
+          "$description": "Pink 100 — surface use"
+        },
+        "50": {
+          "$value": "#fdf4f8",
+          "$description": "Pink 50 — surface use"
+        }
+      },
+      "ai": {
+        "$description": "AI Gradient palette (brand-to-purple linear gradient) — V2 Colour Theory. Each stop pair represents a left-to-right linear gradient.",
+        "900": {
+          "start": {
+            "$value": "#2738be",
+            "$description": "AI Gradient 900 start (left)"
+          },
+          "end": {
+            "$value": "#8342c1",
+            "$description": "AI Gradient 900 end (right)"
+          }
+        },
+        "700": {
+          "start": {
+            "$value": "#3248f4",
+            "$description": "AI Gradient 700 start (left) — base"
+          },
+          "end": {
+            "$value": "#a855f7",
+            "$description": "AI Gradient 700 end (right) — base"
+          }
+        },
+        "500": {
+          "start": {
+            "$value": "#6576f7",
+            "$description": "AI Gradient 500 start (left)"
+          },
+          "end": {
+            "$value": "#be80f9",
+            "$description": "AI Gradient 500 end (right)"
+          }
+        },
+        "300": {
+          "start": {
+            "$value": "#98a4fa",
+            "$description": "AI Gradient 300 start (left)"
+          },
+          "end": {
+            "$value": "#d4aafb",
+            "$description": "AI Gradient 300 end (right)"
+          }
+        },
+        "200": {
+          "start": {
+            "$value": "#ccd1fc",
+            "$description": "AI Gradient 200 start (left)"
+          },
+          "end": {
+            "$value": "#e9d4fd",
+            "$description": "AI Gradient 200 end (right)"
+          }
+        },
+        "100": {
+          "start": {
+            "$value": "#eaedfe",
+            "$description": "AI Gradient 100 start (left) — surface use"
+          },
+          "end": {
+            "$value": "#f6eefe",
+            "$description": "AI Gradient 100 end (right) — surface use"
+          }
+        },
+        "50": {
+          "start": {
+            "$value": "#f4f5ff",
+            "$description": "AI Gradient 50 start (left) — surface use"
+          },
+          "end": {
+            "$value": "#fbf6ff",
+            "$description": "AI Gradient 50 end (right) — surface use"
+          }
+        }
+      }
+    }
+  }
+}
